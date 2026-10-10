@@ -1,4 +1,10 @@
-.damage-taken-card { margin-top: .75rem; }
+.ui-card.damage-taken-card {
+  margin-top: .75rem;
+  background: transparent;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--border-radius);
+  box-shadow: none;
+}
 .hud-card-col--monster .damage-taken-card .ui-card-content { display: block; }
 .damage-taken-card .ui-card-body { padding: 0; }
 .damage-taken-toggle { display: flex; align-items: center; gap: .6rem; width: 100%; padding: .85rem 1rem; border: 0; background: transparent; color: var(--text-color); cursor: pointer; font: inherit; font-weight: 600; text-align: left; }
