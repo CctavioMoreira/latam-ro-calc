@@ -2,7 +2,7 @@
 
 O cartão **Dano recebido** fica abaixo do cartão do monstro em Batalha e Auto-conjuração. Começa recolhido e calcula o dano de uma habilidade ou ataque básico contra a build atual, incluindo os efeitos selecionados. A primeira implementação atende somente ao Betelgeuse (20994), conforme o [pedido original](https://issues.latam-tools.com.br/?card=bE74EtfiFav0P6dY4Pld).
 
-O resultado inclui intervalo mínimo/máximo, porcentagem do HP máximo, dano por golpe/onda e etapas da fórmula. Clicar numa redução abre as contribuições da própria build. Não usa as reduções do alvo PvP, do castelo ou da aura defensiva do monstro.
+O resultado inclui intervalo mínimo/máximo, porcentagem do HP máximo, dano por golpe/onda e etapas da fórmula. O botão de informações junto ao resultado abre as notas do ataque selecionado e as limitações da estimativa; essas notas ficam ocultas por padrão. Clicar numa redução abre as contribuições da própria build. Não usa as reduções do alvo PvP, do castelo ou da aura defensiva do monstro.
 
 ## Ataques e fontes
 
