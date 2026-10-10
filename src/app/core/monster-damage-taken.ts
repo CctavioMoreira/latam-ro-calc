@@ -10,6 +10,7 @@ export interface MonsterAttackProfile {
   race: string;
   size: 's' | 'm' | 'l';
   type: 'normal' | 'boss';
+  attackRange: number;
   attack: Attack;
   magicAttack: Attack;
 }
@@ -62,6 +63,9 @@ export function calculateMonsterDamageTaken(profile: IncomingDamageProfile, skil
   if (!skill) return null;
   const { attacker, defender } = profile;
   const armorElement = options.armorElement ?? defender.armorElement;
+  // Basic attacks use the monster's attack range; skill range can depend on distance.
+  const isRanged = skill.formula === 'basic-attack' ? attacker.attackRange > 3
+    : boundedInteger(options.attackerDistance, 1, 1, 14) > 3;
   const steps: IncomingDamageStep[] = [];
   const range = skill.damageType === 'physical' || skill.formula === 'earthquake' ? attacker.attack : attacker.magicAttack;
   let min = skill.damageType === 'fixed' ? 10000 : range.minimum;
@@ -77,7 +81,7 @@ export function calculateMonsterDamageTaken(profile: IncomingDamageProfile, skil
       : defender.bonus;
     for (const step of defenderReductionSteps({ bonus, dmgType: skill.damageType,
       attackerRace: attacker.race, attackerElement: skill.element.toLowerCase(), attackerSize: attacker.size,
-      attackerType: attacker.type, isRanged: boundedInteger(options.attackerDistance, 1, 1, 14) > 3 })) {
+      attackerType: attacker.type, isRanged })) {
       multiply(step.label, step.factor, step.keys);
     }
   };
@@ -88,6 +92,7 @@ export function calculateMonsterDamageTaken(profile: IncomingDamageProfile, skil
   let ratio = 1;
   let hits = 1;
   switch (skill.formula) {
+    case 'basic-attack': break;
     case 'npc-comet': {
       const band = Math.max(1, Math.floor(boundedInteger(options.cometDistance, 0, 0, 9) / 2));
       ratio = (2500 + (skill.level - band + 1) * 500) / 100;
@@ -115,8 +120,12 @@ export function calculateMonsterDamageTaken(profile: IncomingDamageProfile, skil
     if (soft) push(physical ? 'DEF de atributos' : 'DEFM de atributos', [physical ? 'softDef' : 'softMdef']);
   }
   if (skill.damageType !== 'fixed') {
-    const elementFactor = ElementMapper[`${armorElement} 1`][skill.element] / 100;
-    if (elementFactor !== 1) multiply('Elemento da armadura', elementFactor);
+    // Monster auto-attacks are non-elemental against armor, while neutral gear
+    // resistance still applies (e.g. Raydric reduces them, Ghostring does not).
+    if (skill.formula !== 'basic-attack') {
+      const elementFactor = ElementMapper[`${armorElement} 1`][skill.element] / 100;
+      if (elementFactor !== 1) multiply('Elemento da armadura', elementFactor);
+    }
     if (skill.damageType === 'physical' || skill.formula === 'earthquake') applyEquipmentReductions();
   }
   if (skill.formula === 'npc-comet') {

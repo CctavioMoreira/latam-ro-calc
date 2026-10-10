@@ -27,8 +27,9 @@ export function BattleDamageTakenCard({ profile, disabled = false, onReductionCl
   const result = calculateMonsterDamageTaken(profile, skillId, { cometDistance, earthquakeTargets, meteors, attackerDistance,
     armorElement: armor === 'auto' ? undefined : armor });
   if (!result) return null;
+  const basicAttack = result.skill.formula === 'basic-attack';
   const range = (min: number, max: number) => min === max ? formatNumber(min) : `${formatNumber(min)} – ${formatNumber(max)}`;
-  const skillOptions = skills.map(skill => ({ label: `${skill.name} · Nv. ${skill.level}`, value: skill.id }));
+  const skillOptions = skills.map(skill => ({ label: skill.formula === 'basic-attack' ? skill.name : `${skill.name} · Nv. ${skill.level}`, value: skill.id }));
   const numbers = (max: number, suffix = '') => Array.from({ length: max }, (_, index) => ({ label: `${index + 1}${suffix}`, value: index + 1 }));
   const armorOptions = [{ label: `Equipamento (${ELE_PT[profile.defender.armorElement.toLowerCase()]})`, value: 'auto' },
     ...Object.values(ElementType).map(value => ({ label: `${ELE_PT[value.toLowerCase()]} 1`, value }))];
@@ -37,12 +38,13 @@ export function BattleDamageTakenCard({ profile, disabled = false, onReductionCl
       <Icon name="shield" /><span>Dano recebido</span><Icon name={open ? 'chevron-down' : 'chevron-right'} />
     </button>
     <div id={`${id}-content`} hidden={!open} role="region" aria-label="Dano recebido" className="damage-taken-content">
-      <label className="damage-taken-field"><span>Habilidade do monstro</span>
-        <Select ariaLabel="Habilidade do monstro" options={skillOptions} optionLabel="label" optionValue="value" value={skillId} disabled={disabled} onChange={setSkillId} />
+      <label className="damage-taken-field"><span>Ataque do monstro</span>
+        <Select ariaLabel="Ataque do monstro" options={skillOptions} optionLabel="label" optionValue="value" value={skillId} disabled={disabled} onChange={setSkillId} />
       </label>
       <div className="damage-taken-badges"><span>{result.skill.damageType === 'physical' ? 'Físico' : result.skill.damageType === 'fixed' ? 'Fixo' : 'Mágico'}</span>
-        <span>{ELE_PT[result.skill.element.toLowerCase()]}</span><span>Nv. {result.skill.level}</span></div>
-      {result.skill.formula !== 'killing-aura' && <label className="damage-taken-field"><span>Elemento da armadura</span>
+        <span>{basicAttack ? 'Sem propriedade' : ELE_PT[result.skill.element.toLowerCase()]}</span>
+        <span>{basicAttack ? profile.attacker.attackRange > 3 ? 'À distância' : 'Corpo a corpo' : `Nv. ${result.skill.level}`}</span></div>
+      {!basicAttack && result.skill.formula !== 'killing-aura' && <label className="damage-taken-field"><span>Elemento da armadura</span>
         <Select ariaLabel="Elemento da armadura" options={armorOptions} optionLabel="label" optionValue="value" value={armor} disabled={disabled} onChange={setArmor} />
       </label>}
       {result.skill.formula === 'npc-comet' && <label className="damage-taken-field"><span>Distância ao centro do Cometa</span>
@@ -59,7 +61,7 @@ export function BattleDamageTakenCard({ profile, disabled = false, onReductionCl
         <Select ariaLabel="Distância ao monstro" options={numbers(14, ' células')} optionLabel="label" optionValue="value" value={attackerDistance} disabled={disabled} onChange={setAttackerDistance} />
       </label>}
       <div className="damage-taken-result" aria-live="polite">
-        <span>{result.skill.damageType === 'fixed' ? 'Dano por segundo' : 'Dano total recebido'}</span>
+        <span>{result.skill.damageType === 'fixed' ? 'Dano por segundo' : basicAttack ? 'Dano por ataque básico' : 'Dano total recebido'}</span>
         <strong>{range(result.min, result.max)}</strong>
         {result.hpPercent && <span>{range(Math.round(result.hpPercent.min * 10) / 10, Math.round(result.hpPercent.max * 10) / 10)}% do HP máximo</span>}
         {result.hits > 1 && <span>{range(result.perHit.min, result.perHit.max)} por {result.skill.formula === 'earthquake' ? 'onda' : 'golpe'} · {result.hits} {result.skill.formula === 'earthquake' ? 'ondas' : 'golpes'}</span>}
@@ -73,7 +75,7 @@ export function BattleDamageTakenCard({ profile, disabled = false, onReductionCl
           <dd>{range(step.min, step.max)}</dd>
         </div>)}</dl>
       </details>
-      <a className="damage-taken-source" href={`https://www.divine-pride.net/database/skill/${result.skill.id}`} target="_blank" rel="noopener noreferrer">Ver habilidade no Divine Pride <Icon name="external-link" /></a>
+      <a className="damage-taken-source" href={basicAttack ? `https://www.divine-pride.net/database/monster/${profile.attacker.id}` : `https://www.divine-pride.net/database/skill/${result.skill.id}`} target="_blank" rel="noopener noreferrer">Ver {basicAttack ? 'monstro' : 'habilidade'} no Divine Pride <Icon name="external-link" /></a>
     </div>
   </Card>;
 }

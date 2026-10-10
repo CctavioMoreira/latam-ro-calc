@@ -7,19 +7,44 @@ import { calculateMonsterDamageTaken, IncomingDamageProfile } from './monster-da
 import { defenderReductionMultiplier } from './pvp';
 
 const profile = (bonus: IncomingDamageProfile['defender']['bonus'] = {}): IncomingDamageProfile => ({
-  attacker: { id: 20994, race: 'dragon', size: 'l', type: 'boss',
+  attacker: { id: 20994, race: 'dragon', size: 'l', type: 'boss', attackRange: 3,
     attack: { minimum: 1000, maximum: 2000 }, magicAttack: { minimum: 100, maximum: 200 } },
   defender: { hp: 10000, def: 0, softDef: 0, mdef: 0, softMdef: 0, res: 0, mres: 0, bonus, armorElement: ElementType.Neutral },
 });
 const damage = (id: number, p = profile(), options = {}) => calculateMonsterDamageTaken(p, id, options)!;
 
 describe('Betelgeuse incoming damage', () => {
-  it('offers the seven unique damaging skill IDs from the Skills tab, with monster levels', () => {
+  it('offers the seven unique damaging skills with monster levels, plus basic attack', () => {
     expect(getMonsterOffensiveSkills(20994).map(skill => [skill.id, skill.level])).toEqual([
-      [708, 4], [2217, 5], [768, 5], [340, 10], [83, 10], [783, 4], [750, 4],
+      [708, 4], [2217, 5], [768, 5], [340, 10], [83, 10], [783, 4], [750, 4], [0, 0],
     ]);
     expect(calculateMonsterDamageTaken(profile(), 2213)).toBeNull();
     expect(calculateMonsterDamageTaken({ ...profile(), attacker: { ...profile().attacker, id: 1002 } }, 708)).toBeNull();
+  });
+
+  it('basic attack is one 100% ATK hit with TEN, DEF, soft DEF and current physical reductions', () => {
+    expect(damage(0)).toMatchObject({ min: 1000, max: 2000, hits: 1, perHit: { min: 1000, max: 2000 } });
+    const p = profile({ subclass_boss: 40, subrace_dragon: 20, subele_neutral: 50,
+      dmg_taken_physical: 25, dmg_taken_magical: 100 });
+    Object.assign(p.defender, { res: 1000, def: 400, softDef: 100, mres: 1000, mdef: 1000 });
+    // (2000 × 50% TEN × 4400/8000 DEF − 100) × 80% Dragon × 50% Neutral × 60% Boss × 75% physical.
+    expect(damage(0, p).max).toBe(81);
+  });
+
+  it('basic attacks bypass armor property but retain neutral gear resistance', () => {
+    const p = profile({ subele_neutral: 20, subele_dark: 100 });
+    for (const armorElement of Object.values(ElementType)) {
+      expect(damage(0, p, { armorElement })).toMatchObject({ min: 800, max: 1600 });
+    }
+    expect(damage(0, p, { armorElement: ElementType.Ghost }).steps.some(step => step.label === 'Elemento da armadura')).toBe(false);
+    expect(damage(768, p, { armorElement: ElementType.Ghost }).max).toBe(7200);
+  });
+
+  it('classifies basic attack range from the monster, regardless of a previous skill distance', () => {
+    const p = profile({ dmg_taken_range: 50 });
+    expect(damage(0, p, { attackerDistance: 7 }).max).toBe(2000);
+    p.attacker.attackRange = 4;
+    expect(damage(0, p, { attackerDistance: 1 }).max).toBe(1000);
   });
 
   it('NPC Comet uses distance bands and one damage calculation, with no player level scaling', () => {

@@ -1,6 +1,7 @@
 import { ElementType } from './element-type.const';
 
-/** Monster skill IDs, listed levels and unique entries from Divine Pride's Skills tab.
+/** Monster skill IDs, listed levels and unique entries from Divine Pride's Skills tab,
+ * plus basic attacks (ID/level 0, as in the damage packets).
  * Formula references and the differences from player skills are in docs/damage-taken.md. */
 export interface MonsterOffensiveSkill {
   id: number;
@@ -8,7 +9,7 @@ export interface MonsterOffensiveSkill {
   level: number;
   damageType: 'physical' | 'magical' | 'fixed';
   element: ElementType;
-  formula: 'npc-comet' | 'tetra-vortex' | 'hell-judgement' | 'dark-strike' | 'meteor-storm' | 'killing-aura' | 'earthquake';
+  formula: 'basic-attack' | 'npc-comet' | 'tetra-vortex' | 'hell-judgement' | 'dark-strike' | 'meteor-storm' | 'killing-aura' | 'earthquake';
   /** NPC variants can use a different hit count than the listed player-skill level. */
   hitsPerMeteor?: number;
   note: string;
@@ -29,6 +30,8 @@ const BETELGEUSE_SKILLS: readonly MonsterOffensiveSkill[] = [
     note: '10.000 de dano fixo por segundo. Ignora as defesas e resistências de equipamento; bloqueios e habilidades defensivas não são simulados.' },
   { id: 750, name: 'Terremoto', level: 4, damageType: 'magical', element: ElementType.Neutral, formula: 'earthquake',
     note: '3 ondas de 800% de ATQ, divididas entre os alvos vivos na área. Ignora DEF, DEFM, TEN, TENM e resistências de raça, elemento, tamanho e chefe. O elemento da armadura e a redução mágica geral se aplicam.' },
+  { id: 0, name: 'Ataque básico', level: 0, damageType: 'physical', element: ElementType.Neutral, formula: 'basic-attack',
+    note: '100% de ATQ por golpe normal. O ataque básico ignora a propriedade da armadura, mas reduções de dano Neutro e resistências físicas se aplicam.' },
 ];
 
 /** Add another monster here without changing the calculation or the card. */

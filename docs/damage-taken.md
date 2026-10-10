@@ -1,10 +1,10 @@
 # Dano recebido de monstros
 
-O cartão **Dano recebido** fica abaixo do cartão do monstro em Batalha e Auto-conjuração. Começa recolhido e calcula o dano de uma habilidade contra a build atual, incluindo os efeitos selecionados. A primeira implementação atende somente ao Betelgeuse (20994), conforme o [pedido original](https://issues.latam-tools.com.br/?card=bE74EtfiFav0P6dY4Pld).
+O cartão **Dano recebido** fica abaixo do cartão do monstro em Batalha e Auto-conjuração. Começa recolhido e calcula o dano de uma habilidade ou ataque básico contra a build atual, incluindo os efeitos selecionados. A primeira implementação atende somente ao Betelgeuse (20994), conforme o [pedido original](https://issues.latam-tools.com.br/?card=bE74EtfiFav0P6dY4Pld).
 
 O resultado inclui intervalo mínimo/máximo, porcentagem do HP máximo, dano por golpe/onda e etapas da fórmula. Clicar numa redução abre as contribuições da própria build. Não usa as reduções do alvo PvP, do castelo ou da aura defensiva do monstro.
 
-## Habilidades e fontes
+## Ataques e fontes
 
 A [aba Skills do Divine Pride](https://www.divine-pride.net/database/monster/20994/betelgeuse) foi consultada em 09/10/2026. Entradas repetidas por estado/condição foram deduplicadas por ID. Maldição, quebra de equipamentos, remoção sombria e Ganbantein não causam dano direto e ficam fora do seletor.
 
@@ -17,11 +17,13 @@ A [aba Skills do Divine Pride](https://www.divine-pride.net/database/monster/209
 | 83 / WZ_METEOR — Chuva de Meteoros | 10 listado | 15 golpes de ATQM × 1,25 por impacto NPC, conforme replays LATAM. Fogo. |
 | 783 / NPC_KILLING_AURA — Aura Assassina | 4 | 10.000 por segundo, fixo. |
 | 750 / NPC_EARTHQUAKE_K — Terremoto | 4 | 3 ondas de ATQ × 8, cada uma dividida entre os alvos vivos. Neutro. |
+| 0 / Ataque básico | — | 1 golpe de ATQ × 1. Sem propriedade contra a armadura; resistências de equipamento a Neutro se aplicam. |
 
 Betelgeuse usa os intervalos publicados ATQ 8.259–12.158 e ATQM 4.938–8.827. A escolha de dificuldade existente modifica seu HP; não há uma curva comprovada de ATQ/ATQM por dificuldade nesta implementação.
 
 As fórmulas foram confrontadas com rAthena, revisão [`d4b8e7b8f16061cc2496d377ac8f777ce72a4f39`](https://github.com/rathena/rathena/tree/d4b8e7b8f16061cc2496d377ac8f777ce72a4f39):
 
+- **Ataque básico:** [iROWiki — dano sem propriedade](https://irowiki.org/wiki/Non-elemental_damage) descreve ataques básicos de monstros como não elementais: Ghostring não os reduz, mas Raydric e outras resistências a Neutro se aplicam. Em [battle.cpp](https://github.com/rathena/rathena/blob/d4b8e7b8f16061cc2496d377ac8f777ce72a4f39/src/map/battle.cpp), `initialize_weapon_data` usa ID 0, um golpe e classificação de alcance baseada no monstro; `battle_calc_attack_skill_ratio` parte de 100%, e `battle_calc_element_damage` ignora a tabela elemental para ataques básicos de monstros. O Betelgeuse tem alcance de 3 células no Divine Pride: o golpe é corpo a corpo, sem redução física à distância. O resultado é dano por golpe normal conectado, sem média de esquiva, crítico ou DPS. A interface não mostra nível de habilidade nem seletor de armadura para esse ataque.
 - [Cometa de monstro](https://github.com/rathena/rathena/blob/d4b8e7b8f16061cc2496d377ac8f777ce72a4f39/src/map/skills/npc/comet2.cpp): `2500 + (nível − faixa + 1) × 500`%, com `faixa = clamp(floor(distância/2), 1, 4)`. Não usar a fórmula de Cometa de jogador (2213). Os 20 números visuais dividem um único dano; não descontam DEFM 20 vezes. `HitCount: -20` e `battle_apply_div_fix` arredondam o total para `floor(dano/20) × 20`, com mínimo de 1 por golpe conectado. Os pacotes LATAM corroboram esse arredondamento.
 - [Julgamento Infernal](https://github.com/rathena/rathena/blob/d4b8e7b8f16061cc2496d377ac8f777ce72a4f39/src/map/skills/npc/hellsjudgement2.cpp) e [Ataque Sombrio](https://github.com/rathena/rathena/blob/d4b8e7b8f16061cc2496d377ac8f777ce72a4f39/src/map/skills/npc/soulstrikeofdarkness.cpp), também descritos no [bROWiki](https://browiki.org/wiki/Julgamento_Infernal) e [iROWiki](https://irowiki.org/wiki/Dark_Strike).
 - [Tetra Vortex](https://browiki.org/wiki/Tetra_Vortex): o bROWiki explicita a propriedade Neutro para monstros. rAthena utiliza uma sequência elemental; a implementação segue a descrição regional. Nenhuma escala de nível base do jogador é aplicada ao monstro.
@@ -37,7 +39,7 @@ Para magia Renewal, as reduções de equipamento incidem no ATQM antes do multip
 
 A categoria racial é a do atacante (Dragão), o tamanho é Grande, a classe é Chefe e a propriedade ofensiva vem da habilidade. Resistência a Sombrio não substitui resistência a Neutro por o monstro ter propriedade Sombrio.
 
-O elemento automático vem de `ItemModel.armorElement`: carta na armadura tem prioridade sobre a propriedade da armadura. Os dados são explícitos no banco; não dependem de carregar descrições na interface. É possível simular outra propriedade no seletor. A armadura sempre tem nível elemental 1 e usa a tabela `ElementMapper` existente. Essa tabela usa ×0,9 para Neutro contra Fantasma 1; o artigo de Terremoto do iROWiki cita ×0,7. Conservamos a tabela regional do projeto; essa diferença precisa de replay LATAM para validação.
+O elemento automático vem de `ItemModel.armorElement`: carta na armadura tem prioridade sobre a propriedade da armadura. Os dados são explícitos no banco; não dependem de carregar descrições na interface. É possível simular outra propriedade no seletor. Para as habilidades que usam propriedade, a armadura tem nível elemental 1 e usa a tabela `ElementMapper` existente. O ataque básico ignora essa tabela e qualquer propriedade simulada, mantendo as reduções físicas e de equipamento a Neutro. Essa tabela usa ×0,9 para Neutro contra Fantasma 1; o artigo de Terremoto do iROWiki cita ×0,7. Conservamos a tabela regional do projeto; essa diferença precisa de replay LATAM para validação.
 
 Hipóteses que ainda exigem confirmação por replay LATAM:
 
@@ -61,7 +63,7 @@ As novas chaves `subrace_*_physical`, `subrace_*_magical`, `subele_*_physical` e
 
 `constants/monster-offensive-skills.ts` guarda o registro por ID de monstro. `core/monster-damage-taken.ts` é uma função pura sobre o perfil ofensivo do monstro, a ficha do defensor e as opções do ataque. A UI só oferece o cartão para monstros registrados. Novos monstros podem reutilizar as fórmulas cadastradas; habilidades, níveis ou mecânicas diferentes devem acrescentar sua fórmula e referências, com testes independentes.
 
-Os testes de `monster-damage-taken.spec.ts` cobrem multiplicadores, elementos, etapas de defesa, casos especiais e itens reais pelo pipeline de equipamento. `tools/audit-defender-bonuses.spec.ts` cobre condições e preservação dos registros. `e2e/damage-taken.spec.ts` verifica posição do cartão, teclado, seletor, propriedade da carta, divisão de Terremoto, dano fixo, contribuições e largura do cartão.
+Os testes de `monster-damage-taken.spec.ts` cobrem multiplicadores, elementos, etapas de defesa, casos especiais e itens reais pelo pipeline de equipamento. Também cobrem o ataque básico, a independência da propriedade da armadura e a classificação pelo alcance do monstro. `tools/audit-defender-bonuses.spec.ts` cobre condições e preservação dos registros. `e2e/damage-taken.spec.ts` verifica posição do cartão, teclado, seletor, propriedade da carta, divisão de Terremoto, dano fixo, contribuições e largura do cartão.
 
 ### Confronto parcial com RagnaRecap — 10/10/2026
 
@@ -76,9 +78,10 @@ Em 10/10 foram decodificadas 11 gravações públicas do [RagnaRecap](https://re
 | Meteoros: 15 pacotes em três sessões, todos com 15 golpes | Corrigidos os **7 para 15 golpes por impacto**. [Tigerstrike / WGbWZGCqXo](https://recap.latam-tools.com.br/?r=WGbWZGCqXo) recebe **25.725** e **41.460** em pacotes de 15 golpes. Isso confirma a estrutura do pacote, não o multiplicador nem todas as reduções. |
 | Ataque Sombrio e Tetra Vortex | Ataque Sombrio exibe 5 golpes; Tetra aparece em sequências de 4 pacotes. Os valores/elementos e as reduções ainda não foram validados exatamente. |
 | [Terremoto / nkgSjnzRHL](https://recap.latam-tools.com.br/?r=nkgSjnzRHL) | Três ondas em 126,307, 126,606 e 126,890 s: **18.074 / 16.676 / 12.743** no gravador. A sequência coincide; falta reconstruir os alvos vivos e o ATQ efetivo para validar o dano. |
+| Ataques básicos: 717 pacotes na mesma amostra, 363 positivos, todos de um golpe | Quatro golpes positivos no gravador [Tony Jaa / eDxX4jcFyb](https://recap.latam-tools.com.br/?r=eDxX4jcFyb), em 105,793 / 136,527 / 145,747 / 154,844 s: **1.570.365 / 1.550.529 / 1.504.562 / 1.399.582**. Confirmam o uso do ataque básico e um golpe por pacote. Assim como Julgamento, não coincidem com o ATQ de referência; o dano final e a regra de propriedade ainda precisam de validação exata LATAM. Os pacotes e contagens ficam no campo `basicAttacks` da auditoria. |
 | [Julgamento Infernal / eDxX4jcFyb](https://recap.latam-tools.com.br/?r=eDxX4jcFyb), arquivo `20261009Betel50+400pt3.rrf` | **8.579.232** recebidos e ataques básicos de aproximadamente **1,4–1,6 milhão**. Esses valores não são explicados pelo ATQ publicado de 8.259–12.158. A build importada, com defesas registradas e ATQ de referência, estima **9.443–13.951** para Julgamento. O replay não fornece o ATQ efetivo do monstro; não se ajustou um multiplicador arbitrário para fazê-lo coincidir. |
 
-Portanto, **as sete fórmulas ainda não estão validadas contra os valores finais dos replays**. A dificuldade pode alterar os atributos ofensivos e os pacotes de dano têm nível de habilidade `-1` (desconhecido). Os buffs defensivos, trocas de equipamento, posição e divisão por alvos também precisam ser reconstruídos para uma comparação exata. A interface explicita que aumentos de ataque por dificuldade ainda não estão incluídos. Os quatro testes de `monster-damage-taken-replay.spec.ts` fixam somente as partes observáveis descritas acima.
+Portanto, **as fórmulas de dano ainda não estão validadas contra os valores finais dos replays**. A dificuldade pode alterar os atributos ofensivos e os pacotes das habilidades têm nível `-1` (desconhecido). Os buffs defensivos, trocas de equipamento, posição e divisão por alvos também precisam ser reconstruídos para uma comparação exata. A interface explicita que aumentos de ataque por dificuldade ainda não estão incluídos. Os testes de `monster-damage-taken-replay.spec.ts` fixam somente as partes observáveis descritas acima, incluindo a estrutura de um golpe do ataque básico e a divergência do ATQ de referência.
 
 Somente os registros 27111, 27264, 300122 e 300123 do baseline de conjuntos foram atualizados: as diferenças defensivas estão descritas acima e verificadas separadamente. As demais contribuições e combinações do fixture permanecem iguais.
 

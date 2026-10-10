@@ -173,6 +173,7 @@ export class Monster {
     const { attack, magicAttack } = this._monster.stats;
     if (!attack || !magicAttack) return null;
     return { id: this._monster.id, race: this.race, size: this.size, type: this.type,
+      attackRange: this._monster.stats.attackRange,
       attack: { ...attack }, magicAttack: { ...magicAttack } };
   }
 

@@ -22,6 +22,22 @@ const incoming = replay.damage.filter(packet => packet.target === replay.session
   && replay.entities.get(packet.source)?.view === 20994);
 
 describe('Betelgeuse incoming Recap evidence — partial validation', () => {
+  it('records single-hit basic attacks without claiming that reference ATK matches difficulty-scaled damage', () => {
+    expect(audit.basicAttacks).toMatchObject({ packets: 717, positivePackets: 363,
+      positiveRecorderPackets: 4, displayedHitCounts: [1] });
+    const packets = audit.basicAttacks.recorderDamage.filter((packet: any) => packet.damage > 0);
+    expect(packets.map((packet: any) => [packet.replayId, packet.time, packet.skillId, packet.damage, packet.hits])).toEqual([
+      ['eDxX4jcFyb', 105793, 0, 1570365, 1], ['eDxX4jcFyb', 136527, 0, 1550529, 1],
+      ['eDxX4jcFyb', 145747, 0, 1504562, 1], ['eDxX4jcFyb', 154844, 0, 1399582, 1],
+    ]);
+    expect(profile.attacker.attackRange).toBe(3);
+    const prediction = calculateMonsterDamageTaken(profile, 0)!;
+    expect(prediction.hits).toBe(1);
+    for (const packet of packets) expect(packet.damage).toBeGreaterThan(prediction.max);
+    // The attack structure is observable; difficulty ATK and the armor-property
+    // bypass are not exactly validated by these damage values.
+  });
+
   it('matches five consecutive unshielded Aura ticks at roughly one-second intervals', () => {
     const ticks = incoming.filter(packet => packet.skillId === 783 && packet.time >= 87456);
     expect(ticks.map(packet => Number(packet.damage))).toEqual([10000, 10000, 10000, 10000, 10000]);
