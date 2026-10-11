@@ -1,5 +1,13 @@
 [
   {
+    "v": "0.1.169-beta",
+    "date": "11-10-2026",
+    "logs": [
+      "Adicionado cartão recolhível de dano recebido abaixo do Betelgeuse, com seleção de habilidades ofensivas e ataque básico, com aplicação das defesas e resistências da build. A estimativa usa ATQ e ATQM de referência e ainda não inclui aumentos de ataque por dificuldade.",
+      "Atualizados bônus defensivos de equipamentos e cartas, incluindo resistências específicas a dano físico ou mágico e propriedades permanentes de armadura."
+    ]
+  },
+  {
     "v": "0.1.168-beta",
     "date": "10-10-2026",
     "logs": [
