@@ -455,7 +455,7 @@ export class Calculator {
 
   /** The class skill catalog used by configurable auto-cast selectors. */
   get atkSkills(): AtkSkillModel[] {
-    return this._class?.atkSkills ?? [];
+    return this._class?.getAtkSkills(this.model.skillFormulaVersion) ?? [];
   }
 
   /** Learned/active levels after the controller has prepared the current build. */

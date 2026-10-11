@@ -1,4 +1,7 @@
+import type { SkillFormulaVersion } from '../../skills/skill-formula-version';
+
 export interface PresetModel {
+  skillFormulaVersion?: SkillFormulaVersion;
   class: number;
   level: number;
   jobLevel: number;

@@ -163,6 +163,8 @@ let sharedDamagePopovers: any = vm["sharedDamagePopovers"]; return <>{(() => { c
 "entries2": (vm.rotationView2?.entries || null),
 "isComparing": vm.isComparing,
 "rotation": vm.rotation,
+"skillFormulaVersion": vm.model.skillFormulaVersion,
+"skillFormulaVersionChange": (event: any) => vm.action(() => vm.skillFormulaVersionChange.emit(event)),
 "atkSkills": vm.atkSkills,
 "isShowSelectableSkillLevel": vm.isShowSelectableSkillLevel,
 "isInProcessingPreset": vm.isInProcessingPreset,

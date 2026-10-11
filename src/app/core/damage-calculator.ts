@@ -10,6 +10,8 @@ import { InfoForClass } from 'src/app/models/info-for-class.model';
 import { MainModel } from 'src/app/models/main.model';
 import { StatusSummary } from 'src/app/models/status-summary.model';
 import { SKILL_ID_BY_NAME, resolveSkillMeta } from 'src/app/skills';
+import { resolveRebalancedSkill } from 'src/app/skills/rebalance-2026';
+import { applyPreviewBuffs } from 'src/app/skills/preview-275';
 import { calcDmgDps, calcSkillAspd, engineHitsPerSec, floor, formatCalcNumber, isSkillCanEDP, round } from 'src/app/utils';
 import { computeBasicCritRate, computeSkillCritRate, EMPTY_CRIT_RATE } from './crit-rate';
 import { targetReduction } from './target-reduction';
@@ -32,6 +34,21 @@ interface DamageResultModel {
   skillFormulaTraceNoCri?: DamageFormulaTrace;
   skillFormulaGraph?: { min: DamageFormulaGraph; max: DamageFormulaGraph; };
   skillFormulaGraphNoCri?: { min: DamageFormulaGraph; max: DamageFormulaGraph; };
+}
+
+function repeatPackets(result: DamageResultModel, count: number): DamageResultModel {
+  if (count === 1) return result;
+  const repeated = { ...result };
+  for (const key of ['minDamage', 'maxDamage', 'rawMinNoCri', 'rawMaxNoCri', 'avgNoCriDamage', 'avgCriDamage', 'criDmgToMonster'] as const) {
+    repeated[key] *= count;
+  }
+  for (const graph of [repeated.skillFormulaGraph, repeated.skillFormulaGraphNoCri]) {
+    for (const side of [graph?.min, graph?.max]) {
+      const prev = side?.nodes.at(-1);
+      if (prev) side.nodes.push({ id: 'repeatPackets', label: `${count} impactos`, value: prev.value * count, inputs: [prev.id], kind: 'stage' });
+    }
+  }
+  return repeated;
 }
 
 /**
@@ -2464,7 +2481,7 @@ export class DamageCalculator {
       ? this.infoForClass.skills.activeLevel('Fist Spell') : 0;
     if (fistChoice >= 1 && fistChoice <= 3) {
       const boltNames = ['Fire Bolt', 'Cold Bolt', 'Lightening Bolt'] as const;
-      const bolt = this._class.atkSkills.find((skill) => skill.name === boltNames[fistChoice - 1]);
+      const bolt = this._class.getAtkSkills(this.infoForClass.model.skillFormulaVersion).find((skill) => skill.name === boltNames[fistChoice - 1]);
       if (bolt?.element) {
         const ratio = (20 * 10 + 100 * 10) * (Number(this.model.level) / 100);
         const fistDamage = this.calcMagicalSkillDamage({
@@ -2520,12 +2537,14 @@ export class DamageCalculator {
     };
 
     const [, _skillName, skillLevelStr] = skillValue?.match(/(.+)==(\d+)/) ?? [];
-    const skillData = args.skillData ?? this._class.atkSkills.find((a) => a.value === skillValue || a.levelList?.findIndex((b) => b.value === skillValue) >= 0);
+    let skillData = args.skillData ? applyPreviewBuffs(resolveRebalancedSkill(args.skillData, this.infoForClass.model.skillFormulaVersion))
+      : this._class.getAtkSkills(this.infoForClass.model.skillFormulaVersion).find((a) => a.value === skillValue || a.levelList?.findIndex((b) => b.value === skillValue) >= 0);
     const isValidSkill = !!_skillName && !!skillLevelStr && typeof skillData?.formula === 'function';
 
     if (!isValidSkill) return { basicDmg, misc, basicAspd };
 
     const skillLevel = Number(skillLevelStr);
+    if (skillData.hitByLevel) skillData = { ...skillData, hit: skillData.hitByLevel(skillLevel) };
     const {
       formula,
       part2,
@@ -2643,6 +2662,7 @@ export class DamageCalculator {
       }
     }
 
+    calculated = repeatPackets(calculated, typeof skillData.damageRepeat === 'function' ? skillData.damageRepeat(formulaParams) : skillData.damageRepeat ?? 1);
     let { minDamage, maxDamage } = calculated;
     let skillPart2Label = '';
     let skillMinDamage2 = 0;
@@ -2672,7 +2692,8 @@ export class DamageCalculator {
         formulaParams,
       };
 
-      const calcPart2 = isPart2Matk ? this.calcMagicalSkillDamage(params2) : this.calcPhysicalSkillDamage(params2);
+      const part2Result = isPart2Matk ? this.calcMagicalSkillDamage(params2) : this.calcPhysicalSkillDamage(params2);
+      const calcPart2 = repeatPackets(part2Result, typeof part2.damageRepeat === 'function' ? part2.damageRepeat(formulaParams) : part2.damageRepeat ?? 1);
 
       if (isIncludeMain) {
         minDamage += calcPart2.minDamage;
@@ -2815,7 +2836,7 @@ export class DamageCalculator {
   private calculateFlashCombo(args: { skillValue: string; propertyAtk: ElementType; maxHp: number; maxSp: number }): DamageSummaryModel {
     const flashLevel = Number(args.skillValue.split('==')[1]);
     const base = this.calculateAllDamages({ ...args, skillValue: '' });
-    const flashSkill = this._class.atkSkills.find((skill) => skill.name === 'Flash Combo')!;
+    const flashSkill = this._class.getAtkSkills(this.infoForClass.model.skillFormulaVersion).find((skill) => skill.name === 'Flash Combo')!;
     const names = ['Dragon Combo', 'Fallen Empire', 'Tiger Cannon'] as const;
     const bonusAtk = 20 * (flashLevel + 1); // +40 / +60 / +80 / +100 / +120 ATQ.
     const oldAtk = this.totalBonus.atk || 0;
@@ -2831,7 +2852,7 @@ export class DamageCalculator {
       for (const name of names) {
         const level = this.infoForClass.skills.learnedLevel(name);
         if (!level) continue;
-        const skill = this._class.atkSkills.find((entry) => entry.name === name && entry.value === `${name}==10`);
+        const skill = this._class.getAtkSkills(this.infoForClass.model.skillFormulaVersion).find((entry) => entry.name === name && entry.value === `${name}==10`);
         if (!skill) continue;
         const result = this.calculateAllDamages({ ...args, skillValue: `${name}==${level}`, skillData: skill });
         if (result.skillDmg) pieces.push({ label: resolveSkillMeta(name)?.label ?? name, level, damage: result.skillDmg });

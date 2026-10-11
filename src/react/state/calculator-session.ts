@@ -1251,6 +1251,18 @@ await ((_event?: unknown) => {
     this.updateItemEvent.next(true);
   }
 
+  onSkillFormulaVersionChange(version: 'current' | 'rebalance-2026-02') {
+    this.model.skillFormulaVersion = version === 'rebalance-2026-02' ? version : 'current';
+    this.setClassSkill();
+    const rotation = this.model.rotation ?? [];
+    const kept = rotation.flatMap((value, index) => pruneRotationForClass([value], this.atkSkills).length ? [index] : []);
+    this.model.rotation = kept.map(index => rotation[index]);
+    if (this.model.rotationStacks) this.model.rotationStacks = kept.map(index => this.model.rotationStacks[index]);
+    this.syncRotationMirror();
+    if (!pruneRotationForClass([this.model.selectedAtkSkill], this.atkSkills).length) this.model.selectedAtkSkill = this.atkSkills[0]?.value;
+    this.updateItemEvent.next(true);
+  }
+
   onSkillStackChange(change: { index: number; stack: number }) {
     const name = this.model.rotation?.[change.index]?.split('==')[0];
     const skill = this.atkSkills.find((entry) => entry.name === name);
@@ -2441,7 +2453,7 @@ await ((_event?: unknown) => {
     // and render no icon (the template guards on `icon`).
     const localize = <T extends { name: string }>(skill: T) => {
       const pt = this.resolveSkill(skill.name);
-      const base = pt ? { ...skill, label: pt.name, icon: pt.id, iconType: pt.iconType } : skill;
+      const base = pt ? { ...skill, label: (skill as any).preview && !(skill as any).labelSuffix ? (skill as any).label : pt.name, icon: pt.id, iconType: pt.iconType } : skill;
       // A skill whose level-list entries are really *other* skills (Fist Spell
       // casts Fire/Cold/Lightning Bolt) exposes a `treatedAsSkillNameFn`. Relabel
       // each entry with the underlying bolt's pt-BR name + icon so the picker drops
@@ -2486,7 +2498,8 @@ await ((_event?: unknown) => {
     // Atk skills can repeat the same name with different fixed properties (e.g. Adoramus
     // cast as Holy vs Neutral). After localizing the bare skill name, disambiguate any
     // repeated name by appending its element, so the picker reads "Adoramus - Sagrado".
-    const localizedAtkSkills = this.selectedCharacter.atkSkills.map(localize);
+    const catalog = this.selectedCharacter.getAtkSkills(this.model.skillFormulaVersion);
+    const localizedAtkSkills = catalog.map(localize);
     const seenLabel = new Set<string>();
     const dupLabels = new Set<string>();
     for (const s of localizedAtkSkills) {
@@ -2500,11 +2513,11 @@ await ((_event?: unknown) => {
       if ((s as any).labelSuffix) return { ...s, label: `${s.label} (${(s as any).labelSuffix})` };
       return dupLabels.has(s.label) && s.element ? { ...s, label: `${s.label} - ${elementPtBr(s.element)}` } : s;
     });
-    this.offensiveSkills = [...new Set(this.selectedCharacter.atkSkills.map((a) => a.name)).values()].map((name) => {
+    this.offensiveSkills = [...new Set(catalog.map((a) => a.name)).values()].map((name) => {
       const pt = this.resolveSkill(name);
-      return { label: pt?.name ?? name, value: name, icon: pt?.id };
+      return { label: (pt?.name ?? name) + (catalog.some(s => s.name === name && s.preview) ? ' (Prévia)' : ''), value: name, icon: pt?.id };
     });
-    this.isShowSelectableSkillLevel = this.selectedCharacter.atkSkills.some((a) => a.levelList?.length > 0);
+    this.isShowSelectableSkillLevel = catalog.some((a) => a.levelList?.length > 0);
   }
 
   private setClassMinMaxLvl() {
@@ -3598,20 +3611,20 @@ await ((_event?: unknown) => {
    *  themselves skills, the group label ("Espírito Elemental") describes nothing on its
    *  own, so the popover follows whichever summon is selected. The cache key has to carry
    *  that value, or the first selection would stick for the rest of the session. */
-  buffTooltip(buff: { name: string; label: string; icon?: number; isDebuff?: boolean; dropdown: any[] }, selectedValue?: number): string {
+  buffTooltip(buff: { name: string; label: string; icon?: number; isDebuff?: boolean; preview?: boolean; previewDescription?: string; dropdown: any[] }, selectedValue?: number): string {
     // A fallback rendered during startup must not outlive the deferred skill prose.
     if (this.buffTooltipVersion !== this.itemDescriptionStore.version) {
       this.buffTooltipCache.clear();
       this.buffTooltipVersion = this.itemDescriptionStore.version;
     }
-    const cacheKey = selectedValue === undefined ? buff.name : `${buff.name}:${selectedValue}`;
+    const cacheKey = `${buff.name}:${selectedValue ?? ''}:${buff.preview ?? false}`;
     const cached = this.buffTooltipCache.get(cacheKey);
     if (cached !== undefined) return cached;
 
     // The selected option's own skill wins; otherwise the group's own icon (a picker
     // like Domínio Elemental, whose levels are modes of one skill).
     const selected = selectedValue === undefined ? undefined : (buff.dropdown || []).find((d) => d.value === selectedValue);
-    const desc = skillDescHtml(selected?.icon ?? buff.icon ?? SKILL_ID_BY_NAME[buff.name]);
+    const desc = buff.preview ? '' : skillDescHtml(selected?.icon ?? buff.icon ?? SKILL_ID_BY_NAME[buff.name]);
 
     let html: string;
     if (desc) {
@@ -3629,8 +3642,9 @@ await ((_event?: unknown) => {
         });
       const title = `<div class="item_desc_title"><b>${buff.label}</b></div>`;
       const debuff = buff.isDebuff ? `<div style="color:#b00000">Debuff no monstro</div>` : '';
-      html = `${title}${debuff}${lines.length ? lines.join('') : '<div>—</div>'}`;
+      html = `${title}${debuff}${buff.previewDescription ? `<div>${buff.previewDescription}</div>` : ''}${lines.length ? lines.join('') : buff.preview ? '' : '<div>—</div>'}`;
     }
+    if (buff.preview) html += '<div>Prévia kRO 275/60. Coeficientes e tempos ausentes no anúncio usam dados provisórios; podem mudar.</div>';
 
     this.buffTooltipCache.set(cacheKey, html);
     return html;
@@ -3641,11 +3655,13 @@ await ((_event?: unknown) => {
    *  and the "Resumo de Batalha" skill picker (which labels via `label`). With no dropdown
    *  buffTooltip falls through to the pt-BR client description.
    *  Arrow property, not a prototype method — it is passed by reference as an @Input. */
-  skillTooltip = (skill: { name?: string; label?: string; displayName?: string; icon?: number }): string =>
+  skillTooltip = (skill: { name?: string; label?: string; displayName?: string; icon?: number; preview?: boolean; previewDescription?: string }): string =>
     this.buffTooltip({
       name: skill?.name,
       label: skill?.label || skill?.displayName || skill?.name,
       icon: skill?.icon,
+      preview: skill?.preview,
+      previewDescription: skill?.previewDescription,
       dropdown: [],
     });
 

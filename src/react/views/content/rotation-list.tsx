@@ -1,9 +1,10 @@
 import { Fragment } from 'react';
+import { SkillFormulaSelector } from '../../ui/skill-formula-selector';
 import { Render, displayPipe, interpolate, classNames, identityKey } from '../render';
 export function Content({vm, services}: {vm: any; services: any}) {
 return <><Render tag="div" props={{"className": ["rot"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["rot-head"].filter(Boolean).join(' ')}}><Render tag="span" props={{"className": ["cap2"].filter(Boolean).join(' ')}}>{"ROTAÇÃO"}
 {(() => { const __condition1 = vm.rotation.length;  return __condition1 ? <><>{interpolate([" · "," ",""], [vm.rotation.length,((vm.rotation.length === 1) ? "HABILIDADE" : "HABILIDADES")])}</></> : null; })()}</Render>
-<Render tag="span" props={{"className": ["rot-head-actions"].filter(Boolean).join(' ')}}><Render tag="button" props={{"type": "button",
+<Render tag="span" props={{"className": ["rot-head-actions"].filter(Boolean).join(' ')}}><SkillFormulaSelector value={vm.skillFormulaVersion} disabled={vm.isInProcessingPreset} onChange={value => vm.action(() => vm.skillFormulaVersionChange.emit(value))} /><Render tag="button" props={{"type": "button",
 "icon": "trash",
 "label": "Limpar",
 "tooltipPosition": "top",

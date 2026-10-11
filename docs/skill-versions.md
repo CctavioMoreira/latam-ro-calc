@@ -1,0 +1,86 @@
+# Skill formula versions and 275/60 previews
+
+The **Fórmulas** selector in Batalha, PVP and Auto-conjuração controls one build setting. **Atual (LATAM)** is the default, including old saved builds and unknown version values. **Rebalance 4th · fev/2026** selects the February article ratios, hit counts and cast timings. The setting travels with named saves and shared builds. Comparing two builds resolves each build's version independently.
+
+The legacy class definitions remain the source for the current version. The rebalance catalog uses copies and adds attacks absent from the current catalog only in the rebalance version. Preview attacks are available in both versions and are explicitly labelled **Prévia**; all new buff/condition controls start disabled.
+
+## February rebalance coverage
+
+All 18 article groups in Sigma's dropdown are represented (20 classes because two articles cover pairs). Expanded classes call their February article the “3rd version.” The numeric timing reference is in `src/app/skills/rebalance-2026-reference.ts`; formulas and conditional states are in `rebalance-2026.ts`.
+
+| Classes | Article |
+| --- | --- |
+| Arch Mage | [4th version](https://sigmathefallen.blogspot.com/2026/02/arch-mage-4th-version.html) |
+| Dragon Knight | [4th version](https://sigmathefallen.blogspot.com/2026/02/dragon-knight-4th-version.html) |
+| Windhawk | [4th version](https://sigmathefallen.blogspot.com/2026/02/windhawk-4th-version.html) |
+| Shadow Cross | [4th version](https://sigmathefallen.blogspot.com/2026/02/shadow-cross-4th-version.html) |
+| Abyss Chaser | [4th version](https://sigmathefallen.blogspot.com/2026/02/abyss-chaser-4th-version.html) |
+| Inquisitor | [4th version](https://sigmathefallen.blogspot.com/2026/02/inquisitor-4th-version.html) |
+| Imperial Guard | [4th version](https://sigmathefallen.blogspot.com/2026/02/imperial-guard-4th-version.html) |
+| Troubadour, Trouvere | [4th version](https://sigmathefallen.blogspot.com/2026/02/troubadour-trouvere-4th-version.html) |
+| Cardinal | [4th version](https://sigmathefallen.blogspot.com/2026/02/cardinal-4th-version.html) |
+| Biolo | [4th version](https://sigmathefallen.blogspot.com/2026/02/biolo-4th-version.html) |
+| Elemental Master | [4th version](https://sigmathefallen.blogspot.com/2026/02/elemental-master-4th-version.html) |
+| Meister | [4th version](https://sigmathefallen.blogspot.com/2026/02/meister-4th-version.html) |
+| Night Watch | [3rd version](https://sigmathefallen.blogspot.com/2026/02/night-watch-3rd-version.html) |
+| Soul Ascetic | [3rd version](https://sigmathefallen.blogspot.com/2026/02/soul-ascetic-3rd-version.html) |
+| Shinkiro, Shiranui | [3rd version](https://sigmathefallen.blogspot.com/2026/02/shinkiro-shiranui-3rd-version.html) |
+| Sky Emperor | [3rd version](https://sigmathefallen.blogspot.com/2026/02/sky-emperor-3rd-version.html) |
+| Spirit Handler | [3rd version](https://sigmathefallen.blogspot.com/2026/02/spirit-handler-3rd-version.html) |
+| Hyper Novice | [3rd version](https://sigmathefallen.blogspot.com/2026/02/hyper-novice-3rd-version.html) |
+
+Displayed hit splits and repeated full-ratio damage packets are distinct. Multipart attacks with unequal repetition (All Bloom, Astral Strike and Mission Bombard) apply defense to each part before repeating its packets. Hyper Novice's initial, sustained and explosion entries remain independently selectable.
+
+Sonic Brand's alternative Reverberation and Metallic Sound ratios are included. Frenzy Shot's probabilistic third hit and Storm Slash's Giant Growth double-damage chance use expected values for the simulator's damage/DPS estimate.
+
+## Preview mapping
+
+Both skill announcements in the [275/60 thread](https://www.divine-pride.net/forum/index.php?/topic/7814-kro-27560-level-expansion-and-new-skills/) are included: 29 unique skills, comprising 26 attacks and 3 support skills. Abyss Flame exposes separate target-centered and user-centered attack entries so their hit counts can be simulated independently.
+
+| Class | Skill IDs and attack names |
+| --- | --- |
+| Dragon Knight | 6502 Dragonic Pierce |
+| Imperial Guard | 6503 Radiant Spear; 6504 Imperial Cross; 6505 Imperial Pressure |
+| Meister | 6506 Rush Strike; 6507 Powerful Swing; 6508 Energy Cannonade |
+| Biolo | 6509 Mystery Powder; 6510 Dust Explosion |
+| Shadow Cross | 6511 Cross Slash |
+| Abyss Chaser | 6512 Hit and Sliding; 6513 Chasing Break; 6514 Chasing Shot; 6515 Abyss Flame |
+| Elemental Master | 6517 Psychic Stream |
+| Cardinal | 6518 Divinus Flos |
+| Inquisitor | 6519 Blazing Flame Blast |
+| Windhawk | 6520 Wild Walk |
+| Troubadour, Trouvere | 6521 Rhythmical Wave |
+| Night Watch | 5500 Wild Shot; 5501 Midnight Fallen |
+| Sky Emperor | 5502 Sky Sun; 5503 Sky Moon; 5504 Star Light Kick |
+| Spirit Handler | 5506 Chulho Battering; 5507 Hyunrok Spirit Power |
+
+The Meister Powerful Swing and Shadow Cross Cross Slash have separate internal names from the older skills with the same English names, preserving item bonus and skill ID identities.
+
+### Support and accompanying buffs
+
+| Class | Preview control | Simulated effect |
+| --- | --- | --- |
+| Arch Mage | 6516 Energy Conversion | Level-specific SP recovery and AP cost shown in the picker; no persistent stat bonus |
+| Hyper Novice | 5505 Overcoming Crisis | Flat MaxHP, P.Atk and S.Matk by level |
+| Shinkiro, Shiranui | 5499 Four Colors Charm | Four independent elemental controls; additive ratio for each corresponding cannon |
+| Biolo | Mystery Powder | Enables Dust Explosion |
+| Abyss Chaser | Chasing | Extra ratios for Unlucky Rush and Chain Reaction Shot's secondary damage; enhanced Chasing Break/Shot ratios and hit counts |
+| Windhawk | Wild Walk | Level-specific Flee bonus |
+| Shadow Cross | Successful blocking | Records the 10-second state; no extra numerical bonus |
+| Inquisitor | Massive Flame Blaster | Enhanced Blazing Flame Blast ratio |
+| Cardinal | Ancilla | Neutral Divinus Flos element |
+| Elemental Master | Energy Coat | Blocks Psychic Stream while enabled |
+| Shinkiro, Shiranui | Hidden Weapon area, Nightmare target mark | Selects conditional rebalance damage |
+| Hyper Novice | Target below 50% HP | Selects conditional Mega Sonic Blow damage |
+
+Existing stance, Axe Stomp, Research Report, Shadow Exceed, Mystic Symphony, Dragonic Aura, Hidden Card, celestial and elemental controls are reused. Weapon restrictions are checked by the normal damage pipeline. Buff durations, movement, instantaneous healing, AP expenditure and regeneration are descriptive; the simulator does not advance resource pools or automatically activate buffs after a rotation entry.
+
+### Preview data limits
+
+The announcement supplies base ratios, hit counts, stated passive dependencies, buff effects and restrictions. It mentions scaling with traits and base level without publishing every coefficient or cast delay. Those missing coefficients and timings use the [rAthena renewal skill database](https://github.com/rathena/rathena/blob/master/db/re/skill_db.yml) and [skill implementations](https://github.com/rathena/rathena/tree/master/src/map/skills), inspected on 2026-10-11. They are provisional and have not been validated against LATAM recordings. Later rAthena base-ratio balance changes do not replace the requested announcement ratios.
+
+The calculator's existing supported character levels and job stat tables are unchanged. These previews do not add level-275 character progression or a combat/resource state machine.
+
+## Verification
+
+`src/app/skills/skill-versions.spec.ts` checks every article's classes and attack levels, independent formula examples, legacy isolation, preview identities, support bonuses, shared-build restoration, real damage and autocast resolution. `e2e/skill-versions.spec.ts` checks synchronization across all three panels, reload persistence and a saved preview buff through the UI.

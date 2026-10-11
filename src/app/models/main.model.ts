@@ -2,8 +2,10 @@ import { ElementType } from '../constants/element-type.const';
 import { EquipmentModel } from '../constants/item-type.enum';
 import { SlotColorMap } from '../core/slot-colors';
 import { CustomAttachments } from '../core/custom-attachments';
+import type { SkillFormulaVersion } from '../skills/skill-formula-version';
 
 export interface MainModel extends Partial<EquipmentModel> {
+  skillFormulaVersion?: SkillFormulaVersion;
   customAttachments?: CustomAttachments;
   class: number;
   level: number;

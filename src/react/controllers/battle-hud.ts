@@ -39,6 +39,7 @@ import { IncomingDamageStep } from '../../app/core/monster-damage-taken';
 
 
 export class BattleHudComponent extends ViewState {
+   skillFormulaVersionChange = new Events<'current' | 'rebalance-2026-02'>();
    totalSummary = {} as any;
    totalSummary2 = {} as any;
    isEnableCompare: boolean;

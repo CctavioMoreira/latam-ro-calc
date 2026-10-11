@@ -3764,6 +3764,7 @@ app-auto-cast-hud{
 }
 :is(app-auto-cast-hud, .ui-scope-app-auto-cast-hud) .sources-head{
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 6px;
   margin: 20px 0 9px;
