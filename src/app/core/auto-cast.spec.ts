@@ -127,13 +127,13 @@ describe('verified item auto-casts', () => {
     expect(byName.get('Lava Flow')!.formula(input(2))).toBe(550);
   });
 
-  it('resolves all 219 stored item rules even without native class skills', () => {
+  it('resolves all 220 stored item rules even without native class skills', () => {
     const addedIds = new Set(ITEM_AUTO_CAST_SKILLS.map((skill) => SKILL_ID_BY_NAME[skill.name]));
     const promotedIds = new Set(ITEM_CLASS_AUTO_CAST_SKILLS.map((skill) => SKILL_ID_BY_NAME[skill.name]));
     const rules = Object.values(ITEMS).flatMap((item: any) =>
       (item.script?.autoCast ?? []).map((rule: any) => ({ rule, item })),
     );
-    expect(rules).toHaveLength(219);
+    expect(rules).toHaveLength(220);
     expect(rules.filter(({ rule }) => addedIds.has(rule.skillId))).toHaveLength(64);
     expect(promotedIds.size).toBe(24);
     expect(rules.filter(({ rule }) => promotedIds.has(rule.skillId))).toHaveLength(64);
