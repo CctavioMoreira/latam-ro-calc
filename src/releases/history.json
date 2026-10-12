@@ -1,5 +1,12 @@
 [
   {
+    "v": "0.1.171-beta",
+    "date": "12-10-2026",
+    "logs": [
+      "Corrigidos os encantamentos das seis Batinas Angelicais, do Manto Angelical e do Sapato Angelical conforme as opções de Hugel. Bênçãos e pedras especiais das Batinas agora ficam no 2º slot; os slots 3 e 4 oferecem apenas os encantos básicos. Incluídas as opções ausentes de DEF, DEFM, Esquiva e Anti-Atraso 3 e 4. Reportado por Rodrigo Shion."
+    ]
+  },
+  {
     "v": "0.1.170-beta",
     "date": "12-10-2026",
     "logs": [
