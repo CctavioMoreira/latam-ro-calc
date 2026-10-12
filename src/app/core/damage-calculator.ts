@@ -1610,6 +1610,12 @@ export class DamageCalculator {
       total = floor(total * baseSkillMultiplier); // tested
       push(`Hab. Base ${this.fmtCalc(baseSkillDamage)}%`, total, ['flatDmg', `flat_${skillName}`]);
       emit('baseSkillDmg', `Hab. Base ${this.fmtCalc(baseSkillDamage)}%`, total, ['flatDmg', `flat_${skillName}`], { multiplier: baseSkillMultiplier, calc: ratioCalc });
+      const flatDamage = floor((skillData.flatDamage?.(formulaParams) ?? 0) * this.getPropertyMultiplier(element || weaponPropertyAtk));
+      if (flatDamage !== 0) {
+        total += flatDamage;
+        push(`Bônus fixo da habilidade +${this.fmtCalc(flatDamage)}`, total);
+        emit('skillFlatDamage', `Bônus fixo da habilidade +${this.fmtCalc(flatDamage)}`, total);
+      }
       // DEF (res / hard def / soft def) is applied right after the skill ratio,
       // BEFORE the per-skill equipment bonus — verified against in-game replay
       // (Focused Arrow Strike on a soft-def target). Subtracting soft def after
