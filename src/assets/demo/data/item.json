@@ -371970,6 +371970,90 @@
       ]
     }
   },
+  "12427": {
+    "id": 12427,
+    "aegisName": "SP증가포션_대",
+    "name": "Poção Grande de SP",
+    "unidName": "Poção Grande de SP",
+    "resName": "",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 3,
+    "itemSubTypeId": 768,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 8,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": null,
+    "usableClass": [
+      "all"
+    ],
+    "script": {
+      "spPercent": [
+        "5"
+      ]
+    }
+  },
+  "12436": {
+    "id": 12436,
+    "aegisName": "비타타500",
+    "name": "Poção Vitata 500",
+    "unidName": "Poção Vitata 500",
+    "resName": "",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 3,
+    "itemSubTypeId": 768,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 5,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": null,
+    "usableClass": [
+      "all"
+    ],
+    "script": {
+      "spPercent": [
+        "5"
+      ],
+      "spRecovRate": [
+        "20"
+      ]
+    }
+  },
+  "14600": {
+    "id": 14600,
+    "aegisName": "Mental_Potion",
+    "name": "Poção Mental",
+    "unidName": "Poção Mental",
+    "resName": "",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 3,
+    "itemSubTypeId": 768,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 1,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": null,
+    "usableClass": [
+      "all"
+    ],
+    "script": {
+      "spPercent": [
+        "10"
+      ],
+      "spCostPercent": [
+        "-10"
+      ]
+    }
+  },
   "4902": {
     "id": 4902,
     "aegisName": "Def18",

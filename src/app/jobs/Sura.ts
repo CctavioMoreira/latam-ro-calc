@@ -97,6 +97,33 @@ export class Sura extends Champion {
   private readonly classNames3rd = [ClassName.Only_3rd, ClassName.Sura];
   private readonly atkSkillList3rd: AtkSkillModel[] = [
     {
+      name: 'Asura Strike',
+      label: 'Punho Supremo de Asura',
+      value: 'Asura Strike==5',
+      levelList: Array.from({ length: 5 }, (_, i) => ({ label: `Asura Strike Nv${i + 1}`, value: `Asura Strike==${i + 1}` })),
+      fct: (level) => 2.25 - level * 0.25,
+      vct: (level) => 2.25 - level * 0.25,
+      acd: 1, // LATAM client: 1 second at every level (skill-delay.json).
+      cd: 0,
+      isMelee: true,
+      isHit100: true,
+      isIgnoreDef: true,
+      isIgnoreSDef: true,
+      element: ElementType.Neutral,
+      currentSpFn: (maxSp) => this.getCurrentSP(maxSp),
+      // https://browiki.org/wiki/Punho_Supremo_de_Asura
+      // ATK * (8 + remaining SP / 10) + 250 + 150 * level; doubled at 6+ spheres.
+      // The wiki currently prints an extra "* 10" in its SP term. Keep the SP/10
+      // coefficient already used by ITEM_AUTO_CAST_SKILLS, pending replay validation.
+      formula: ({ currentSp }) => (800 + (currentSp ?? 0) * 10) * this.asuraSpiritFactor(),
+      flatDamage: ({ skillLevel }) => (250 + skillLevel * 150) * this.asuraSpiritFactor(),
+      ratioCalc: ({ currentSp }) => ({ rows: [
+        { label: 'SP atual', display: formatCalcNumber(currentSp ?? 0) },
+        { label: 'Multiplicador de ATQ: 8 + SP ÷ 10', display: formatCalcNumber(8 + (currentSp ?? 0) / 10) },
+        { label: 'Fator Espiritual (6 ou mais esferas: ×2)', display: String(this.asuraSpiritFactor()) },
+      ] }),
+    },
+    {
       name: 'Dragon Combo',
       label: 'Dragon Combo Lv10',
       value: 'Dragon Combo==10',
@@ -497,6 +524,7 @@ export class Sura extends Champion {
         { label: '3', value: 3, isUse: true, bonus: { atk: 3 * 3 } },
         { label: '4', value: 4, isUse: true, bonus: { atk: 4 * 3 } },
         { label: '5', value: 5, isUse: true, bonus: { atk: 5 * 3 } },
+        { label: '6', value: 6, isUse: true, bonus: { atk: 6 * 3 } },
         { label: '10', value: 10, isUse: true, bonus: { atk: 10 * 3 } },
         { label: '15', value: 15, isUse: true, bonus: { atk: 15 * 3 } },
       ],
@@ -745,5 +773,9 @@ export class Sura extends Champion {
     const currentSp = this.activeSkillLv('Current SP') || 100;
 
     return floor(maxSp * currentSp * 0.01);
+  }
+
+  private asuraSpiritFactor() {
+    return this.activeSkillLv('Total Spirit') >= 6 ? 2 : 1;
   }
 }

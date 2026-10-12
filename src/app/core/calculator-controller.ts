@@ -24,6 +24,7 @@ const SUPERIOR_BATTLE_PILL = 12792;
 const REGULAR_BATTLE_PILL = 12791;
 /** HP Increase Potion (L) — consumed flag is needed by the HP/SP step. */
 const HP_INCREASE_POTION_L = 12424;
+const SP_INCREASE_POTION_L = 12427;
 
 export interface ConsumableSelection {
   /** The item scripts to feed into `Calculator.setConsumables`. */
@@ -43,7 +44,7 @@ export interface ConsumableSelection {
  * Mirrors the rule that the Superior Battle Pill replaces the regular one.
  */
 export function collectConsumables(
-  model: Pick<MainModel, 'consumables' | 'consumables2' | 'aspdPotions'>,
+  model: Pick<MainModel, 'consumables' | 'consumables2' | 'aspdPotions'> & Partial<Pick<MainModel, 'level'>>,
   items: Record<number, { script?: any }>,
 ): ConsumableSelection {
   const consumables = model.consumables ?? [];
@@ -55,9 +56,18 @@ export function collectConsumables(
     // when the superior pill is on, drop the regular pill so they don't stack
     .filter((id: ConsumableId) => !usedSupBattlePill || id !== REGULAR_BATTLE_PILL);
 
+  const scriptFor = (id: ConsumableId) => {
+    const script = items[id]?.script;
+    if (id !== SP_INCREASE_POTION_L || !script) return script;
+    // SC_ENERGY_DRINK_RESERCH: Large = 5 + floor(BaseLv / 10) percent.
+    // Consumables enter the engine as numeric bonuses; resolve this level-dependent
+    // potion here so the calculation and its per-item breakdown use the same value.
+    return { ...script, spPercent: [String(5 + Math.floor((model.level ?? 1) / 10))] };
+  };
+
   const sources: Record<string, Record<string, number>> = {};
   for (const id of ids) {
-    const script = items[id]?.script;
+    const script = scriptFor(id);
     if (!script || typeof script !== 'object') continue;
     const bonus: Record<string, number> = {};
     for (const [attr, value] of itemBonusScriptEntries(script)) {
@@ -68,7 +78,7 @@ export function collectConsumables(
   }
 
   return { scripts: ids.filter((id: ConsumableId) => !!items[id]?.script)
-    .map((id: ConsumableId) => (items[id] as any).custom ? { __customItem: items[id] } : items[id].script),
+    .map((id: ConsumableId) => (items[id] as any).custom ? { __customItem: items[id] } : scriptFor(id)),
     sources, usedHpL, usedSupBattlePill };
 }
 
