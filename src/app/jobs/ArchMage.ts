@@ -657,7 +657,11 @@ export class ArchMage extends Warlock {
     // Destrutivo. bROWiki says each "é cumulativo com equipamentos de efeitos semelhantes",
     // so they join the gear's "Dano de [habilidade] +N%" rather than scaling the ratio —
     // keyed by skill id, which is what getSkillBonus reads back.
-    const climaxSkillBonus: Record<number, [SKILL_NAME, number][]> = {
+    const climaxSkillBonus: Record<number, [SKILL_NAME, number][]> = params.model.skillFormulaVersion === 'rebalance-2026-02' ? {
+      1: [['Violent Quake', -50]],
+      3: [['All Bloom', 300], ['Violent Quake', 200], ['Destructive Hurricane', 150]],
+      5: [['Destructive Hurricane', -20]],
+    } : {
       1: [['Violent Quake', -50]],
       2: [['All Bloom', -50]],
       3: [['All Bloom', 100], ['Violent Quake', 100], ['Destructive Hurricane', 100]],

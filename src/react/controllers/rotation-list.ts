@@ -21,6 +21,8 @@ export const BASIC_ATTACK_ICON = 'https://assets.latam-tools.com.br/maps/_u/4680
  */
 
 export class RotationListComponent extends ViewState {
+   skillFormulaVersion: 'current' | 'rebalance-2026-02' = 'current';
+   skillFormulaVersionChange = new Events<'current' | 'rebalance-2026-02'>();
    entries: RotationEntryView[] = [];
   /** The compared build's entries, positionally aligned with `entries`. */
    entries2: RotationEntryView[] | null = null;

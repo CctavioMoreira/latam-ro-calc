@@ -15,6 +15,7 @@ import { SelectHandle as UiSelectComponent } from '../ui/select';
 
 
 export class AutoCastHudComponent extends ViewState {
+   skillFormulaVersionChange = new Events<'current' | 'rebalance-2026-02'>();
   constructor(
 public readonly itemDescriptions: ItemDescriptionStore,
   ) { super();}

@@ -3,6 +3,7 @@ import { MainModel } from '../models/main.model';
 import { createMainModel } from '../utils/create-main-model';
 import { normalizeRotation } from './rotation';
 import { sanitizeSlotColors } from './slot-colors';
+import { normalizeSkillFormulaVersion } from '../skills/skill-formula-version';
 
 /**
  * Turn a stored build — a share token's sparse delta, the `ro-set` autosave, a named
@@ -66,6 +67,7 @@ export function normalizeSavedModel(savedData: Record<string, any> | null | unde
   // the one gate a hand-edited share token passes through, so a slot key the grid does
   // not draw or a colour outside the palette is dropped rather than stored.
   rawModel.slotColors = sanitizeSlotColors(rawModel.slotColors);
+  rawModel.skillFormulaVersion = normalizeSkillFormulaVersion(rawModel.skillFormulaVersion);
 
   return rawModel;
 }

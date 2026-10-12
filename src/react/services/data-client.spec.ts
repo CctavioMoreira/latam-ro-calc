@@ -2,8 +2,19 @@ import { DataClient, DescriptionStore } from './data-client';
 import { DataManifest } from '../../app/core/data-manifest';
 import { skillDescHtml } from '../../app/utils/pretty-item-desc';
 import { SKILL_DESC_BY_ID } from '../../app/skills';
+import { PREVIEW_275_REFERENCE } from '../../app/skills/preview-275-reference';
 
 describe('React data loading', () => {
+  it('provides English descriptions for every preview without waiting for client prose', () => {
+    for (const skill of PREVIEW_275_REFERENCE) {
+      const html = skillDescHtml(skill.id);
+      expect(html).toContain(`${skill.name} (Prévia)<br>Max level: ${skill.maxLevel}<br>`);
+      expect(html).toContain('Preview kRO 275/60.');
+      expect(html).not.toContain('undefined');
+    }
+    expect(skillDescHtml(6515)).toContain('5 hits around the target and 3 around the caster');
+    expect(skillDescHtml(5505)).toContain('+15000 Max HP, +3 P.Atk and +3 S.Matk per skill level');
+  });
   it('adopts preload promises without issuing duplicate requests', async () => {
     const items = Promise.resolve({ 1: { name: 'Item' } });
     const fetcher = vi.fn();
