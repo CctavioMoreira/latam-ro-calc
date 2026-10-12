@@ -7,7 +7,7 @@ import { CUSTOM_ITEM_LIMIT, CUSTOM_ITEM_MIN_ID, CUSTOM_ITEM_MAX_ID, CUSTOM_KINDS
 import { encodeCustomBundle } from 'src/app/core/custom-item-library';
 import { createRawTotalBonus } from 'src/app/utils/create-raw-total-bonus';
 import { bonusKeyLabel } from 'src/app/core/bonus-key-label';
-import { shortenShareUrl } from '../engine/share';
+import { Shortener, shortenShareUrl } from '../engine/share';
 
 const itemWarnings = (item: { script: Record<string, unknown> }): string[] => [
   ...((item.script['autoCastPending'] as unknown[] | undefined)?.length
@@ -20,7 +20,7 @@ const draftsSchema = {
 };
 
 /** Item creation is entirely stateless. The returned URL carries the validated records. */
-export function registerCustomItemTools(server: McpServer, dataset: Dataset): void {
+export function registerCustomItemTools(server: McpServer, dataset: Dataset, shortener?: Shortener): void {
   registerJsonTool(server, 'get_custom_item_schema', {
     title: 'Esquema de itens personalizados',
     description: 'Tipos, campos e chaves de bônus que podem ser enviados a validate_custom_items/create_custom_items.',
@@ -86,7 +86,7 @@ export function registerCustomItemTools(server: McpServer, dataset: Dataset): vo
     const url = `${config.appOrigin.replace(/\/+$/, '')}/#/?customItem=${token}`;
     return json({
       valid: true,
-      url: await shortenShareUrl(url, config.shortenerUrl),
+      url: await shortenShareUrl(url, config.shortenerUrl, undefined, shortener),
       items: result.items.map((item) => ({ item, description: customItemDescription(item), warnings: itemWarnings(item) })),
     });
   });

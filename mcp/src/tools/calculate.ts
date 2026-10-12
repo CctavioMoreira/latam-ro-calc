@@ -18,7 +18,7 @@ import { SLOT_TAGS } from '../data/slot-classifier';
 import { plainItemDesc } from '../data/text';
 import { BuildInput, buildInputSchema, ITEM_ID_KEYS, MAIN_ITEM_SLOTS, relatedItemKeys, ResolvedBuild, resolveBuild } from '../engine/build-input';
 import { projectResult } from '../engine/project';
-import { buildShareUrl, parseShare, resolveIfShort, shortenShareUrl, toPreset } from '../engine/share';
+import { buildShareUrl, parseShare, resolveIfShort, Shortener, shortenShareUrl, toPreset } from '../engine/share';
 import { solve } from '../engine/solve';
 import { compact, json, registerJsonTool } from './helpers';
 
@@ -32,8 +32,8 @@ type TargetArg = z.infer<typeof targetSchema>;
 const deltaPct = (value: number, base: number): number | null => (base ? round(((value - base) / base) * 100, 2) : null);
 
 /** Resolve a short link before decoding, since that is the form the app hands out. */
-const normalizeShare = async (input: BuildInput): Promise<BuildInput> =>
-  input.share ? { ...input, share: await resolveIfShort(input.share, config.shortenerUrl) } : input;
+const normalizeShare = async (input: BuildInput, shortener?: Shortener): Promise<BuildInput> =>
+  input.share ? { ...input, share: await resolveIfShort(input.share, config.shortenerUrl, shortener) } : input;
 
 function resolveTarget(dataset: Dataset, monsterId?: number) {
   const id = monsterId ?? config.defaultTargetId;
@@ -51,7 +51,7 @@ const dpsAndMax = (calc: any): { dps: number; max: number } => {
   return { dps: dmg.skillDps ?? 0, max: dmg.skillMaxDamage ?? 0 };
 };
 
-export function registerCalculationTools(server: McpServer, dataset: Dataset): void {
+export function registerCalculationTools(server: McpServer, dataset: Dataset, shortener?: Shortener): void {
   registerJsonTool<{ build: BuildInput; target?: TargetArg; effects?: string[]; include?: ('bonuses' | 'tables')[] }>(
     server,
     'calculate',
@@ -67,7 +67,7 @@ export function registerCalculationTools(server: McpServer, dataset: Dataset): v
       },
     },
     async ({ build, target, effects, include }) => {
-      const input = await normalizeShare(build);
+      const input = await normalizeShare(build, shortener);
       const rb = resolveBuild(input, dataset);
       const { id: targetId, monster } = resolveTarget(dataset, target?.monsterId);
       const calc = solve(rb, dataset, monster, effects ?? []);
@@ -83,7 +83,7 @@ export function registerCalculationTools(server: McpServer, dataset: Dataset): v
       monsterIds: z.array(z.number().int()).min(1).max(config.limits.maxTableMonsters),
     },
   }, async ({ build, monsterIds }) => {
-    const input = await normalizeShare(build);
+    const input = await normalizeShare(build, shortener);
     const rb = resolveBuild(input, dataset);
     const skillValue = rb.model.selectedAtkSkill;
     // Same flag solve() feeds runChain: HP Increase Potion (L) changes max HP, so
@@ -136,7 +136,7 @@ export function registerCalculationTools(server: McpServer, dataset: Dataset): v
       labels: z.array(z.string()).optional().describe('Nomes para identificar cada build no resultado.'),
     },
   }, async ({ builds, target, labels }) => {
-    const inputs = await Promise.all(builds.map(normalizeShare));
+    const inputs = await Promise.all(builds.map((build) => normalizeShare(build, shortener)));
     const { id: targetId, monster } = resolveTarget(dataset, target?.monsterId);
     const results = inputs.map((input, i) => {
       const rb = resolveBuild(input, dataset);
@@ -183,7 +183,7 @@ export function registerCalculationTools(server: McpServer, dataset: Dataset): v
       limit: z.number().int().min(1).max(20).optional().default(10),
     },
   }, async ({ build, slot, candidates, slotTag, query, target, limit = 10 }) => {
-    const input = await normalizeShare(build);
+    const input = await normalizeShare(build, shortener);
     if (!ITEM_ID_KEYS.includes(slot)) {
       // Without this the override is silently skipped and every candidate solves to
       // the baseline, producing a confident ranking of identical numbers.
@@ -270,14 +270,14 @@ function resolveCandidates(
   return ids.slice(0, max);
 }
 
-export function registerBridgeTools(server: McpServer, dataset: Dataset): void {
+export function registerBridgeTools(server: McpServer, dataset: Dataset, shortener?: Shortener): void {
   registerJsonTool<{ share: string }>(server, 'parse_share_link', {
     title: 'Ler link do simulador',
     description:
       'Lê um link de simulação (URL completa, encurtada, fragmento antigo #/?b=… ou token) e devolve a build resolvida: classe, níveis, atributos, cada peça equipada com refino/cartas/encantes, habilidades, buffs, consumíveis e a comparação, se o link levar uma. Não calcula dano — para isso passe o mesmo link em `calculate`.',
     inputSchema: { share: z.string() },
   }, async ({ share }) => {
-    const decoded = parseShare(await resolveIfShort(share, config.shortenerUrl));
+    const decoded = parseShare(await resolveIfShort(share, config.shortenerUrl, shortener));
     const rb = resolveBuild({ preset: decoded.preset, customItems: (decoded.items ?? []).map((item) => ({ ...item })) }, dataset);
     const model = rb.model;
 
@@ -336,10 +336,10 @@ export function registerBridgeTools(server: McpServer, dataset: Dataset): void {
       short: z.boolean().optional().default(false).describe('Encurtar via short.latam-tools.com.br.'),
     },
   }, async ({ build, compare, short }) => {
-    const rb = resolveBuild(await normalizeShare(build), dataset);
+    const rb = resolveBuild(await normalizeShare(build, shortener), dataset);
     const state: CompareState | null = compare ? { itemNames: compare.slots, model2: compare.gear } : null;
     const url = shareOf(rb, state);
-    const finalUrl = short ? await shortenShareUrl(url, config.shortenerUrl) : url;
+    const finalUrl = short ? await shortenShareUrl(url, config.shortenerUrl, undefined, shortener) : url;
     return json(
       compact({
         url: finalUrl,

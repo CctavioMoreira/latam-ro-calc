@@ -8,7 +8,8 @@
  */
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { buildShareUrl } from '../../mcp/src/engine/share';
 import { handleMcp, McpEnv } from './handler';
 
 /**
@@ -33,13 +34,13 @@ const ctx = { waitUntil: () => undefined, passThroughOnException: () => undefine
 
 const call = (request: Request) => handleMcp(request, env, ctx);
 
-const rpc = (body: unknown, headers: Record<string, string> = {}) =>
-  call(
+const rpc = (body: unknown, headers: Record<string, string> = {}, bindings: McpEnv = env) =>
+  handleMcp(
     new Request('https://simulador.latam-tools.com.br/mcp', {
       method: 'POST',
       headers: { 'content-type': 'application/json', accept: 'application/json, text/event-stream', ...headers },
       body: JSON.stringify(body),
-    }),
+    }), bindings, ctx,
   );
 
 describe('health', () => {
@@ -94,6 +95,69 @@ describe('MCP over Streamable HTTP', () => {
       await rpc({ jsonrpc: '2.0', id: 7, method: 'tools/call', params: { name: 'item_description', arguments: { id: 20940 } } })
     ).json();
     expect(JSON.parse(res.result.content[0].text).description).toBeTruthy();
+  });
+});
+
+describe('shortener service binding', () => {
+  const origin = 'https://simulador.latam-tools.com.br';
+  const short = 'https://short.latam-tools.com.br/gJELaJ';
+  const long = buildShareUrl({ class: 4261, level: 230, jobLevel: 47, int: 133, spl: 100, vit: 120,
+    selectedAtkSkill: 'Poison Burst==5' }, origin);
+  const build = { share: short };
+
+  const tool = async (name: string, args: unknown, bindings: McpEnv) => {
+    const res = await rpc({ jsonrpc: '2.0', id: 10, method: 'tools/call', params: { name, arguments: args } }, {}, bindings);
+    expect(res.status).toBe(200);
+    const body: any = await res.json();
+    return { data: JSON.parse(body.result.content[0].text), isError: !!body.result.isError };
+  };
+
+  beforeEach(() => {
+    // A same-zone public fetch bypasses the shortener Worker in production. These
+    // calls must still succeed when that network path is unavailable.
+    vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('Public shortener fetch is unavailable'));
+  });
+  afterEach(() => vi.restoreAllMocks());
+
+  it.each([
+    ['parse_share_link', { share: short }, { build: { class: 4261, level: 230 } }],
+    ['calculate', { build }, { damage: { skill: { max: 68309 } } }],
+    ['damage_table', { build, monsterIds: [21077] }, { rows: [{ id: 21077, max: 68309 }] }],
+    ['compare_builds', { builds: [build, build] }, { ranking: [{ max: 68309 }, { max: 68309 }] }],
+    ['optimize_slot', { build, slot: 'weapon', candidates: [2610] }, { tested: 1 }],
+    ['share_link', { build }, { url: expect.stringContaining('/s/') }],
+  ])('resolves short links through the binding in %s', async (name, args, expected) => {
+    const lookup = vi.fn(async () => new Response(null, { status: 301, headers: { location: long } }));
+    const result = await tool(name as string, args, { ...env, SHORTENER: { fetch: lookup } });
+    expect(result.isError).toBe(false);
+    expect(result.data).toMatchObject(expected);
+    expect(lookup).toHaveBeenCalledWith(short, expect.objectContaining({ redirect: 'manual', signal: expect.any(AbortSignal) }));
+    expect(globalThis.fetch).toHaveBeenCalledTimes(0);
+  });
+
+  it.each([
+    ['share_link', { build: { class: 4261, level: 230 }, short: true }, '/s/'],
+    ['create_custom_items', { items: [{ name: 'Carta MCP', kind: 'card', script: { cri: ['5'] } }] }, 'customItem='],
+  ])('creates short links through the binding in %s', async (name, args, urlPart) => {
+    const create = vi.fn<(url: string, init: RequestInit) => Promise<Response>>(async () =>
+      new Response(JSON.stringify({ short_url: short }), { status: 201 }));
+    const result = await tool(name as string, args, { ...env, SHORTENER: { fetch: create } });
+    expect(result.isError).toBe(false);
+    expect(result.data.url).toBe(short);
+    expect(create).toHaveBeenCalledWith('https://short.latam-tools.com.br/api/links', expect.objectContaining({ method: 'POST' }));
+    const init = create.mock.calls[0][1] as RequestInit;
+    expect(JSON.parse(init.body as string).url).toContain(urlPart);
+    expect(globalThis.fetch).toHaveBeenCalledTimes(0);
+  });
+
+  it('reports a binding failure as a tool error and keeps long-link generation available', async () => {
+    const bindings = { ...env, SHORTENER: { fetch: vi.fn().mockRejectedValue(new Error('Shortener unavailable')) } };
+    expect(await tool('parse_share_link', { share: short }, bindings)).toEqual({ isError: true, data: { error: 'Shortener unavailable' } });
+    const result = await tool('share_link', { build: { class: 4261 }, short: true }, bindings);
+    expect(result.isError).toBe(false);
+    expect(result.data.url).toContain('/s/');
+    expect(result.data.note).toBeTruthy();
+    expect(globalThis.fetch).toHaveBeenCalledTimes(0);
   });
 });
 

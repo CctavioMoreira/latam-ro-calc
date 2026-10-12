@@ -3,6 +3,7 @@ import { Dataset } from './data/dataset';
 import { registerDiscoveryTools } from './tools/discovery';
 import { registerBridgeTools, registerCalculationTools } from './tools/calculate';
 import { registerCustomItemTools } from './tools/custom-items';
+import { Shortener } from './engine/share';
 
 /**
  * Keeps AJV out of the request path.
@@ -34,7 +35,7 @@ const unreachableValidator = {
  * A fresh McpServer per request. Registration is microseconds — the expensive state
  * (the dataset and its indexes) is shared read-only and never rebuilt.
  */
-export function createMcpServer(dataset: Dataset): McpServer {
+export function createMcpServer(dataset: Dataset, shortener?: Shortener): McpServer {
   const server = new McpServer(
     { name: 'ro-calc-latam', version: '1.0.0' },
     {
@@ -48,9 +49,9 @@ export function createMcpServer(dataset: Dataset): McpServer {
   );
 
   registerDiscoveryTools(server, dataset);
-  registerCalculationTools(server, dataset);
-  registerBridgeTools(server, dataset);
-  registerCustomItemTools(server, dataset);
+  registerCalculationTools(server, dataset, shortener);
+  registerBridgeTools(server, dataset, shortener);
+  registerCustomItemTools(server, dataset, shortener);
 
   return server;
 }

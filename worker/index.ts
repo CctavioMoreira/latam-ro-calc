@@ -34,6 +34,8 @@ interface Env {
    * latam-social is running in a local dev session too.
    */
   SOCIAL?: Fetcher;
+  /** Same-zone shortener calls must reach its Worker through a service binding. */
+  SHORTENER?: Fetcher;
   /**
    * The MCP server's vars, all optional — its defaults live in mcp/src/config.ts, and the
    * deployed values in wrangler.jsonc. Spelled out rather than an index signature, which

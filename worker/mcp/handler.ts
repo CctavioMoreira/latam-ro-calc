@@ -14,13 +14,14 @@
 import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js';
 import { config, initConfig } from '../../mcp/src/config';
 import { createMcpServer } from '../../mcp/src/mcp-server';
+import { Shortener } from '../../mcp/src/engine/share';
 import { AssetsEnv, getDataset, isCold, lastLoadMs } from './data';
 
 /**
- * All this handler needs is the assets binding; `initConfig` reads the MCP vars off the
- * same object without the type having to enumerate them.
+ * Assets supply the dataset; SHORTENER reaches the same-zone shortener Worker.
+ * `initConfig` reads the MCP vars off the same object without enumerating them here.
  */
-export type McpEnv = AssetsEnv;
+export type McpEnv = AssetsEnv & { SHORTENER?: Shortener };
 
 const MAX_BODY_BYTES = 256 * 1024;
 
@@ -151,7 +152,7 @@ export async function handleMcp(request: Request, env: McpEnv, ctx: ExecutionCon
 
   try {
     const dataset = await getDataset(env);
-    const server = createMcpServer(dataset);
+    const server = createMcpServer(dataset, env.SHORTENER);
     const transport = new WebStandardStreamableHTTPServerTransport({
       sessionIdGenerator: undefined,
       enableJsonResponse: true,
