@@ -576,9 +576,19 @@ interface EntTable {
 }
 
 const soutanes = ['Cassock_Str', 'Cassock_Agi', 'Cassock_Vit', 'Cassock_Dex', 'Cassock_Int', 'Cassock_Luk'];
-const specialBonus = [FS._5, FS._6, Spell._4, Spell._5, EA._4, EA._5, Sharp._4, Sharp._5];
-const soutaneBase = [...cri510, ...mhp35, MSP._100, MSP._150, ...createBaseStat(6, 8)];
-const soutaneArmor = [...soutanes, ...specialBonus, ...soutaneBase];
+// https://browiki.org/wiki/Hugel#Equipamentos_Angelicais
+// Slots 3/4 always use the base pool. Slot 2 combines the +0–8 and +9 pools
+// (normal/MiauMiau), like other refine-dependent enchants in this static table.
+const soutaneBase = [
+  ...cri510, ...mhp35, MSP._100, MSP._150, ...createBaseStat(6, 8),
+  'Evasion6', 'Evasion10', 'Def12', 'Def18', 'Mdef2', 'Mdef4',
+];
+const soutaneGarmentBoot2 = [...soutaneBase, 'Def20', 'Mdef6', 'Mdef8'];
+const soutaneArmor2 = [
+  ...soutaneBase, 'Def21', 'Mdef10', ...soutanes,
+  FS._5, FS._6, Spell._4, Spell._5, EA._4, EA._5, Sharp._4, Sharp._5,
+  AttackDelay._3, AttackDelay._4,
+];
 
 const sinful4 = [
   'Tha_Wrath_1',
@@ -1071,14 +1081,14 @@ export const EnchantTable: EntTable[] = [
   { name: 'Sin_Necklace_O', enchants: [null, null, sinful3, sinful4] },
   { name: 'Sin_Ring_O', enchants: [null, null, sinful3, sinful4] },
 
-  { name: 'Cassock_Manteau', enchants: [null, soutaneBase, soutaneBase, soutaneBase] },
-  { name: 'Cassock_Boots', enchants: [null, soutaneBase, soutaneBase, soutaneBase] },
-  { name: 'CassockA_STR', enchants: [null, soutaneBase, soutaneBase, soutaneArmor] },
-  { name: 'CassockA_AGI', enchants: [null, soutaneBase, soutaneBase, soutaneArmor] },
-  { name: 'CassockA_VIT', enchants: [null, soutaneBase, soutaneBase, soutaneArmor] },
-  { name: 'CassockA_DEX', enchants: [null, soutaneBase, soutaneBase, soutaneArmor] },
-  { name: 'CassockA_INT', enchants: [null, soutaneBase, soutaneBase, soutaneArmor] },
-  { name: 'CassockA_LUK', enchants: [null, soutaneBase, soutaneBase, soutaneArmor] },
+  { name: 'Cassock_Manteau', enchants: [null, soutaneGarmentBoot2, soutaneBase, soutaneBase] },
+  { name: 'Cassock_Boots', enchants: [null, soutaneGarmentBoot2, soutaneBase, soutaneBase] },
+  { name: 'CassockA_STR', enchants: [null, soutaneArmor2, soutaneBase, soutaneBase] },
+  { name: 'CassockA_AGI', enchants: [null, soutaneArmor2, soutaneBase, soutaneBase] },
+  { name: 'CassockA_VIT', enchants: [null, soutaneArmor2, soutaneBase, soutaneBase] },
+  { name: 'CassockA_DEX', enchants: [null, soutaneArmor2, soutaneBase, soutaneBase] },
+  { name: 'CassockA_INT', enchants: [null, soutaneArmor2, soutaneBase, soutaneBase] },
+  { name: 'CassockA_LUK', enchants: [null, soutaneArmor2, soutaneBase, soutaneBase] },
 
   { name: 'Shine_Ring_R', enchants: [null, null, brilliant3, brilliant4] },
   { name: 'Shine_Necklace_R', enchants: [null, null, brilliant3, brilliant4] },

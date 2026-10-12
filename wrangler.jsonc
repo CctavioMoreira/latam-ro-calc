@@ -62,7 +62,12 @@
   // Workers routes and goes to the DNS origin behind them — so the card has to be fetched
   // through this binding, not through OG_ORIGIN over the public internet. OG_ORIGIN still
   // supplies the URL, because latam-social checks the Host it is called as.
-  "services": [{ "binding": "SOCIAL", "service": "latam-social" }],
+  // The shortener is also a same-zone Worker route. MCP must use the binding for both
+  // reading and creating short links; public fetch() would hit the old DNS origin.
+  "services": [
+    { "binding": "SOCIAL", "service": "latam-social" },
+    { "binding": "SHORTENER", "service": "short" }
+  ],
 
   // The engine is synchronous and a single optimize_slot call can run 40 full solves. The
   // paid plan's default is already 30 s; naming it makes the headroom explicit, and stops

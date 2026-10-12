@@ -229,7 +229,7 @@ export class Kagerou extends Ninja {
    * are all ranged, so they keep it; the basic attack follows the weapon.
    */
   private isThrowingAttack(info: InfoForClass): boolean {
-    const skill = this.atkSkills.find((s) => s.name === info.skillName);
+    const skill = this.getAtkSkills(info.model.skillFormulaVersion).find((s) => s.name === info.skillName);
     if (!skill) return info.weapon?.data?.rangeType === 'range';
     const isMelee = typeof skill.isMelee === 'function' ? skill.isMelee(info.weapon?.data?.typeName) : !!skill.isMelee;
 

@@ -7,6 +7,8 @@ import { CustomItems } from '../services/custom-items';
 import { Confirmations, Messages } from '../services/notifications';
 import { DataKey, DataManifest, manifestPath } from '../../app/core/data-manifest';
 import { SKILL_DESC_BY_ID } from '../../app/skills';
+import { previewBuffsForClass } from '../../app/skills/preview-275';
+import { ClassName } from '../../app/jobs/_class-name';
 
 function makeSession(overrides: Partial<Record<DataKey, Promise<unknown>>> = {}) {
   const values = new Map<string, string>();
@@ -66,6 +68,24 @@ describe('plain calculator session', () => {
       expect(session.skillTooltip(skill)).toContain('Descrição completa da habilidade');
     } finally {
       delete SKILL_DESC_BY_ID[id];
+      session.dispose();
+    }
+  });
+
+  it('uses English preview skill and buff descriptions while keeping condition summaries', () => {
+    const { session } = makeSession();
+    try {
+      expect(session.skillTooltip({ name: 'Abyss Flame', icon: 6515, preview: true })).toContain('5 hits around the target and 3 around the caster');
+      const crisis = previewBuffsForClass(ClassName.HyperNovice)[0];
+      const html = session.buffTooltip(crisis);
+      expect(html).toContain('Costs 50 AP and lasts 300 seconds.');
+      expect(html).toContain('Max HP +75000, P.Atk +15, S.Matk +15');
+      expect(html).toContain('The activation heal is not simulated.');
+      expect(html).toContain('Preview kRO 275/60.');
+      const chasing = previewBuffsForClass(ClassName.AbyssChaser)[0];
+      expect(session.buffTooltip({ ...chasing, icon: 6512 })).toContain('Adds 2500% per skill level to Unlucky Rush');
+      expect(session.buffTooltip({ ...chasing, icon: 6512 })).not.toContain('retreats');
+    } finally {
       session.dispose();
     }
   });

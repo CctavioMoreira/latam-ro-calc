@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import { SkillFormulaSelector } from '../../ui/skill-formula-selector';
 import { Render, displayPipe, interpolate, classNames, parseStyle, normalizeStyle, identityKey } from '../render';
 export function Content({vm, services}: {vm: any; services: any}) {
 return <><Render tag="div" props={{"className": ["auto-cast-hud"].filter(Boolean).join(' ')}}>{(() => { let sharedDamagePopovers: any = vm["sharedDamagePopovers"];
@@ -43,6 +44,7 @@ let critRatePanel: any = vm["critRatePanel"]; return <><Render tag="div" props={
 "tooltip": {text: "Apenas ataques que acertam podem ativar o efeito.", position: "top", className: "auto_cast_tip", showDelay: 0, hideDelay: 0, escape: true, disabled: false}}}><Render tag="span" props={{}}>{"Ataques elegíveis"}</Render>
 <Render tag="strong" props={{}}>{interpolate(["","/s"], [displayPipe("number", vm.simulation?.eligibleAttacksPerSecond, ["1.2-2"], services)])}</Render></Render></>; })()}</Render></Render></Render></Render></Render>
 <Render tag="div" props={{"className": ["sources-head"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{interpolate(["Fontes de DPS · "," ",""], [vm.sourceCount,((vm.sourceCount === 1) ? "fonte" : "fontes")])}</Render>
+<SkillFormulaSelector value={vm.model?.skillFormulaVersion} onChange={value => vm.action(() => vm.skillFormulaVersionChange.emit(value))} />
 <Render tag="button" props={{"type": "button",
 "aria-pressed": vm.autoCompareEnabled,
 "click": (event: any) => vm.action(() => { const $event = event; vm.toggleComparisonWithoutScroll($event) }),

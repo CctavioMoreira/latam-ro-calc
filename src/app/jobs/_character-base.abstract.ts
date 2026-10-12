@@ -11,6 +11,9 @@ import { AdditionalBonusInput, InfoForClass, SkillRef, SkillStateCtx } from '../
 import { ASPD_CAP, sortSkill } from '../utils';
 import { AspdTable } from './_aspd-table';
 import { ClassName } from './_class-name';
+import { rebalancedSkillCatalog } from '../skills/rebalance-2026';
+import type { SkillFormulaVersion } from '../skills/skill-formula-version';
+import { previewSkillsForClass, previewBuffsForClass, applyPreviewBuffs } from '../skills/preview-275';
 
 export interface AtkSkillFormulaInput extends InfoForClass {
   skillLevel: number;
@@ -32,6 +35,8 @@ export interface DefForCalcModel {
 }
 
 export interface AtkSkillModel {
+  preview?: boolean;
+  previewDescription?: string;
   label: string;
   name: SKILL_NAME;
   value: string;
@@ -65,6 +70,7 @@ export interface AtkSkillModel {
     } & DefForCalcModel,
   ) => number;
   part2?: {
+    damageRepeat?: number | ((input: AtkSkillFormulaInput) => number);
     label: string;
     element: ElementType;
     isIncludeMain: boolean;
@@ -95,7 +101,10 @@ export interface AtkSkillModel {
    * Will be round down
    */
   hit?: number;
+  hitByLevel?: (skillLevel: number) => number;
   totalHit?: number | ((parmas: AtkSkillFormulaInput) => number);
+  /** Apply defenses to each packet before aggregating multipart casts. */
+  damageRepeat?: number | ((input: AtkSkillFormulaInput) => number);
   hitEveryNSec?: number;
   isMatk?: boolean;
   isMelee?: boolean | ((weaponType: WeaponTypeName) => boolean);
@@ -136,6 +145,8 @@ export interface SkillModel {
 }
 
 export interface ActiveSkillModel {
+  preview?: boolean;
+  previewDescription?: string;
   isEquipAtk?: boolean;
   isMasteryAtk?: boolean;
   inputType: 'dropdown' | 'selectButton';
@@ -257,6 +268,10 @@ export abstract class CharacterBase {
     }
 
     return skills;
+  }
+
+  getAtkSkills(version?: SkillFormulaVersion): AtkSkillModel[] {
+    return rebalancedSkillCatalog([...this.atkSkills, ...previewSkillsForClass(this.className)], this.className, version).map(applyPreviewBuffs);
   }
 
   get passiveSkills() {
@@ -639,6 +654,11 @@ export abstract class CharacterBase {
     this._activeSkillList.push(...activeSkillList);
     this._passiveSkillList.push(...passiveSkillList);
     this.classNames.push(...classNames);
+    // Only the final fourth-job inheritance step adds these. Earlier generations
+    // keep their catalogs, and the extra buff slots default to off in old saves.
+    for (const className of classNames) {
+      this._activeSkillList.push(...previewBuffsForClass(className));
+    }
   }
 
   protected inheritAutoCasts(definitions: readonly ClassAutoCastDefinition[]): void {

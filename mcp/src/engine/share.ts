@@ -23,6 +23,11 @@ export interface DecodedShare {
   items?: CustomItemDefinition[];
 }
 
+/** Request-local access to the shortener Worker; omitted by Node callers. */
+export interface Shortener {
+  fetch(url: string, init: RequestInit): Promise<Response>;
+}
+
 /** A build as the app serializes it for saving/sharing. */
 export const toPreset = (model: MainModel, char: CharacterBase): Record<string, any> =>
   toUpsertPresetModel(model, char) as unknown as Record<string, any>;
@@ -47,18 +52,19 @@ export function parseShare(input: string): DecodedShare {
 }
 
 /** Expand a shortened link, or pass anything else through untouched. */
-export const resolveIfShort = async (share: string, shortenerUrl: string): Promise<string> =>
-  isShortLink(share, shortenerUrl) ? resolveShortLink(share) : share;
+export const resolveIfShort = async (share: string, shortenerUrl: string, shortener?: Shortener): Promise<string> =>
+  isShortLink(share, shortenerUrl) ? resolveShortLink(share, undefined, shortener) : share;
 
 /**
  * Follow a short link to the real share URL. People paste the shortened form because
  * that's what the app's share dialog hands them.
  */
-export async function resolveShortLink(url: string, timeoutMs = 3000): Promise<string> {
+export async function resolveShortLink(url: string, timeoutMs = 3000, shortener?: Shortener): Promise<string> {
   // `redirect: 'manual'` is load-bearing for the legacy links already in the wild: their
   // token lives in the URL fragment, which fetch strips from `res.url` when it follows a
   // redirect — and once followed there is no Location header left to recover it from.
-  const res = await fetch(url, { redirect: 'manual', signal: AbortSignal.timeout(timeoutMs) });
+  const init: RequestInit = { redirect: 'manual', signal: AbortSignal.timeout(timeoutMs) };
+  const res = await (shortener ? shortener.fetch(url, init) : fetch(url, init));
   const location = res.headers.get('location');
   const candidate = location ? new URL(location, url).href : res.url;
   if (!readShareToken(candidate) && !TOKEN_IN_URL.test(candidate)) {
@@ -71,14 +77,16 @@ export async function resolveShortLink(url: string, timeoutMs = 3000): Promise<s
  * Shorten a build or custom-item URL via the same service the app uses. Best-effort: the long URL
  * always works, so a shortener hiccup must not fail the tool call.
  */
-export async function shortenShareUrl(url: string, shortenerUrl: string, timeoutMs = 3000): Promise<string> {
+export async function shortenShareUrl(url: string, shortenerUrl: string, timeoutMs = 3000, shortener?: Shortener): Promise<string> {
   try {
-    const res = await fetch(`${shortenerUrl}/api/links`, {
+    const endpoint = `${shortenerUrl}/api/links`;
+    const init: RequestInit = {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ url }),
       signal: AbortSignal.timeout(timeoutMs),
-    });
+    };
+    const res = await (shortener ? shortener.fetch(endpoint, init) : fetch(endpoint, init));
     if (!res.ok) return url;
     const body = (await res.json()) as { short_url?: string };
     return body?.short_url || url;
