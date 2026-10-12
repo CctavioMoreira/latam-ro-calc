@@ -371969,5 +371969,120 @@
         "1"
       ]
     }
+  },
+  "4902": {
+    "id": 4902,
+    "aegisName": "Def18",
+    "name": "DEF +18",
+    "unidName": "DEF +18",
+    "resName": "마력석_검정",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 11,
+    "itemSubTypeId": 0,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 0,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": 65535,
+    "script": {
+      "def": [
+        "18"
+      ]
+    }
+  },
+  "4903": {
+    "id": 4903,
+    "aegisName": "Def21",
+    "name": "DEF +21",
+    "unidName": "DEF +21",
+    "resName": "마력석_검정",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 11,
+    "itemSubTypeId": 0,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 0,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": 65535,
+    "script": {
+      "def": [
+        "21"
+      ]
+    }
+  },
+  "4790": {
+    "id": 4790,
+    "aegisName": "Mdef10",
+    "name": "DEFM + 10",
+    "unidName": "DEFM + 10",
+    "resName": "마력석_초록",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 11,
+    "itemSubTypeId": 0,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 0,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": 65535,
+    "script": {
+      "mdef": [
+        "10"
+      ]
+    }
+  },
+  "29238": {
+    "id": 29238,
+    "aegisName": "Evasion10",
+    "name": "Esquiva+10",
+    "unidName": "Esquiva+10",
+    "resName": "안실라",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 11,
+    "itemSubTypeId": 0,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 0,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": 65535,
+    "script": {
+      "flee": [
+        "10"
+      ]
+    }
+  },
+  "29026": {
+    "id": 29026,
+    "aegisName": "Def20",
+    "name": "DEF +20",
+    "unidName": "DEF +20",
+    "resName": "마력석_검정",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 11,
+    "itemSubTypeId": 0,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 0,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": 65535,
+    "script": {
+      "def": [
+        "20"
+      ]
+    }
   }
 }
