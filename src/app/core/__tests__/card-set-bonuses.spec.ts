@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ArchMage, ElementalMaster, RuneKnight } from 'src/app/jobs';
+import { itemBonusScriptEntries } from '../../models/item.model';
 import { ACESSORIO_D, ACESSORIO_E, ARMADURA, CALCADO, CAPA, ELMO, ESCUDO, FACA_3, ITEM_DB, Worn, wornBonus } from './worn-bonus';
 
 /**
@@ -308,7 +309,7 @@ describe('the sets that stay out', () => {
     const ADDED = [4153, 4161, 4169, 4179, 4183, 4191, 4197, 4199, 4211, 4218, 4246, 4248, 4266, 4268, 4269, 4280, 4294, 4296, 4306, 4321, 4332, 4343, 4348, 4371, 4382, 4488, 4605, 4606, 27016, 27102, 27114, 27120, 27163, 27197, 27321, 27357, 27383, 27392, 31025];
 
     for (const id of ADDED) {
-      const entries = (Object.values(ITEM_DB[id].script) as string[][]).flat();
+      const entries = itemBonusScriptEntries(ITEM_DB[id].script).flatMap(([, values]) => values);
       expect(entries.some((entry) => entry.includes('EQUIP_ID[')), `${id} has no set clause`).toBe(true);
     }
   });

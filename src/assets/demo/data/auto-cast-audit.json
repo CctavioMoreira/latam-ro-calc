@@ -3686,7 +3686,9 @@
       "itemName": "Carta Xamã Imortal",
       "raw": "Ao realizar ataques mágicos:\n1% de chance de consumir 2 Gemas Vermelhas para autoconjurar [Maldição de Jormungand] nv.5.",
       "trigger": "magic-or-skill",
-      "disposition": "wrong-trigger"
+      "disposition": "verified-direct-damage",
+      "executableRuleCount": 1,
+      "itemRuleCount": 1
     },
     {
       "key": "item-31026-clause-1",

@@ -72458,6 +72458,18 @@
     "compositionPos": 0,
     "cardPrefix": "Deadly",
     "script": {
+      "autoCast": [
+        {
+          "skillId": 2450,
+          "skillLevel": [
+            "5"
+          ],
+          "chance": [
+            "1"
+          ],
+          "trigger": "magic-attack"
+        }
+      ],
       "matkPercent": [
         "10"
       ],
