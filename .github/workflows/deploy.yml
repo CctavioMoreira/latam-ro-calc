@@ -69,6 +69,7 @@ jobs:
             -H 'content-type: application/json' \
             -H 'accept: application/json, text/event-stream' \
             -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | grep -q '"calculate"'
+          node tools/verify-mcp.mjs
 
       # Durable tags record successful announcements. A rerun can recover a
       # failed deployment or Discord post without allocating another version.
