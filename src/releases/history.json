@@ -1,5 +1,12 @@
 [
   {
+    "v": "0.1.170-beta",
+    "date": "12-10-2026",
+    "logs": [
+      "Adicionada a autoconjuração de Maldição de Jormungand nv. 5 da Carta Xamã Imortal, com 1% de chance ao realizar ataques mágicos. A simulação pressupõe disponibilidade das 2 Gemas Vermelhas consumidas por ativação. Reportado por Kato."
+    ]
+  },
+  {
     "v": "0.1.169-beta",
     "date": "11-10-2026",
     "logs": [
