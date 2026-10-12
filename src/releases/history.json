@@ -1,5 +1,14 @@
 [
   {
+    "v": "0.1.172-beta",
+    "date": "12-10-2026",
+    "logs": [
+      "Adicionado o seletor de fórmulas na rotação de Batalha, no PVP e na Auto-conjuração, permitindo alternar entre Atual (LATAM) e Rebalance 4th de fevereiro de 2026 para as 20 classes contempladas. Atual (LATAM) continua como padrão, e a versão escolhida é mantida ao salvar e compartilhar a simulação.",
+      "Adicionadas as 29 habilidades da expansão kRO 275/60 como Prévia, incluindo os novos buffs e controles de efeitos. As prévias ficam disponíveis nas duas versões de fórmulas, com descrições em inglês. Os buffs de prévia mantêm o espaço dos ícones sem exibir imagens indisponíveis.",
+      "Os coeficientes e tempos das prévias que não foram divulgados no anúncio usam referências provisórias e podem mudar. Os limites atuais de nível do personagem foram mantidos; consumo e recuperação de recursos, movimentação e ativação automática de buffs durante a rotação não são simulados."
+    ]
+  },
+  {
     "v": "0.1.171-beta",
     "date": "12-10-2026",
     "logs": [
