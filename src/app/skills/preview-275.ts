@@ -81,22 +81,22 @@ function buff(name: SKILL_NAME, label: string, maxLevel = 1, bonus?: (level: num
 }
 export function previewBuffsForClass(className: ClassName): ActiveSkillModel[] {
   switch (className) {
-    case ClassName.ArchMage: return [{ ...buff('Energy Conversion', 'Energy Conversion', 5, undefined, 'Converte AP em SP. A recuperação e o custo aparecem por nível. O simulador não altera recursos durante a rotação.'), dropdown: [
+    case ClassName.ArchMage: return [{ ...buff('Energy Conversion', 'Energy Conversion', 5, undefined, 'Exchanges AP for SP. Levels 1 to 5 cost 22/19/16/13/10 AP and restore 40/120/240/400/600 SP respectively. Resource changes during a rotation are not simulated.'), dropdown: [
       {label:'Não',value:0,isUse:false}, ...[40,120,240,400,600].map((sp,index) => ({label:`Nv ${index + 1} · ${sp} SP / ${22 - index * 3} AP`,value:index+1,isUse:true})),
     ] }];
-    case ClassName.HyperNovice: return [buff('Overcoming Crisis', 'Overcoming Crisis', 5, level => ({hp:level * 15000,pAtk:level * 3,sMatk:level * 3}), 'Duração: 300s. A cura ao ativar não é simulada.'), buff('_Preview_Target Below Half HP', 'Alvo abaixo de 50% HP', 1, undefined, 'Seleciona o dano adicional de Mega Sonic Blow contra o alvo ferido.')];
-    case ClassName.Biolo: return [buff('_Preview_Mystery Powder', 'Mystery Powder · 60s', 1, undefined, 'Habilita Dust Explosion enquanto o efeito de Mystery Powder está ativo.')];
-    case ClassName.AbyssChaser: return [buff('_Preview_Chasing', 'Chasing · 60s', 1, undefined, 'Aumenta Unlucky Rush, o dano secundário de Chain Reaction Shot e os golpes de Chasing Break e Chasing Shot.')];
-    case ClassName.Inquisitor: return [buff('_Preview_Massive Flame Blaster', 'Massive Flame Blaster', 1, undefined, 'Seleciona a fórmula fortalecida de Blazing Flame Blast.')];
-    case ClassName.Windhawk: return [buff('_Preview_Wild Walk', 'Wild Walk', 5, level => ({flee:50 + level * 50}), 'Aplica a Esquiva do efeito de Wild Walk. Duração: 3 + 3 × nível segundos. O deslocamento não é simulado.')];
-    case ClassName.ShadowCross: return [buff('_Preview_Blocking', 'Bloqueio bem-sucedido · 10s', 1, undefined, 'Estado concedido por Cross Slash; não acrescenta dano por si só.')];
-    case ClassName.Cardinal: return [buff('_Preview_Ancilla', 'Ancilla', 1, undefined, 'Altera a propriedade de Divinus Flos para Neutro.')];
-    case ClassName.ElementalMaster: return [buff('_Preview_Energy Coat', 'Proteção Arcana · condição de Psychic Stream', 1, undefined, 'Psychic Stream não pode ser usada enquanto Proteção Arcana está ativa.')];
+    case ClassName.HyperNovice: return [buff('Overcoming Crisis', 'Overcoming Crisis', 5, level => ({hp:level * 15000,pAtk:level * 3,sMatk:level * 3}), 'Costs 50 AP and lasts 300 seconds. Fully heals HP on activation and grants +15000 Max HP, +3 P.Atk and +3 S.Matk per skill level. The activation heal is not simulated.'), buff('_Preview_Target Below Half HP', 'Alvo abaixo de 50% HP', 1, undefined, 'Applies the additional Mega Sonic Blow damage against a target below 50% HP.')];
+    case ClassName.Biolo: return [buff('_Preview_Mystery Powder', 'Mystery Powder · 60s', 1, undefined, 'Enables Dust Explosion while the 60-second Mystery Powder buff is active.')];
+    case ClassName.AbyssChaser: return [buff('_Preview_Chasing', 'Chasing · 60s', 1, undefined, 'Lasts 60 seconds. Adds 2500% per skill level to Unlucky Rush and 700% per skill level to Chain Reaction Shot secondary damage. Increases Chasing Break and Chasing Shot damage and hit counts.')];
+    case ClassName.Inquisitor: return [buff('_Preview_Massive Flame Blaster', 'Massive Flame Blaster', 1, undefined, 'Applies the enhanced Blazing Flame Blast damage while the Massive Flame Blaster buff is active.')];
+    case ClassName.Windhawk: return [buff('_Preview_Wild Walk', 'Wild Walk', 5, level => ({flee:50 + level * 50}), 'Applies the Wild Walk Flee bonus: +100/150/200/250/300 for 6/9/12/15/18 seconds at levels 1 to 5. Movement speed also increases in game; movement is not simulated.')];
+    case ClassName.ShadowCross: return [buff('_Preview_Blocking', 'Bloqueio bem-sucedido · 10s', 1, undefined, 'Records the successful blocking state granted by Cross Slash for 10 seconds. This control adds no damage bonus by itself.')];
+    case ClassName.Cardinal: return [buff('_Preview_Ancilla', 'Ancilla', 1, undefined, 'Changes Divinus Flos from Holy to Neutral damage while Ancilla is active.')];
+    case ClassName.ElementalMaster: return [buff('_Preview_Energy Coat', 'Proteção Arcana · condição de Psychic Stream', 1, undefined, 'Prevents Psychic Stream from being used while Energy Coat is active.')];
     case ClassName.Shinkiro:
     case ClassName.Shiranui: return [
-      buff('_Preview_Four Colors Fire', 'Four Colors Charm · Fogo', 1, undefined, '300s: +8500% na razão de Red Flame Cannon. Pode coexistir com os outros talismãs.'), buff('_Preview_Four Colors Water', 'Four Colors Charm · Água', 1, undefined, '300s: +7000% na razão de Cold Blooded Cannon. Pode coexistir com os outros talismãs.'),
-      buff('_Preview_Four Colors Wind', 'Four Colors Charm · Vento', 1, undefined, '300s: +8500% na razão de Thundering Cannon. Pode coexistir com os outros talismãs.'), buff('_Preview_Four Colors Earth', 'Four Colors Charm · Terra', 1, undefined, '300s: +5500% na razão de Golden Dragon Cannon. Pode coexistir com os outros talismãs.'),
-      buff('_Preview_Hidden Weapon', 'Hidden Weapon · área ativa', 1, undefined, 'Seleciona o dano adicional de Huuma Shuriken - Construct na área de Hidden Weapon.'), buff('_Preview_Nightmare', 'Nightmare · alvo marcado', 1, undefined, 'Seleciona as fórmulas de Nightmare contra um alvo marcado.'),
+      buff('_Preview_Four Colors Fire', 'Four Colors Charm · Fogo', 1, undefined, 'Requires 10 Fire spirits and costs 20 AP. Adds 8500% to the Red Flame Cannon ratio for 300 seconds. Can coexist with the other elemental charms.'), buff('_Preview_Four Colors Water', 'Four Colors Charm · Água', 1, undefined, 'Requires 10 Water spirits and costs 20 AP. Adds 7000% to the Cold Blooded Cannon ratio for 300 seconds. Can coexist with the other elemental charms.'),
+      buff('_Preview_Four Colors Wind', 'Four Colors Charm · Vento', 1, undefined, 'Requires 10 Wind spirits and costs 20 AP. Adds 8500% to the Thundering Cannon ratio for 300 seconds. Can coexist with the other elemental charms.'), buff('_Preview_Four Colors Earth', 'Four Colors Charm · Terra', 1, undefined, 'Requires 10 Earth spirits and costs 20 AP. Adds 5500% to the Golden Dragon Cannon ratio for 300 seconds. Can coexist with the other elemental charms.'),
+      buff('_Preview_Hidden Weapon', 'Hidden Weapon · área ativa', 1, undefined, 'Applies the additional Huuma Shuriken - Construct damage inside the Hidden Weapon area.'), buff('_Preview_Nightmare', 'Nightmare · alvo marcado', 1, undefined, 'Applies the Nightmare damage formulas against a marked target.'),
     ];
     default: return [];
   }

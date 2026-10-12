@@ -37,6 +37,8 @@ Sonic Brand's alternative Reverberation and Metallic Sound ratios are included. 
 
 Both skill announcements in the [275/60 thread](https://www.divine-pride.net/forum/index.php?/topic/7814-kro-27560-level-expansion-and-new-skills/) are included: 29 unique skills, comprising 26 attacks and 3 support skills. Abyss Flame exposes separate target-centered and user-centered attack entries so their hit counts can be simulated independently.
 
+All 29 preview skills have English effect descriptions in pickers and skill details, independent of the deferred LATAM descriptions. Preview buff controls also use English summaries and preserve an empty icon space.
+
 | Class | Skill IDs and attack names |
 | --- | --- |
 | Dragon Knight | 6502 Dragonic Pierce |

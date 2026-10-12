@@ -3624,7 +3624,7 @@ await ((_event?: unknown) => {
     // The selected option's own skill wins; otherwise the group's own icon (a picker
     // like Domínio Elemental, whose levels are modes of one skill).
     const selected = selectedValue === undefined ? undefined : (buff.dropdown || []).find((d) => d.value === selectedValue);
-    const desc = buff.preview ? '' : skillDescHtml(selected?.icon ?? buff.icon ?? SKILL_ID_BY_NAME[buff.name]);
+    const desc = buff.preview && buff.previewDescription ? '' : skillDescHtml(selected?.icon ?? buff.icon ?? SKILL_ID_BY_NAME[buff.name]);
 
     let html: string;
     if (desc) {
@@ -3637,14 +3637,14 @@ await ((_event?: unknown) => {
       const lines = (buff.dropdown || [])
         .filter((d) => d.isUse && d.bonus && Object.keys(d.bonus).length)
         .map((d) => {
-          const parts = Object.entries(d.bonus).map(([k, v]) => `${BUFF_BONUS_LABELS[k] ?? bonusKeyLabel(k)} ${fmt(v)}`);
+          const parts = Object.entries(d.bonus).map(([k, v]) => `${buff.preview ? ({ hp: 'Max HP', pAtk: 'P.Atk', sMatk: 'S.Matk', flee: 'Flee' }[k] ?? k) : BUFF_BONUS_LABELS[k] ?? bonusKeyLabel(k)} ${fmt(v)}`);
           return `<div>${d.label}: ${parts.join(', ')}</div>`;
         });
       const title = `<div class="item_desc_title"><b>${buff.label}</b></div>`;
       const debuff = buff.isDebuff ? `<div style="color:#b00000">Debuff no monstro</div>` : '';
       html = `${title}${debuff}${buff.previewDescription ? `<div>${buff.previewDescription}</div>` : ''}${lines.length ? lines.join('') : buff.preview ? '' : '<div>—</div>'}`;
     }
-    if (buff.preview) html += '<div>Prévia kRO 275/60. Coeficientes e tempos ausentes no anúncio usam dados provisórios; podem mudar.</div>';
+    if (buff.preview && !desc) html += '<div>Preview kRO 275/60. Unannounced coefficients and timings are provisional and may change.</div>';
 
     this.buffTooltipCache.set(cacheKey, html);
     return html;

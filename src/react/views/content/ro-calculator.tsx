@@ -458,7 +458,7 @@ const i = __index38; return <Fragment key={identityKey(__entry38)}><Render tag="
 const i = context["index"]; return <><Render tag="div" props={{"className": ["skill-control-row"].filter(Boolean).join(' ')}}><Render tag="span" props={{"tooltipPosition": "top",
 "tooltipStyleClass": "item_desc_tooltip",
 "className": ["skill-control-label"].filter(Boolean).join(' '),
-"tooltip": {text: vm.buffTooltip(skill,((skill.inputType === "dropdown") ? vm.model.skillBuffs[i] : undefined)), position: "top", className: "item_desc_tooltip", showDelay: 400, hideDelay: 0, escape: false, disabled: false}}}>{(() => { const __condition39 = skill.icon;  return __condition39 ? <><Render tag="img" props={{"alt": "",
+"tooltip": {text: vm.buffTooltip(skill,((skill.inputType === "dropdown") ? vm.model.skillBuffs[i] : undefined)), position: "top", className: "item_desc_tooltip", showDelay: 400, hideDelay: 0, escape: false, disabled: false}}}>{skill.preview && <span className="skill_icon" aria-hidden="true" />}{(() => { const __condition39 = skill.icon && !skill.preview;  return __condition39 ? <><Render tag="img" props={{"alt": "",
 "src": displayPipe("iconUrl", skill.icon, ["skill"], services),
 "className": ["skill_icon"].filter(Boolean).join(' ')}}></Render></> : null; })()}
 {(() => { const __condition40 = skill.icon;  return __condition40 ? <><Render tag="a" props={{"target": "_blank",
@@ -480,7 +480,7 @@ const activeSkillRow = (context: any) => { const skill = context["skill"];
 const i = context["index"]; return <><Render tag="div" props={{"className": ["skill-control-row"].filter(Boolean).join(' ')}}><Render tag="span" props={{"tooltipPosition": "top",
 "tooltipStyleClass": "item_desc_tooltip",
 "className": ["skill-control-label"].filter(Boolean).join(' '),
-"tooltip": {text: vm.buffTooltip(skill,((skill.inputType === "dropdown") ? vm.model.activeSkills[i] : undefined)), position: "top", className: "item_desc_tooltip", showDelay: 400, hideDelay: 0, escape: false, disabled: false}}}>{(() => { const __condition42 = skill.icon;  return __condition42 ? <><Render tag="img" props={{"alt": "",
+"tooltip": {text: vm.buffTooltip(skill,((skill.inputType === "dropdown") ? vm.model.activeSkills[i] : undefined)), position: "top", className: "item_desc_tooltip", showDelay: 400, hideDelay: 0, escape: false, disabled: false}}}>{skill.preview && <span className="skill_icon" aria-hidden="true" />}{(() => { const __condition42 = skill.icon && !skill.preview;  return __condition42 ? <><Render tag="img" props={{"alt": "",
 "src": displayPipe("iconUrl", skill.icon, [(skill.iconType || "skill")], services),
 "className": ["skill_icon"].filter(Boolean).join(' ')}}></Render></> : null; })()}
 {(() => { const __condition43 = skill.icon;  return __condition43 ? <><Render tag="a" props={{"target": "_blank",

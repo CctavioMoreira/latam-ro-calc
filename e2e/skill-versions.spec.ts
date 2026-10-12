@@ -58,10 +58,34 @@ test('new support buffs appear as Prévia and affect the saved build', async ({ 
   await page.goto('/');
   await expect(page.locator('#ro-splash')).toHaveCount(0,{timeout:40000});
   await page.getByRole('button',{name:'Habilidades',exact:true}).click();
-  await expect(page.locator('.skill-control-label').filter({hasText:'Overcoming Crisis (Prévia)'})).toBeVisible();
+  const label = page.locator('.skill-control-label').filter({hasText:'Overcoming Crisis (Prévia)'});
+  await expect(label).toBeVisible();
+  await expect(label.locator('img')).toHaveCount(0);
+  const iconSpace = label.locator('span.skill_icon');
+  await expect(iconSpace).toBeVisible();
+  await expect(iconSpace).toHaveCSS('width','20px');
+  await expect(iconSpace).toHaveCSS('height','20px');
+  await label.hover();
+  await expect(page.getByRole('tooltip')).toContainText('Costs 50 AP and lasts 300 seconds.');
+  await expect(page.getByRole('tooltip')).toContainText('Max HP +75000, P.Atk +15, S.Matk +15');
   const control = page.locator('.skill-control-row').filter({hasText:'Overcoming Crisis (Prévia)'}).getByRole('combobox');
   await control.click();
   await page.getByRole('option',{name:'Nv 5',exact:true}).click();
   await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('ro-set')!).activeSkillMap['Overcoming Crisis'])).toBe(5);
   await page.screenshot({path:'.tmp/skill-preview-buffs.png',fullPage:true});
+});
+
+test('preview attack details show the English description', async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('ro-set',JSON.stringify({class:4260,level:250,jobLevel:1,int:130,spl:100,selectedAtkSkill:'Abyss Flame==5',rotation:['Abyss Flame==5']}));
+    localStorage.setItem('ro-right-accordion-active','[]');
+  });
+  await page.goto('/');
+  await expect(page.locator('#ro-splash')).toHaveCount(0,{timeout:40000});
+  await page.getByRole('button',{name:'Batalha',exact:true}).click();
+  const battle = page.getByRole('region',{name:'Batalha',exact:true});
+  await battle.getByRole('button',{name:'Detalhes da habilidade',exact:true}).click();
+  await page.getByRole('button',{name:'Descrição da habilidade',exact:true}).click();
+  await expect(page.locator('.pd-desc')).toContainText('5 hits around the target and 3 around the caster');
+  await expect(page.locator('.pd-desc')).toContainText('Max level: 5');
 });
