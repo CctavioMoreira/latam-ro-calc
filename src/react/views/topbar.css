@@ -19,6 +19,5 @@
   margin-left: auto;
 }
 :is(app-topbar, .ui-scope-app-topbar) .topbar-settings{
-  width: 2.5rem;
-  height: 2.5rem;
+  align-self: stretch;
 }

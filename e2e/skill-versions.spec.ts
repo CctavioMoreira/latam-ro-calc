@@ -44,7 +44,13 @@ test('formula selectors stay synchronized in battle, PVP and autocast and surviv
   const searchButtonBounds = await page.getByRole('button', { name: 'Buscar itens', exact: true }).boundingBox();
   expect(settingsButtonBounds!.height).toBe(searchButtonBounds!.height);
   expect(settingsButtonBounds!.y).toBe(searchButtonBounds!.y);
-  expect(settingsButtonBounds!.width).toBe(settingsButtonBounds!.height);
+  // Text metrics vary by platform; the icon-only button must follow its neighbors.
+  await page.evaluate(() => document.documentElement.style.setProperty('--font-family', 'Arial, sans-serif'));
+  const alternateSettingsBounds = await settingsButton.boundingBox();
+  const alternateSearchBounds = await page.getByRole('button', { name: 'Buscar itens', exact: true }).boundingBox();
+  expect(alternateSettingsBounds!.height).toBe(alternateSearchBounds!.height);
+  expect(alternateSettingsBounds!.y).toBe(alternateSearchBounds!.y);
+  await page.evaluate(() => document.documentElement.style.removeProperty('--font-family'));
   expect(await settingsButton.evaluate(element => element.nextElementSibling)).toBeNull();
   await settingsButton.click();
   await expect(settingsButton).toHaveAttribute('aria-expanded', 'true');
