@@ -57,6 +57,13 @@ describe('item search catalogue coverage', () => {
 });
 
 describe('item search matching', () => {
+  it('uses the same fuzzy matching as item selectors', () => {
+    expect(search([makeItem(1), makeItem(2, {}, 'Botas')], { name: 'TSTE CHP' })).toEqual([1]);
+    expect(search([makeItem(1)], { name: 'TSTE BOTAS' })).toEqual([]);
+  });
+  it('prioritizes literal names over fuzzy matches without dropping either', () => {
+    expect(search([makeItem(1, {}, 'Botas Rochosas Elegantes'), makeItem(2, {}, 'Broche')], { name: 'BROCHE' })).toEqual([2, 1]);
+  });
   it('normalizes name fragments and includes scriptless items', () => {
     expect(search([makeItem(1), makeItem(2, {}, 'Botas')], { name: '  CHAPEU  ' })).toEqual([1]);
     expect(search([makeItem(1)], { bonuses: ['atk'] })).toEqual([]);

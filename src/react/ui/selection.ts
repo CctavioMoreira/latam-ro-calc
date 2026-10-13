@@ -1,3 +1,5 @@
+import { createFuzzyRanker } from '../../app/utils/fuzzy-search';
+
 /** Preserve primitive values, object identity, and valid falsy selections. */
 export function optionValue(option: any, key?: string, labelKey?: string): any {
   if (option == null || typeof option !== 'object') return option;
@@ -18,13 +20,17 @@ export function chooseSelection(value: any, option: any, multiple: boolean, togg
   return multiple ? toggleSelection(value, next) : toggleSingle && value === next ? null : next;
 }
 
-export function filteredRows(options: any[], query: string, group: boolean, filterBy = 'label', labelKey?: string): { option: any; group?: boolean }[] {
-  const search = query.toLocaleLowerCase('pt-BR').trim();
-  const matches = (option: any) => !search || filterBy.split(',').some(key => String(option?.[key.trim()] ?? optionLabel(option, labelKey)).toLocaleLowerCase('pt-BR').includes(search));
+export function filteredRows(options: any[], query: string, group: boolean, filterBy = 'label', labelKey?: string, optionFilter?: (option: any) => boolean): { option: any; group?: boolean }[] {
+  const rank = createFuzzyRanker(query);
+  const keys = filterBy.split(',').map(key => key.trim());
+  const matches = (entries: any[]) => entries.map(option => ({ option,
+    rank: Math.min(...keys.map(key => rank(String(option?.[key] ?? optionLabel(option, labelKey))))) }))
+    .filter(entry => Number.isFinite(entry.rank) && (!optionFilter || optionFilter(entry.option)))
+    .sort((a, b) => a.rank - b.rank).map(entry => ({ option: entry.option }));
   return group ? options.flatMap(parent => {
-    const entries = (parent.items ?? []).filter(matches);
-    return entries.length ? [{ option: parent, group: true }, ...entries.map(option => ({ option }))] : [];
-  }) : options.filter(matches).map(option => ({ option }));
+    const entries = matches(parent.items ?? []);
+    return entries.length ? [{ option: parent, group: true }, ...entries] : [];
+  }) : matches(options);
 }
 
 export function toggleAllSelection(value: readonly any[] | null | undefined, rows: { option: any; group?: boolean }[], key?: string, labelKey?: string): any[] {

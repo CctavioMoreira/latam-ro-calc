@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { Render, displayPipe, interpolate, classNames, parseStyle, normalizeStyle, identityKey } from '../render';
 import { sanitizeHtml } from '../../ui/sanitize-html';
+import { PanelSearch } from '../../ui/panel-search';
 export function Content({vm, services}: {vm: any; services: any}) {
 return <>{(() => { const reductionPop = (context: any) => { const cats = context["cats"];
 const sources = context["sources"];
@@ -391,7 +392,7 @@ let sustainPanel: any = vm["sustainPanel"]; return <>{(() => { const __condition
 "activeIndex": vm.rightAccordionActiveIndices,
 "tabOpened": (event: any) => vm.action(() => { const $event = event; vm.onRightAccordionOpen($event) }),
 "tabClosed": (event: any) => vm.action(() => { const $event = event; vm.onRightAccordionClose($event) })}}><Render tag="app-ui-accordion-tab" props={{"header": "Consumíveis",
-"className": ["consumable"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["calc-panel consumable-panel"].filter(Boolean).join(' ')}}>{(() => { const consumableOption = (context: any) => { const option = context["$implicit"]; return <><Render tag="div" props={{"className": ["calc-option-row"].filter(Boolean).join(' ')}}><Render tag="span" props={{"tooltipPosition": "right",
+"className": ["consumable"].filter(Boolean).join(' ')}}><PanelSearch label="consumíveis" labels={[...vm.consumableList, ...vm.consumableList2.flat(), ...vm.aspdPotionList, ...vm.aspdPotionList2].map((option: any) => option.label)}>{matches => <Render tag="div" props={{"className": ["calc-panel consumable-panel"].filter(Boolean).join(' ')}}>{(() => { const consumableOption = (context: any) => { const option = context["$implicit"]; return <><Render tag="div" props={{"className": ["calc-option-row"].filter(Boolean).join(' ')}}><Render tag="span" props={{"tooltipPosition": "right",
 "tooltipStyleClass": "item_desc_tooltip",
 "className": ["calc-option-main"].filter(Boolean).join(' '),
 "tooltip": {text: vm.itemDescTooltip(option?.value), position: "right", className: "item_desc_tooltip", showDelay: 500, hideDelay: 0, escape: false, disabled: false}}}>{(() => { const __condition36 = option;  return __condition36 ? <><Render tag="img" props={{"alt": "",
@@ -405,7 +406,7 @@ let sustainPanel: any = vm["sustainPanel"]; return <>{(() => { const __condition
 "click": (event: any) => vm.action(() => { const $event = event; vm.editCustomConsumable(option.value,$event) }),
 "className": ["ui-tag consumable-custom-tag"].filter(Boolean).join(' '),
 "tooltip": {text: "Item customizado. Clique para editar.", position: "top", className: '', showDelay: 300, hideDelay: 0, escape: true, disabled: false}}}>{"Customizado"}</Render></> : null; })()}</Render></>; }; return <>
-<Render tag="section" props={{"className": ["calc-panel-section consumable-stack"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["calc-section-heading"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"Itens acumuláveis"}</Render>
+<Render tag="section" props={{"hidden": !vm.consumableList.some((option: any) => matches(option.label)), "className": ["calc-panel-section consumable-stack"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["calc-section-heading"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"Itens acumuláveis"}</Render>
 <Render tag="button" props={{"type": "button",
 "icon": "plus",
 "label": "Criar item",
@@ -413,48 +414,52 @@ let sustainPanel: any = vm["sustainPanel"]; return <>{(() => { const __condition
 "click": (event: any) => vm.action(() => { const $event = event; vm.openCreateConsumable() }),
 "className": ["ui-button-text ui-button-sm consumable-create"].filter(Boolean).join(' '),
 "button": true}}></Render></Render>
-<Render tag="app-ui-listbox" props={{"options": vm.consumableList,
+<Render tag="app-ui-listbox" props={{"options": vm.consumableList.filter((option: any) => matches(option.label)),
 "multiple": true,
 "metaKeySelection": false,
 "value": vm.model.consumables,
 "onModelChange": (value: any, event: any) => vm.action(() => { ((event: any) => vm.action(() => { const $event = event; (vm.model.consumables = $event) }))(value); ((event: any) => vm.action(() => { const $event = event; vm.onConsumableChange() }))({value, originalEvent: event}); }),
 "template_item": (context: any) => { const item = context["$implicit"]; return <>{consumableOption({"$implicit": item})}</>; }}}></Render></Render>
-<Render tag="div" props={{"className": ["consumable-side"].filter(Boolean).join(' ')}}><Render tag="section" props={{"className": ["calc-panel-section consumable-food"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["calc-section-heading"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"Comidas de atributo"}</Render></Render>
+<Render tag="div" props={{"className": ["consumable-side"].filter(Boolean).join(' ')}}><Render tag="section" props={{"hidden": !vm.consumableList2.flat().some((option: any) => matches(option.label)), "className": ["calc-panel-section consumable-food"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["calc-section-heading"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"Comidas de atributo"}</Render></Render>
 {(vm.consumableList2 ?? []).map((__entry38: any, __index38: number, __array38: any[]) => { const con = __entry38;
-const i = __index38; return <Fragment key={identityKey(__entry38)}><Render tag="div" props={{"className": ["joined_field consumable-picker-field consumable-food-field"].filter(Boolean).join(' ')}}><Render tag="span" props={{"className": ["joined_caption calc-select-label"].filter(Boolean).join(' ')}}>{interpolate(["",""], [["FOR","AGI","VIT","INT","DES","SOR"][i]])}</Render>
+const i = __index38; if (!con.some((option: any) => matches(option.label))) return null; return <Fragment key={identityKey(__entry38)}><Render tag="div" props={{"className": ["joined_field consumable-picker-field consumable-food-field"].filter(Boolean).join(' ')}}><Render tag="span" props={{"className": ["joined_caption calc-select-label"].filter(Boolean).join(' ')}}>{interpolate(["",""], [["FOR","AGI","VIT","INT","DES","SOR"][i]])}</Render>
 <Render tag="app-ui-dropdown" props={{"placeholder": "Nenhuma",
 "scrollHeight": "300px",
 "autoDisplayFirst": false,
 "resetFilterOnHide": true,
 "options": con,
+"filter": true,
+"optionFilter": (option: any) => matches(option.label),
 "showClear": true,
 "value": vm.model.consumables2[i],
 "onModelChange": (value: any, event: any) => vm.action(() => { ((event: any) => vm.action(() => { const $event = event; (vm.model.consumables2[i] = $event) }))(value); ((event: any) => vm.action(() => { const $event = event; vm.onConsumableChange() }))({value, originalEvent: event}); }),
 "template_selectedItem": (context: any) => { const option = context["$implicit"]; return <>{consumableOption({"$implicit": option})}</>; },
 "template_item": (context: any) => { const option = context["$implicit"]; return <>{consumableOption({"$implicit": option})}</>; }}}>
 </Render></Render></Fragment>; })}</Render>
-<Render tag="section" props={{"className": ["calc-panel-section consumable-aspd"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["calc-section-heading"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"Velocidade de ataque"}</Render></Render>
-<Render tag="div" props={{"className": ["consumable-aspd-grid"].filter(Boolean).join(' ')}}><Render tag="div" props={{}}><Render tag="span" props={{"className": ["calc-field-label"].filter(Boolean).join(' ')}}>{"Poção principal"}</Render>
+<Render tag="section" props={{"hidden": ![...vm.aspdPotionList, ...vm.aspdPotionList2].some((option: any) => matches(option.label)), "className": ["calc-panel-section consumable-aspd"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["calc-section-heading"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"Velocidade de ataque"}</Render></Render>
+<Render tag="div" props={{"className": ["consumable-aspd-grid"].filter(Boolean).join(' ')}}><Render tag="div" props={{"hidden": !vm.aspdPotionList.some((option: any) => matches(option.label))}}><Render tag="span" props={{"className": ["calc-field-label"].filter(Boolean).join(' ')}}>{"Poção principal"}</Render>
 <Render tag="div" props={{"className": ["joined_field consumable-picker-field consumable-aspd-field"].filter(Boolean).join(' ')}}><Render tag="app-ui-dropdown" props={{"placeholder": "Nenhuma",
 "scrollHeight": "300px",
 "autoDisplayFirst": false,
 "resetFilterOnHide": true,
 "options": vm.aspdPotionList,
+"filter": true,
+"optionFilter": (option: any) => matches(option.label),
 "showClear": true,
 "value": vm.model.aspdPotion,
 "onModelChange": (value: any, event: any) => vm.action(() => { ((event: any) => vm.action(() => { const $event = event; (vm.model.aspdPotion = $event) }))(value); ((event: any) => vm.action(() => { const $event = event; vm.onConsumableChange() }))({value, originalEvent: event}); }),
 "template_selectedItem": (context: any) => { const option = context["$implicit"]; return <>{consumableOption({"$implicit": option})}</>; },
 "template_item": (context: any) => { const option = context["$implicit"]; return <>{consumableOption({"$implicit": option})}</>; }}}>
 </Render></Render></Render>
-<Render tag="div" props={{}}><Render tag="span" props={{"className": ["calc-field-label"].filter(Boolean).join(' ')}}>{"Efeitos adicionais"}</Render>
-<Render tag="app-ui-listbox" props={{"options": vm.aspdPotionList2,
+<Render tag="div" props={{"hidden": !vm.aspdPotionList2.some((option: any) => matches(option.label))}}><Render tag="span" props={{"className": ["calc-field-label"].filter(Boolean).join(' ')}}>{"Efeitos adicionais"}</Render>
+<Render tag="app-ui-listbox" props={{"options": vm.aspdPotionList2.filter((option: any) => matches(option.label)),
 "multiple": true,
 "metaKeySelection": false,
 "value": vm.model.aspdPotions,
 "onModelChange": (value: any, event: any) => vm.action(() => { ((event: any) => vm.action(() => { const $event = event; (vm.model.aspdPotions = $event) }))(value); ((event: any) => vm.action(() => { const $event = event; vm.onConsumableChange() }))({value, originalEvent: event}); }),
-"template_item": (context: any) => { const item = context["$implicit"]; return <>{consumableOption({"$implicit": item})}</>; }}}></Render></Render></Render></Render></Render></>; })()}</Render></Render>
+"template_item": (context: any) => { const item = context["$implicit"]; return <>{consumableOption({"$implicit": item})}</>; }}}></Render></Render></Render></Render></Render></>; })()}</Render>}</PanelSearch></Render>
 <Render tag="app-ui-accordion-tab" props={{"header": "Habilidades",
-"className": ["select_skill"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["calc-panel skill-panel"].filter(Boolean).join(' ')}}>{(() => { const sharedSkillRow = (context: any) => { const skill = context["skill"];
+"className": ["select_skill"].filter(Boolean).join(' ')}}><PanelSearch label="habilidades e buffs" labels={[...vm.activeSkills, ...vm.passiveSkills, ...vm.skillBuffs].filter((skill: any) => vm.isSkillVisible(skill)).map((skill: any) => skill.label)}>{matches => <Render tag="div" props={{"className": ["calc-panel skill-panel"].filter(Boolean).join(' ')}}>{(() => { const sharedSkillRow = (context: any) => { const skill = context["skill"];
 const i = context["index"]; return <><Render tag="div" props={{"className": ["skill-control-row"].filter(Boolean).join(' ')}}><Render tag="span" props={{"tooltipPosition": "top",
 "tooltipStyleClass": "item_desc_tooltip",
 "className": ["skill-control-label"].filter(Boolean).join(' '),
@@ -511,15 +516,13 @@ const i = context["index"]; return <><Render tag="div" props={{"className": ["sk
 "value": vm.model.activeSkills[i],
 "onModelChange": (value: any, event: any) => vm.action(() => { ((event: any) => vm.action(() => { const $event = event; (vm.model.activeSkills[i] = $event);vm.onSkillClassChange(i) }))(value); })}}></Render></>}</Render></>; }; return <>
 
-{(() => { const __condition47 = vm.hasActiveSkillEffects;  return __condition47 ? <><Render tag="section" props={{"className": ["calc-panel-section"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["calc-section-heading"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"Habilidades e efeitos ativos"}</Render></Render>
+{(() => { const __condition47 = vm.hasActiveSkillEffects && vm.activeSkills.some((skill: any) => !skill.isDebuff && (vm.isSkillVisible(skill) && matches(skill.label)));  return __condition47 ? <><Render tag="section" props={{"className": ["calc-panel-section"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["calc-section-heading"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"Habilidades e efeitos ativos"}</Render></Render>
 {(vm.activeSkills ?? []).map((__entry48: any, __index48: number, __array48: any[]) => { const skill = __entry48;
-if (!vm.isSkillVisible(skill)) return null;
-const i = __index48; return <Fragment key={identityKey(__entry48)}><>{(() => { const __condition49 = !(skill.isDebuff);  return __condition49 ? <>{activeSkillRow({"skill": skill,"index": i})}</> : null; })()}</></Fragment>; })}</Render></> : null; })()}
-<Render tag="section" props={{"hidden": !vm.passiveSkills.some((skill: any) => vm.isSkillVisible(skill)),
+const i = __index48; return <Fragment key={identityKey(__entry48)}><>{(() => { const __condition49 = !(skill.isDebuff) && (vm.isSkillVisible(skill) && matches(skill.label));  return __condition49 ? <>{activeSkillRow({"skill": skill,"index": i})}</> : null; })()}</></Fragment>; })}</Render></> : null; })()}
+<Render tag="section" props={{"hidden": (!vm.passiveSkills.some((skill: any) => (vm.isSkillVisible(skill) && matches(skill.label)))),
 "className": ["calc-panel-section"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["calc-section-heading"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"Aprenda para ganhar bônus"}</Render></Render>
 {(vm.passiveSkills ?? []).map((__entry50: any, __index50: number, __array50: any[]) => { const skill = __entry50;
-if (!vm.isSkillVisible(skill)) return null;
-const i = __index50; return <Fragment key={identityKey(__entry50)}><Render tag="div" props={{"className": ["skill-control-row"].filter(Boolean).join(' ')}}><Render tag="span" props={{"tooltipPosition": "top",
+const i = __index50; if (!(vm.isSkillVisible(skill) && matches(skill.label))) return null; return <Fragment key={identityKey(__entry50)}><Render tag="div" props={{"className": ["skill-control-row"].filter(Boolean).join(' ')}}><Render tag="span" props={{"tooltipPosition": "top",
 "tooltipStyleClass": "item_desc_tooltip",
 "className": ["skill-control-label"].filter(Boolean).join(' '),
 "tooltip": {text: vm.buffTooltip(skill), position: "top", className: "item_desc_tooltip", showDelay: 400, hideDelay: 0, escape: false, disabled: false}}}>{(() => { const __condition51 = skill.icon;  return __condition51 ? <><Render tag="img" props={{"alt": "",
@@ -540,17 +543,14 @@ const i = __index50; return <Fragment key={identityKey(__entry50)}><Render tag="
 {!["dropdown"].includes(skill.inputType) && <><Render tag="app-ui-select-button" props={{"options": skill.dropdown,
 "value": vm.model.passiveSkills[i],
 "onModelChange": (value: any, event: any) => vm.action(() => { ((event: any) => vm.action(() => { const $event = event; (vm.model.passiveSkills[i] = $event);vm.onSkillClassChange() }))(value); })}}></Render></>}</Render></Fragment>; })}</Render>
-<Render tag="section" props={{"className": ["calc-panel-section"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["calc-section-heading"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"Buffs"}</Render></Render>
+<Render tag="section" props={{"hidden": !vm.skillBuffs.some((skill: any) => !skill.isDebuff && (vm.isSkillVisible(skill) && matches(skill.label))), "className": ["calc-panel-section"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["calc-section-heading"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"Buffs"}</Render></Render>
 {(vm.skillBuffs ?? []).map((__entry54: any, __index54: number, __array54: any[]) => { const skill = __entry54;
-if (!vm.isSkillVisible(skill)) return null;
-const i = __index54; return <Fragment key={identityKey(__entry54)}><>{(() => { const __condition55 = !(skill.isDebuff);  return __condition55 ? <>{sharedSkillRow({"skill": skill,"index": i})}</> : null; })()}</></Fragment>; })}</Render>
-{(() => { const __condition56 = vm.hasSkillDebuffs;  return __condition56 ? <><Render tag="section" props={{"className": ["calc-panel-section"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["calc-section-heading"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"Debuffs no monstro"}</Render></Render>
+const i = __index54; return <Fragment key={identityKey(__entry54)}><>{(() => { const __condition55 = !(skill.isDebuff) && (vm.isSkillVisible(skill) && matches(skill.label));  return __condition55 ? <>{sharedSkillRow({"skill": skill,"index": i})}</> : null; })()}</></Fragment>; })}</Render>
+{(() => { const __condition56 = vm.hasSkillDebuffs && [...vm.skillBuffs, ...vm.activeSkills].some((skill: any) => skill.isDebuff && (vm.isSkillVisible(skill) && matches(skill.label)));  return __condition56 ? <><Render tag="section" props={{"className": ["calc-panel-section"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["calc-section-heading"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"Debuffs no monstro"}</Render></Render>
 {(vm.skillBuffs ?? []).map((__entry57: any, __index57: number, __array57: any[]) => { const skill = __entry57;
-if (!vm.isSkillVisible(skill)) return null;
-const i = __index57; return <Fragment key={identityKey(__entry57)}><>{(() => { const __condition58 = skill.isDebuff;  return __condition58 ? <>{sharedSkillRow({"skill": skill,"index": i})}</> : null; })()}</></Fragment>; })}
+const i = __index57; return <Fragment key={identityKey(__entry57)}><>{(() => { const __condition58 = skill.isDebuff && (vm.isSkillVisible(skill) && matches(skill.label));  return __condition58 ? <>{sharedSkillRow({"skill": skill,"index": i})}</> : null; })()}</></Fragment>; })}
 {(vm.activeSkills ?? []).map((__entry59: any, __index59: number, __array59: any[]) => { const skill = __entry59;
-if (!vm.isSkillVisible(skill)) return null;
-const i = __index59; return <Fragment key={identityKey(__entry59)}><>{(() => { const __condition60 = skill.isDebuff;  return __condition60 ? <>{activeSkillRow({"skill": skill,"index": i})}</> : null; })()}</></Fragment>; })}</Render></> : null; })()}</>; })()}</Render></Render>
+const i = __index59; return <Fragment key={identityKey(__entry59)}><>{(() => { const __condition60 = skill.isDebuff && (vm.isSkillVisible(skill) && matches(skill.label));  return __condition60 ? <>{activeSkillRow({"skill": skill,"index": i})}</> : null; })()}</></Fragment>; })}</Render></> : null; })()}</>; })()}</Render>}</PanelSearch></Render>
 <Render tag="app-ui-accordion-tab" props={{"header": "PVP"}}><Render tag="div" props={{"className": ["grid grid-nogutter battle_summary"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["col-12"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["hud-selectors-row"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["hud-selectors-col"].filter(Boolean).join(' ')}}><Render tag="app-ui-select-button" props={{"optionLabel": "label",
 "optionValue": "value",
 "options": vm.pvpModeOptions,

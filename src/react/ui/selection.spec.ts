@@ -1,6 +1,27 @@
-import { optionLabel, optionValue, toggleSelection, virtualRange } from './selection';
+import { filteredRows, optionLabel, optionValue, toggleSelection, virtualRange } from './selection';
 
 describe('React selection contracts', () => {
+  it('prioritizes literal names over fuzzy matches in item selectors', () => {
+    const fuzzy = { label: 'Botas Rochosas Elegantes' };
+    const literal = { label: 'Broche' };
+    expect(filteredRows([fuzzy, literal], 'BROCHE', false)).toEqual([{ option: literal }, { option: fuzzy }]);
+  });
+  it('uses fuzzy accent-insensitive matching in grouped selectors and aliases', () => {
+    const blessing = { label: 'Bênção', value: 1 };
+    const potion = { label: 'Poção de Agilidade', value: 2, searchVal: '12020' };
+    const groups = [{ label: 'Buffs', items: [blessing] }, { label: 'Itens', items: [potion] }];
+    expect(filteredRows(groups, 'AGI PCAO', true).map(row => row.option)).toEqual([groups[1], potion]);
+    expect(filteredRows([potion], '12020', false, 'label,searchVal')).toEqual([{ option: potion }]);
+    expect(filteredRows(groups, 'sem resultado', true)).toEqual([]);
+    expect(filteredRows([blessing], 'BNCAO', false)).toEqual([{ option: blessing }]);
+    expect(filteredRows([blessing], '', false)).toEqual([{ option: blessing }]);
+  });
+  it('combines panel and dropdown filters without changing the source options', () => {
+    const options = [{ label: 'Poção de Agilidade' }, { label: 'Poção da Fúria Selvagem' }, { label: 'Bênção' }];
+    const panelFilter = (option: any) => option.label.startsWith('Poção');
+    expect(filteredRows(options, 'fr selv', false, 'label', undefined, panelFilter)).toEqual([{ option: options[1] }]);
+    expect(options).toHaveLength(3);
+  });
   it('keeps falsy primitives and distinguishes object identity from explicit values', () => {
     expect(optionValue(0)).toBe(0);
     expect(optionValue(false)).toBe(false);
