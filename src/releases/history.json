@@ -1,5 +1,13 @@
 [
   {
+    "v": "0.1.175-beta",
+    "date": "13-10-2026",
+    "logs": [
+      "Adicionada Espada Alada ao cálculo de autoconjuração do Cavaleiro Draconiano, com seleção de nível e estimativa de DPS sustentado limitada pela regeneração de espadas. Corrigidos a fórmula, o dano corpo a corpo e os críticos de Explosão Rúnica. Reportado por usuário anônimo.",
+      "Adicionada busca por consumíveis, habilidades e buffs, com opção de limpar o filtro. As buscas de itens e seletores agora usam filtro fuzzy, ignorando maiúsculas, minúsculas e acentos."
+    ]
+  },
+  {
     "v": "0.1.174-beta",
     "date": "13-10-2026",
     "logs": [
