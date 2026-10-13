@@ -1516,13 +1516,13 @@ export class DamageCalculator {
     this.skillName = skillName;
     const { criDmgPercentage = 1 } = skillData;
     const _canCri = typeof canCriFn === 'function' ? canCriFn(formulaParams) : canCriFn;
-    const canCri = this.isForceSkillCri || _canCri || forceCri;
+    const canCri = !this.infoForClass.skills.isActive('Venom Ignition') && (this.isForceSkillCri || _canCri || forceCri);
     const { reducedHardDef, finalDmgReduction, finalSoftDef, resReduction, restRes } = this.getPhisicalDefData();
     const hardDef = isIgnoreDef || isHDefToSDef ? 1 : finalDmgReduction;
     const softDef = isIgnoreSDef ? 0 : finalSoftDef + (isHDefToSDef ? reducedHardDef : 0);
 
     const { range, melee, criDmg } = this.totalBonus;
-    const isMelee = _isMelee != null && typeof _isMelee === 'function' ? _isMelee(this.weaponData.data.typeName) : !!_isMelee;
+    const isMelee = _isMelee != null && typeof _isMelee === 'function' ? _isMelee(this.weaponData.data.typeName, formulaParams) : !!_isMelee;
     const ranged = isMelee ? melee : range;
     const rangedMultiplier = this.toPercent(ranged + 100);
     const baseSkillMultiplier = this.toPercent(baseSkillDamage);
@@ -1613,6 +1613,13 @@ export class DamageCalculator {
         } else {
           emit('atk', 'ATQ', total, ['atk', 'atkPercent']);
         }
+      }
+      const nonCriticalBonus = this.totalBonus.nonCriticalDamage || 0;
+      if (!_calcCri && nonCriticalBonus) {
+        const multiplier = 1 + nonCriticalBonus / 100;
+        total = floor(total * multiplier);
+        push(`Dano físico não crítico ${nonCriticalBonus}%`, total, ['nonCriticalDamage']);
+        emit('nonCriticalDamage', `Dano físico não crítico ${nonCriticalBonus}%`, total, ['nonCriticalDamage'], { multiplier });
       }
       if (_calcCri) {
         total = floor(total * criMultiplier); // tested
@@ -2284,7 +2291,14 @@ export class DamageCalculator {
       const addInput = (id: string, label: string, value: number, keys?: string[]) => graphNodes?.push({ id, label, value, keys, inputs: [], kind: 'input' });
       const lastAtkValue = graphNodes?.filter((node) => node.kind === 'stage').at(-1)?.value;
       if (lastAtkValue != null && floor(lastAtkValue) !== totalAtk) emit('basicAtkAdjust', 'ATQ (ajuste de classe/adicional)', totalAtk);
-      let total = floor(totalAtk * rangedMultiplier);
+      let total = totalAtk;
+      const nonCriticalBonus = this.totalBonus.nonCriticalDamage || 0;
+      if (nonCriticalBonus) {
+        const multiplier = 1 + nonCriticalBonus / 100;
+        total = floor(total * multiplier);
+        emit('basicNonCriticalDamage', `Dano físico não crítico ${nonCriticalBonus}%`, total, ['nonCriticalDamage'], multiplier);
+      }
+      total = floor(total * rangedMultiplier);
       emit('basicRange', isRangeType ? `À distância ${this.fmtCalc(rangedDmg)}%` : `Corpo a corpo ${this.fmtCalc(rangedDmg)}%`, total, [isRangeType ? 'range' : 'melee'], rangedMultiplier);
       total = floor(total * dmgMultiplier);
       emit('basicDamageBonus', `Dano básico ${this.fmtCalc(dmg + this.getFlatDmg('basicAtk'))}%`, total, ['dmg', 'basicAtk'], dmgMultiplier);
@@ -2475,6 +2489,16 @@ export class DamageCalculator {
       targetLuk: this.monster.data.luk,
     });
     let criRateToMonster = criRateBreakdown.total;
+    if (this.infoForClass.skills.isActive('Venom Ignition')) {
+      criRateToMonster = 0;
+      criMinDamage = 0;
+      criMaxDamage = 0;
+      basicFormulaGraphCri = undefined;
+      criRateBreakdown.total = 0;
+      criRateBreakdown.effective = 0;
+      criRateBreakdown.isCapped = false;
+      criRateBreakdown.steps.push({ key: 'venomIgnition', label: 'Venom Ignition (Prévia): críticos desativados', value: 0, kind: 'total' });
+    }
     let basicPropertyAtk = propertyAtk;
     let basicPropertyMultiplier = propertyMultiplier;
     let basicAccuracy = misc.accuracy;
@@ -2731,7 +2755,7 @@ export class DamageCalculator {
       equipCri: this.totalBonus.cri || 0,
       isKatar: this.weaponData.data?.typeName === 'katar',
       canCri: calculated.canCri,
-      forceCri: this.isForceSkillCri || forceCri,
+      forceCri: !this.infoForClass.skills.isActive('Venom Ignition') && (this.isForceSkillCri || forceCri),
       skillCri: baseSkillCri,
       skillCriPercentage: baseCriPercentage,
       criShield,
@@ -2749,7 +2773,7 @@ export class DamageCalculator {
     // hit period read 0 and silently borrowed the basic ASPD rate (Firmamento's 61s cycle
     // came out at 2 uses/s). calc-skill-aspd.ts now keeps enough decimals that a real cast
     // always reports a real rate, which leaves this fallback to the case it was written for.
-    const skillHitsPerSec = Math.min(skillAspd.totalHitPerSec || basicAspd.hitsPerSec, basicAspd.hitsPerSec);
+    const skillHitsPerSec = skillAspd.timingUnknown ? 0 : Math.min(skillAspd.totalHitPerSec || basicAspd.hitsPerSec, basicAspd.hitsPerSec);
     // A separate second packet contributes to every use, including the DPS row.
     // The averages above describe only the main packet.
     const skillDpsInputMin = (avgNoCriDamage || minDamage) + skillMinDamage2;
@@ -2769,7 +2793,7 @@ export class DamageCalculator {
     const hitKill = Math.ceil(this.monster.data.hp / minDamage);
 
     const totalPene = isMatk ? this.getTotalMagicalPene() : basicDmg.totalPene;
-    const isMelee = _isMelee != null && typeof _isMelee === 'function' ? _isMelee(this.weaponData.data.typeName) : !!_isMelee;
+    const isMelee = _isMelee != null && typeof _isMelee === 'function' ? _isMelee(this.weaponData.data.typeName, formulaParams) : !!_isMelee;
 
     const label = calculated.canCri ? 'SkillCri' : 'Skill';
     const { totalPeneRes, totalPeneMres } = this.getPeneResMres();

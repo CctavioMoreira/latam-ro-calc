@@ -21,6 +21,7 @@ export class AppTopBarComponent extends ViewState {
   visibleInfo: boolean = false;
   visibleReference = false;
   visibleMcp = false;
+  visibleSettings = false;
   mcpUrlCopied = false;
 
   /** Public MCP endpoint. Agents connect here; the browser never calls it. */
@@ -233,4 +234,10 @@ export class AppTopBarComponent extends ViewState {
   }
 
   openCustomItems() { this.layoutService.openCustomItems(); }
+
+  get showPreviews(): boolean { return this.layoutService.previews.getSnapshot(); }
+  readonly previewOptions = [{ label: 'Sim', value: true }, { label: 'Não', value: false }];
+  setShowPreviews(value: boolean): void {
+    if (typeof value === 'boolean') this.layoutService.previews.set(value);
+  }
 }

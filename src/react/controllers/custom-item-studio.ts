@@ -1,4 +1,5 @@
 import { ViewState } from '../state/view-state';
+import { CalculatorLayout } from '../services/calculator-services';
 import { Events } from '../services/events';
 import { environment } from 'src/environments/environment';
 import { ItemModel, itemBonusScriptEntries } from 'src/app/models/item.model';
@@ -239,7 +240,8 @@ export class CustomItemStudioComponent extends ViewState {
     return this.conditionOptions.find((option) => option.value === kind)!;
   }
 
-  constructor(public readonly library: CustomItemLibraryService, private readonly picker: ItemPickerService) { super();}
+  constructor(public readonly library: CustomItemLibraryService, private readonly picker: ItemPickerService,
+    private readonly layout?: CalculatorLayout) { super();}
 
   blank(kind: CustomKind): CustomItemDraft {
     return {
@@ -264,7 +266,8 @@ export class CustomItemStudioComponent extends ViewState {
 
   openCreate(kind: string = 'weapon', context?: CreateContext): void {
     const selected = kind === 'leftWeapon' ? 'weapon' : CUSTOM_KINDS.includes(kind as CustomKind) ? kind as CustomKind : 'weapon';
-    this.catalogRows = [...new Map(Object.values(this.items).map((item) => [item.id, item])).values()];
+    this.catalogRows = [...new Map(Object.values(this.items).filter(item =>
+      this.layout?.previews.getSnapshot() !== false || !item.preRelease).map((item) => [item.id, item])).values()];
     this.conditionItemOptions = this.catalogRows.map((item) => ({ label: item.name, value: item.id }));
     this.enchantOptions = this.catalogRows.filter(isEquipmentEnchant).map((item) => ({ label: item.name, value: item.id }));
     this.setCardOptions(selected);
@@ -358,7 +361,8 @@ export class CustomItemStudioComponent extends ViewState {
   get sourceResults(): ItemModel[] {
     const query = this.fold(this.importQuery);
     if (!query) return [];
-    const rows = this.catalogRows.filter((item) => item.script && typeof item.script === 'object');
+    const rows = this.catalogRows.filter((item) => item.script && typeof item.script === 'object'
+      && (this.layout?.previews.getSnapshot() !== false || !item.preRelease));
     return rows.filter((item) => this.fold(`${item.name} ${item.id} ${item.aegisName}`).includes(query))
       .sort((a, b) => Number(b.id === Number(query)) - Number(a.id === Number(query)) || a.name.localeCompare(b.name, 'pt-BR'))
       .slice(0, 60);

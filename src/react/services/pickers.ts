@@ -1,4 +1,5 @@
 import { Store } from '../state/store';
+import { PreviewPreferences } from './preview-preferences';
 import { PickerRequest, PickerResult } from '../../app/layout/pages/ro-calculator/item-picker/item-picker.model';
 import { SlotColorPickerEvent, SlotColorPickerRequest } from '../../app/layout/pages/ro-calculator/slot-color-picker/slot-color-picker.model';
 
@@ -16,7 +17,15 @@ export class PickerRequests<Request, Result> extends Store<Request | null> {
   close(): void { this.settle(this.dismissed); }
 }
 export class ItemPicker extends PickerRequests<PickerRequest, PickerResult> {
-  constructor() { super({ committed: false }); }
+  constructor(private readonly previews?: PreviewPreferences) { super({ committed: false }); }
+  override open(request: PickerRequest): Promise<PickerResult> {
+    if (this.previews?.getSnapshot() === false && request.mode === 'flat') {
+      const items = request.items;
+      request = { ...request, options: request.options.filter(option =>
+        !option['preRelease'] && !items?.[Number(option.value)]?.preRelease) };
+    }
+    return super.open(request);
+  }
 }
 export class ColorPicker extends PickerRequests<SlotColorPickerRequest, SlotColorPickerEvent> {
   constructor() { super({ kind: 'dismiss' }); }

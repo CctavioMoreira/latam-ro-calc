@@ -145,7 +145,8 @@ export class ItemSearchComponent extends ViewState {
   }
 
   onItemSearchFilterChange(): void {
-    this.filteredItems = filterSearchItems(this.items, this.equipableItems, {
+    this.filteredItems = filterSearchItems(this.items, this.equipableItems.filter(row =>
+      this.layoutService.previews.getSnapshot() || !this.items[row.id]?.preRelease), {
       name: this.searchName,
       positions: this.selectedItemPositions,
       skillIds: this.selectedOffensiveSkills.map(name => SKILL_ID_BY_NAME[name]).filter(id => id != null),

@@ -803,7 +803,8 @@ export class BattleHudComponent extends ViewState {
     return maxHitPeriod > 0 ? (hitPeriod / maxHitPeriod) * 100 : 100;
   }
 
-  get optimizeInfo(): OptimizeInfo {
+  get optimizeInfo(): OptimizeInfo | null {
+    if (this.calcSkill?.timingUnknown) return null;
     const { reducedFct, reducedVct, reducedAcd, reducedCd, castPeriod, hitPeriod } = this.normalizedCastTimings;
     return buildOptimizeInfo({
       reducedFct,

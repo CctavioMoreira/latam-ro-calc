@@ -18,3 +18,10 @@
 :is(app-topbar, .ui-scope-app-topbar) .topbar-actions{
   margin-left: auto;
 }
+:is(app-topbar, .ui-scope-app-topbar) .topbar-settings{
+  align-self: stretch;
+  width: 34px;
+}
+:is(app-topbar, .ui-scope-app-topbar) .topbar-settings .ui-button-icon{
+  font-size: 13px;
+}

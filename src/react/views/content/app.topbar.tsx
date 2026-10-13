@@ -1,6 +1,14 @@
 import { Fragment } from 'react';
 import { Render, interpolate, parseStyle, normalizeStyle, identityKey } from '../render';
+import { SelectButton } from '../../ui/select-button';
+import { useTooltip } from '../../ui/tooltip';
+import { Dialog } from '../../ui/dialog';
+import { Button } from '../../ui/primitives';
 export function Content({vm, services}: {vm: any; services: any}) {
+const previewTooltip = useTooltip({
+  text: 'Exibe itens e habilidades ainda não disponíveis no LATAM e permite testar o rebalanceamento. Em Não, oculta as prévias, desativa seus buffs, remove seus ataques da rotação e volta às fórmulas LATAM. Itens já equipados são mantidos. A escolha fica salva neste navegador.',
+  position: 'left', showDelay: 300, disabled: !vm.visibleSettings,
+});
 return <><Render tag="div" props={{"className": ["layout-topbar"].filter(Boolean).join(' '),
 "style": normalizeStyle(Object.assign({}, parseStyle("min-width: 1500px")))}}><Render tag="span" props={{"className": ["pr-2"].filter(Boolean).join(' ')}}>{interpolate(["",""], [vm.lastestVersion])}</Render>
 <Render tag="button" props={{"aria-label": "Novidades",
@@ -36,7 +44,8 @@ return <><Render tag="div" props={{"className": ["layout-topbar"].filter(Boolean
 "style": normalizeStyle(Object.assign({}, parseStyle("background: #5865f2; border-color: #5865f2"))),
 "button": true}}><Render tag="app-icon" props={{"name": "discord"}}></Render>
 <Render tag="span" props={{"className": ["pl-1"].filter(Boolean).join(' ')}}>{"Discord"}</Render></Render></Render></Render>
-<Render tag="div" props={{"className": ["topbar-actions flex align-items-center gap-2"].filter(Boolean).join(' ')}}><Render tag="button" props={{"aria-label": "Servidor MCP",
+<Render tag="div" props={{"className": ["topbar-actions flex align-items-center gap-2"].filter(Boolean).join(' ')}}>
+<Render tag="button" props={{"aria-label": "Servidor MCP",
 "click": (event: any) => vm.action(() => { const $event = event; vm.showMcpDialog() }),
 "className": ["ui-button-help ui-button-raised px-2"].filter(Boolean).join(' '),
 "button": true}}><Render tag="app-icon" props={{"aria-hidden": "true",
@@ -49,7 +58,19 @@ return <><Render tag="div" props={{"className": ["layout-topbar"].filter(Boolean
 <Render tag="button" props={{"click": (event: any) => vm.action(() => { const $event = event; vm.openItemSearch() }),
 "className": ["ui-button-info ui-button-raised px-2"].filter(Boolean).join(' '),
 "button": true}}><Render tag="app-icon" props={{"name": "search"}}></Render>
-<Render tag="span" props={{"className": ["pl-1"].filter(Boolean).join(' ')}}>{"Buscar itens"}</Render></Render></Render>
+<Render tag="span" props={{"className": ["pl-1"].filter(Boolean).join(' ')}}>{"Buscar itens"}</Render></Render>
+<Button icon="cog" aria-label="Configurações" aria-haspopup="dialog" aria-expanded={vm.visibleSettings}
+  className="ui-button-success ui-button-raised topbar-settings" onClick={() => vm.action(() => { vm.visibleSettings = true; })} />
+</Render>
+<Dialog header="Configurações" visible={vm.visibleSettings} modal dismissableMask position="right"
+  onVisibleChange={visible => vm.action(() => { vm.visibleSettings = visible; })}>
+  <div {...previewTooltip.triggerProps} className="flex align-items-center justify-content-between gap-3">
+    <span>Prévias</span>
+    <SelectButton ariaLabel="Mostrar prévias" options={vm.previewOptions} value={vm.showPreviews}
+      onChange={value => vm.action(() => vm.setShowPreviews(value))} />
+  </div>
+  {previewTooltip.tooltip}
+</Dialog>
 <Render tag="app-ui-dialog" props={{"header": "Informações adicionais",
 "modal": true,
 "visible": vm.visibleInfo,

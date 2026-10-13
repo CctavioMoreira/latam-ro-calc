@@ -1,5 +1,6 @@
 import { SKILL_DESC_BY_ID } from '../skills';
 import { PREVIEW_275_DESCRIPTIONS } from '../skills/preview-275-descriptions';
+import { PREVIEW_285_DESCRIPTIONS } from '../skills/preview-285-reference';
 
 export const prettyItemDesc = (desc: string) =>
   desc?.replaceAll('\n', '<br>').replace(/\^(.{6})/g, '<font color="#$1">');
@@ -19,7 +20,7 @@ export const skillDescHtml = (skillId?: number): string => {
   const cached = skillDescCache.get(skillId);
   if (cached !== undefined) return cached;
 
-  const html = prettyItemDesc(PREVIEW_275_DESCRIPTIONS[skillId] ?? SKILL_DESC_BY_ID[skillId]) || '';
+  const html = prettyItemDesc(PREVIEW_285_DESCRIPTIONS[skillId] ?? PREVIEW_275_DESCRIPTIONS[skillId] ?? SKILL_DESC_BY_ID[skillId]) || '';
   // A missing description can still be in flight; do not cache that empty result.
   if (html) skillDescCache.set(skillId, html);
 

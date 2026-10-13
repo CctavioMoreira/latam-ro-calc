@@ -26,9 +26,10 @@ function makeSession(overrides: Partial<Record<DataKey, Promise<unknown>>> = {})
   }
   Object.assign(artifacts, overrides);
   const data = new DataClient({ inFlight: artifacts });
+  const layout = new CalculatorLayout(storage);
   const session = new CalculatorSession(new CalculatorData(data), new Messages(), new Confirmations(), new ItemShop(),
-    data.descriptions, new SlotColorPreferences(), new CalculatorLayout(), new CustomItems(storage));
-  return { session, storage, data };
+    data.descriptions, new SlotColorPreferences(), layout, new CustomItems(storage));
+  return { session, storage, data, layout };
 }
 describe('plain calculator session', () => {
   beforeEach(() => vi.useFakeTimers());
@@ -54,6 +55,53 @@ describe('plain calculator session', () => {
     await vi.advanceTimersByTimeAsync(1500);
     expect(session.getSnapshot()).toBe(snapshot);
     expect(session.totalSummary).toBeUndefined();
+  });
+
+  it('hides preview catalogs, disables hidden buffs and resets rebalance without shifting skill indices', async () => {
+    const { session, storage, layout } = makeSession();
+    storage.setItem('ro-set', JSON.stringify({ class: 4304, level: 250, jobLevel: 1,
+      selectedAtkSkill: 'Shadow Torrent==10', rotation: ['Shadow Torrent==10'], activeSkillMap: { Surge: 5 }, skillFormulaVersion: 'rebalance-2026-02' }));
+    session.start();
+    await vi.advanceTimersByTimeAsync(1500);
+    const surge = session.activeSkills.findIndex(skill => skill.name === 'Surge');
+    const names = session.activeSkills.map(skill => skill.name);
+    const latamSkills = session.activeSkills.filter(skill => !skill.preview).map(skill => session.model.activeSkills[names.indexOf(skill.name)]);
+    const previewItem = session.equipableItems.find(row => session.items[row.id]?.preRelease)!;
+    expect(previewItem).toBeDefined();
+    expect(session.model.activeSkills[surge]).toBe(5);
+    layout.previews.set(false);
+    await vi.advanceTimersByTimeAsync(1000);
+    expect(session.model.skillFormulaVersion).toBe('current');
+    expect(session.model.activeSkills[surge]).toBe(0);
+    expect(session.activeSkills.map(skill => skill.name)).toEqual(names);
+    expect(session.activeSkills.filter(skill => !skill.preview).map(skill => session.model.activeSkills[names.indexOf(skill.name)])).toEqual(latamSkills);
+    expect(session.atkSkills.every(skill => !skill.preview)).toBe(true);
+    expect(session.equipableItems.every(row => !session.items[row.id]?.preRelease)).toBe(true);
+    expect(session.enchants.every(row => !session.items[Number(row.value)]?.preRelease)).toBe(true);
+    expect(session.model.rotation).not.toContain('Shadow Torrent==10');
+    expect(JSON.parse(storage.getItem('ro-set')!).activeSkillMap.Surge).toBe(0);
+    layout.previews.set(true);
+    expect(session.equipableItems.some(row => row.id === previewItem.id)).toBe(true);
+    expect(session.atkSkills.some(skill => skill.name === 'Shadow Torrent')).toBe(true);
+    expect(session.model.skillFormulaVersion).toBe('current');
+    session.dispose();
+  });
+
+  it('keeps LATAM when importing a preview build with previews already off', async () => {
+    const { session, storage, layout } = makeSession();
+    layout.previews.set(false);
+    storage.setItem('ro-set', JSON.stringify({ class: 4304, level: 250, jobLevel: 1,
+      selectedAtkSkill: 'Shadow Torrent==10', rotation: ['Shadow Torrent==10'], activeSkillMap: { Surge: 5 }, skillFormulaVersion: 'rebalance-2026-02' }));
+    session.start();
+    await vi.advanceTimersByTimeAsync(1500);
+    expect(session.model.skillFormulaVersion).toBe('current');
+    expect(session.model.rotation).not.toContain('Shadow Torrent==10');
+    const surge = session.activeSkills.findIndex(skill => skill.name === 'Surge');
+    expect(session.model.activeSkills[surge]).toBe(0);
+    expect(session.atkSkills.every(skill => !skill.preview)).toBe(true);
+    session.onSkillFormulaVersionChange('rebalance-2026-02');
+    expect(session.model.skillFormulaVersion).toBe('current');
+    session.dispose();
   });
 
   it('replaces cached skill fallbacks when deferred descriptions arrive', async () => {

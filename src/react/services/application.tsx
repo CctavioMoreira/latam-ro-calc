@@ -22,10 +22,10 @@ export class ApplicationServices {
   readonly layers = new LayerManager();
   readonly messages = new Messages();
   readonly confirmations = new Confirmations();
-  readonly layout = new CalculatorLayout();
+  readonly layout: CalculatorLayout;
   readonly itemShop = new ItemShop();
   readonly slotColors = new SlotColorPreferences();
-  readonly itemPicker = new ItemPicker();
+  readonly itemPicker: ItemPicker;
   private calculator?: CalculatorSession;
   /** Constructed by the entry before its React root mounts. */
   createCalculator(): CalculatorSession {
@@ -34,6 +34,8 @@ export class ApplicationServices {
   }
   constructor(storage: StorageLike, boot: { manifest?: DataManifest; inFlight?: Partial<Record<DataKey, Promise<unknown>>> }) {
     this.data = new DataClient(boot);
+    this.layout = new CalculatorLayout(storage);
+    this.itemPicker = new ItemPicker(this.layout.previews);
     this.customItems = new CustomItems(storage);
     this.preferences = new CalcStorage(storage);
     this.savedSimulations = new SavedSimulationStore(storage);

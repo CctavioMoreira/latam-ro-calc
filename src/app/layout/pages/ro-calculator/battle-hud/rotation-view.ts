@@ -104,6 +104,7 @@ export interface RotationEntryView {
 }
 
 export interface RotationView {
+  timingUnknown?: boolean;
   entries: RotationEntryView[];
   cycle: RotationCycle;
   /** Null when nothing can die — zero DPS, or an immune target. */
@@ -256,6 +257,7 @@ export function toScheduleStep(input: { value: string; summary: any; damage: num
   return {
     // Recarga is per skill, shared across its levels, so the name is the identity.
     key: splitValue(value).name,
+    timingUnknown: calcSkill.timingUnknown,
     cast,
     acd: channelled ? 0 : calcSkill.reducedAcd || 0,
     cd: channelled ? 0 : calcSkill.reducedCd || 0,
@@ -392,6 +394,7 @@ export function buildRotationView(input: {
 
   return {
     entries,
+    timingUnknown: partial.some(entry => !entry.isBasic && entry.summary?.calcSkill?.timingUnknown),
     cycle,
     ttk: computeRotationTimeToKill(monsterHp, cycle),
     cyclesToKill: cycle.damagePerCycle > 0 ? Math.ceil(monsterHp / cycle.damagePerCycle) : 0,

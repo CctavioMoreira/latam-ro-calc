@@ -14,6 +14,7 @@ import { ClassName } from './_class-name';
 import { rebalancedSkillCatalog } from '../skills/rebalance-2026';
 import type { SkillFormulaVersion } from '../skills/skill-formula-version';
 import { previewSkillsForClass, previewBuffsForClass, applyPreviewBuffs } from '../skills/preview-275';
+import { preview285SkillsForClass, preview285BuffsForClass, preview285PassivesForClass, PREVIEW_285_AUTOCAST } from '../skills/preview-285';
 
 export interface AtkSkillFormulaInput extends InfoForClass {
   skillLevel: number;
@@ -36,6 +37,7 @@ export interface DefForCalcModel {
 
 export interface AtkSkillModel {
   preview?: boolean;
+  previewVersion?: string;
   previewDescription?: string;
   label: string;
   name: SKILL_NAME;
@@ -107,7 +109,9 @@ export interface AtkSkillModel {
   damageRepeat?: number | ((input: AtkSkillFormulaInput) => number);
   hitEveryNSec?: number;
   isMatk?: boolean;
-  isMelee?: boolean | ((weaponType: WeaponTypeName) => boolean);
+  isMelee?: boolean | ((weaponType: WeaponTypeName, input?: AtkSkillFormulaInput) => boolean);
+  /** No published timing data: damage per use is available, DPS is not. */
+  timingUnknown?: boolean;
   isDevMode?: boolean;
   isIgnoreDef?: boolean | ((parmas: AtkSkillFormulaInput) => boolean);
   isIgnoreSDef?: boolean | ((parmas: AtkSkillFormulaInput) => boolean);
@@ -146,6 +150,7 @@ export interface SkillModel {
 
 export interface ActiveSkillModel {
   preview?: boolean;
+  previewVersion?: string;
   previewDescription?: string;
   isEquipAtk?: boolean;
   isMasteryAtk?: boolean;
@@ -271,7 +276,7 @@ export abstract class CharacterBase {
   }
 
   getAtkSkills(version?: SkillFormulaVersion): AtkSkillModel[] {
-    return rebalancedSkillCatalog([...this.atkSkills, ...previewSkillsForClass(this.className)], this.className, version).map(applyPreviewBuffs);
+    return rebalancedSkillCatalog([...this.atkSkills, ...previewSkillsForClass(this.className), ...preview285SkillsForClass(this.className)], this.className, version).map(applyPreviewBuffs);
   }
 
   get passiveSkills() {
@@ -349,9 +354,9 @@ export abstract class CharacterBase {
   get skillState(): SkillStateCtx {
     const nameOf = (s: SkillRef): SKILL_NAME => (typeof s === 'string' ? s : s.name);
     return {
-      isActive: (s) => this.bonuses.activeSkillNames.has(nameOf(s)),
-      activeLevel: (s) => this.bonuses.usedSkillMap.get(nameOf(s)) || 0,
-      learnedLevel: (s) => this.bonuses.learnedSkillMap.get(nameOf(s)) || 0,
+      isActive: (s) => this.bonuses?.activeSkillNames.has(nameOf(s)) ?? false,
+      activeLevel: (s) => this.bonuses?.usedSkillMap.get(nameOf(s)) || 0,
+      learnedLevel: (s) => this.bonuses?.learnedSkillMap.get(nameOf(s)) || 0,
     };
   }
 
@@ -658,6 +663,9 @@ export abstract class CharacterBase {
     // keep their catalogs, and the extra buff slots default to off in old saves.
     for (const className of classNames) {
       this._activeSkillList.push(...previewBuffsForClass(className));
+      this._activeSkillList.push(...preview285BuffsForClass(className));
+      this._passiveSkillList.push(...preview285PassivesForClass(className));
+      if (className === ClassName.ElementalMaster) this.inheritAutoCasts([PREVIEW_285_AUTOCAST]);
     }
   }
 

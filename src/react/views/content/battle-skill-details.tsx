@@ -54,7 +54,7 @@ let damagePopovers: any = vm["damagePopovers"]; return <><Render tag="app-ui-pop
 {(() => { const __condition15 = (vm.calcSkill?.dmgType !== "Magical");  return __condition15 ? <><Render tag="tr" props={{}}><Render tag="th" props={{"scope": "row"}}>{"Prec."}</Render>
 <Render tag="td" props={{}}>{interpolate(["","%"], [displayPipe("number", vm.dmg?.skillAccuracy, [], services)])}</Render>
 {(() => { const __condition16 = vm.isComparing;  return __condition16 ? <><Render tag="td" props={{"className": ["sim"].filter(Boolean).join(' ')}}>{interpolate(["","%"], [displayPipe("number", vm.dmg2?.skillAccuracy, [], services)])}</Render></> : null; })()}</Render></> : null; })()}</Render></Render>
-{(() => { const __condition17 = vm.calcSkill;  return __condition17 ? <><><Render tag="div" props={{"className": ["psec"].filter(Boolean).join(' ')}}>{"Conjuração/Espera"}</Render>
+{(() => { const __condition17 = vm.calcSkill && !vm.calcSkill.timingUnknown;  return __condition17 ? <><><Render tag="div" props={{"className": ["psec"].filter(Boolean).join(' ')}}>{"Conjuração/Espera"}</Render>
 <Render tag="table" props={{"className": ["ptable cast"].filter(Boolean).join(' ')}}><Render tag="thead" props={{}}><Render tag="tr" props={{}}><Render tag="th" props={{}}>{"Nv."}</Render>
 <Render tag="th" props={{}}>{"Fixa"}</Render>
 <Render tag="th" props={{}}>{"Variável"}</Render>
@@ -75,7 +75,7 @@ let damagePopovers: any = vm["damagePopovers"]; return <><Render tag="app-ui-pop
 <Render tag="td" props={{}}>{interpolate(["","s"], [displayPipe("number", vm.calcSkill?.clientFct, ["1.0-3"], services)])}</Render>
 <Render tag="td" props={{}}>{interpolate(["","s"], [displayPipe("number", vm.calcSkill?.clientVct, ["1.0-3"], services)])}</Render>
 <Render tag="td" props={{}}>{interpolate(["","s"], [displayPipe("number", vm.calcSkill?.clientAcd, ["1.0-3"], services)])}</Render>
-<Render tag="td" props={{}}>{interpolate(["","s"], [displayPipe("number", vm.calcSkill?.clientCd, ["1.0-3"], services)])}</Render></Render></Render></Render></></> : null; })()}</>; }; return <><Render tag="div" props={{"className": ["ptitle"].filter(Boolean).join(' ')}}>{interpolate(["",""], [(vm.entry?.isBasic ? "Ataque básico" : "Detalhes da habilidade")])}</Render>
+<Render tag="td" props={{}}>{interpolate(["","s"], [displayPipe("number", vm.calcSkill?.clientCd, ["1.0-3"], services)])}</Render></Render></Render></Render></></> : null; })()}</>; }; return <>{vm.calcSkill?.timingUnknown && <p className="pd-note">Prévia: tempos de conjuração e espera ainda não publicados. DPS indisponível.</p>}<Render tag="div" props={{"className": ["ptitle"].filter(Boolean).join(' ')}}>{interpolate(["",""], [(vm.entry?.isBasic ? "Ataque básico" : "Detalhes da habilidade")])}</Render>
 {(() => { const __condition18 = vm.entry; const e = __condition18; return __condition18 ? <><Render tag="div" props={{"className": ["pd-head"].filter(Boolean).join(' ')}}><Render tag="img" props={{"alt": "",
 "src": (e.isBasic ? vm.basicAttackIcon : displayPipe("iconUrl", e.icon, ["skill"], services)),
 "className": ["pd-icon"].filter(Boolean).join(' '),

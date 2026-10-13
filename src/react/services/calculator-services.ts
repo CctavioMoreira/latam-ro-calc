@@ -1,4 +1,6 @@
 import { Store } from '../state/store';
+import { PreviewPreferences } from './preview-preferences';
+import { StorageLike } from '../../app/core/calc-storage';
 import type { ItemSearchOpenRequest, ItemSearchEquipTarget } from '../../app/core/item-search-equipment';
 import { DataClient, DescriptionStore } from './data-client';
 import { CustomItems } from './custom-items';
@@ -19,6 +21,10 @@ export class CalculatorData {
   getSkillDescriptions(): Promise<void> { return this.client.loadSkillDescriptions(); }
 }
 export class CalculatorLayout {
+  readonly previews: PreviewPreferences;
+  constructor(storage: StorageLike | undefined = typeof localStorage === 'undefined' ? undefined : localStorage) {
+    this.previews = new PreviewPreferences(storage);
+  }
   readonly customItemsOpen = new Events<void>();
   readonly customItemCreate = new Events<{ kind: string; slot: string; compare: boolean }>();
   readonly customItemEdit = new Events<number>();

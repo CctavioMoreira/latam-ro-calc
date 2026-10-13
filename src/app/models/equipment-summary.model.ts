@@ -1,4 +1,6 @@
 export interface EquipmentSummaryModel {
+  /** Preview buffs: applies to physical outcomes that do not critically hit. */
+  nonCriticalDamage?: number;
   weight: number;
   refine: number;
   baseDef?: number;
