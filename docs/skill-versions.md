@@ -4,7 +4,7 @@ The **Fórmulas** selector in Batalha, PVP and Auto-conjuração controls one bu
 
 The legacy class definitions remain the source for the current version. The rebalance catalog uses copies and adds attacks absent from the current catalog only in the rebalance version. Preview attacks are available in both versions and are explicitly labelled **Prévia**; all new buff/condition controls start disabled.
 
-The **Prévias** switch immediately before MCP defaults on and persists separately from builds in `ro-show-previews`. Turning it off hides preview item/enchant choices and skill controls, removes preview attacks from rotations, disables hidden preview buffs, and resets formulas to **Atual (LATAM)**. Formula selectors in Batalha, PVP and Auto-conjuração stay hidden while it is off, including after loading a saved/shared build. Turning it back on restores the catalogs without re-enabling buffs or rebalance. Existing equipped items are preserved. The 285/65 skills were requested by Oden.
+The **Prévias** Sim/Não control immediately before MCP defaults to **Sim** and persists separately from builds in `ro-show-previews`. Its hover tooltip explains preview visibility, the LATAM reset and persistence. Turning it off hides preview item/enchant choices and skill controls, removes preview attacks from rotations, disables hidden preview buffs, and resets formulas to **Atual (LATAM)**. Formula selectors in Batalha, PVP and Auto-conjuração stay hidden while it is off, including after loading a saved/shared build. Turning it back on restores the catalogs without re-enabling buffs or rebalance. Existing equipped items are preserved. The 285/65 skills were requested by Oden.
 
 ## February rebalance coverage
 

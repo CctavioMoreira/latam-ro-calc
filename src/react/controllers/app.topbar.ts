@@ -235,5 +235,8 @@ export class AppTopBarComponent extends ViewState {
   openCustomItems() { this.layoutService.openCustomItems(); }
 
   get showPreviews(): boolean { return this.layoutService.previews.getSnapshot(); }
-  togglePreviews(): void { this.layoutService.previews.set(!this.showPreviews); }
+  readonly previewOptions = [{ label: 'Sim', value: true }, { label: 'Não', value: false }];
+  setShowPreviews(value: boolean): void {
+    if (typeof value === 'boolean') this.layoutService.previews.set(value);
+  }
 }

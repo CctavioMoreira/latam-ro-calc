@@ -1,6 +1,12 @@
 import { Fragment } from 'react';
 import { Render, interpolate, parseStyle, normalizeStyle, identityKey } from '../render';
+import { SelectButton } from '../../ui/select-button';
+import { useTooltip } from '../../ui/tooltip';
 export function Content({vm, services}: {vm: any; services: any}) {
+const previewTooltip = useTooltip({
+  text: 'Exibe itens e habilidades ainda não disponíveis no LATAM e permite testar o rebalanceamento. Em Não, oculta as prévias, desativa seus buffs, remove seus ataques da rotação e volta às fórmulas LATAM. Itens já equipados são mantidos. A escolha fica salva neste navegador.',
+  position: 'bottom', showDelay: 300,
+});
 return <><Render tag="div" props={{"className": ["layout-topbar"].filter(Boolean).join(' '),
 "style": normalizeStyle(Object.assign({}, parseStyle("min-width: 1500px")))}}><Render tag="span" props={{"className": ["pr-2"].filter(Boolean).join(' ')}}>{interpolate(["",""], [vm.lastestVersion])}</Render>
 <Render tag="button" props={{"aria-label": "Novidades",
@@ -37,13 +43,12 @@ return <><Render tag="div" props={{"className": ["layout-topbar"].filter(Boolean
 "button": true}}><Render tag="app-icon" props={{"name": "discord"}}></Render>
 <Render tag="span" props={{"className": ["pl-1"].filter(Boolean).join(' ')}}>{"Discord"}</Render></Render></Render></Render>
 <Render tag="div" props={{"className": ["topbar-actions flex align-items-center gap-2"].filter(Boolean).join(' ')}}>
-<button type="button" role="switch" aria-label="Mostrar prévias" aria-checked={vm.showPreviews}
-  className="ui-button-text px-2" onClick={() => vm.action(() => vm.togglePreviews())}
-  style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-  <span aria-hidden="true" style={{ width: 28, height: 16, borderRadius: 8, padding: 2, background: vm.showPreviews ? 'var(--primary-color)' : 'var(--surface-400)' }}>
-    <span style={{ display: 'block', width: 12, height: 12, borderRadius: '50%', background: 'white', transform: vm.showPreviews ? 'translateX(12px)' : undefined }} />
-  </span>Prévias
-</button>
+<div {...previewTooltip.triggerProps} className="flex align-items-center gap-2">
+  <span>Prévias</span>
+  <SelectButton ariaLabel="Mostrar prévias" options={vm.previewOptions} value={vm.showPreviews}
+    onChange={value => vm.action(() => vm.setShowPreviews(value))} />
+</div>
+{previewTooltip.tooltip}
 <Render tag="button" props={{"aria-label": "Servidor MCP",
 "click": (event: any) => vm.action(() => { const $event = event; vm.showMcpDialog() }),
 "className": ["ui-button-help ui-button-raised px-2"].filter(Boolean).join(' '),
