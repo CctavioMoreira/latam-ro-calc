@@ -170,7 +170,11 @@ test('285 previews expose Surge, persist it and explain unavailable timing', asy
   const battle = page.getByRole('region', { name: 'Batalha', exact: true });
   await expect(battle.getByText('Prévia: tempos ainda não publicados.', { exact: false })).toBeVisible();
   await expect(battle.locator('.loading_block')).toHaveCount(0);
-  await battle.getByRole('button', { name: 'Detalhes da habilidade', exact: true }).click();
+  const details = battle.getByRole('button', { name: 'Detalhes da habilidade', exact: true });
+  await details.scrollIntoViewIfNeeded();
+  await expect(details).toBeInViewport();
+  await details.click();
+  await expect(page.locator('.shared-skill-details')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Descrição da habilidade', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Descrição da habilidade', exact: true }).click();
   await expect(page.locator('.pd-desc')).toContainText('Shadow Torrent (Prévia)');
