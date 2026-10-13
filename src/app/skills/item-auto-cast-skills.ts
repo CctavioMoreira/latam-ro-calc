@@ -44,8 +44,13 @@ export const ITEM_AUTO_CAST_SKILLS: AtkSkillModel[] = [
       isMatk: true, isMelee: false, formula: ({ skillLevel }) => (100 + 40 * skillLevel) / 2 },
   }),
   skill('Spread Shot', 10, ElementType.Neutral, ({ skillLevel }) => 200 + 30 * skillLevel),
+  // LATAM Runa Wyrd (12732): melee and critical. Numeric ratio and critical rules:
+  // https://browiki.org/wiki/Explos%C3%A3o_R%C3%BAnica
+  // https://browiki.org/wiki/Categoria:Habilidades_cr%C3%ADticas
   skill('Storm Blast', 1, ElementType.Neutral, ({ model, status, skills }) =>
-    (skills.learnedLevel('Rune Mastery') + Math.floor(status.totalStr / 6)) * 100 * (model.level / 100)),
+    (skills.learnedLevel('Rune Mastery') + status.totalStr / 8) * 140 * (model.level / 100), {
+    isMelee: true, canCri: true, baseCriPercentage: 1, criDmgPercentage: 0.5,
+  }),
   skill('Dark Claw', 5, ElementType.Neutral, ({ skillLevel }) => 100 * skillLevel, { isMelee: true }),
   // The initial impact is weapon damage; the 5-second fixed-damage field is included by the autocast simulator.
   skill('Lava Flow', 5, ElementType.Neutral, ({ skillLevel }) => 450 + 50 * skillLevel, { isMelee: true }),

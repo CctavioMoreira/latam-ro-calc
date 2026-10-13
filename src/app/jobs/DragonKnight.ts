@@ -1,5 +1,6 @@
 import { JOB_4_MAX_JOB_LEVEL, JOB_4_MIN_MAX_LEVEL } from '../app-config';
 import { WeaponTypeName } from '../constants';
+import { ClassAutoCastDefinition } from '../models/auto-cast.model';
 import { RuneKnight } from './RuneKnight';
 import { ActiveSkillModel, AtkSkillFormulaInput, AtkSkillModel, PassiveSkillModel } from './_character-base.abstract';
 import { ClassName } from './_class-name';
@@ -152,6 +153,32 @@ const TraitBonusTable: Record<number, [number, number, number, number, number, n
 
 /** Dragonic Breath's base ATQ% per level (irowiki). */
 const DRAGONIC_BREATH_BASE = [400, 700, 1100, 1450, 1800, 2150, 2500, 2850, 3200, 3550];
+
+// https://browiki.org/wiki/Espada_Alada — basic melee attacks consume one sword.
+const SERVANT_WEAPON_AUTO_CAST: ClassAutoCastDefinition = {
+  key: 'servant-weapon',
+  resolve: ({ skillState, skillById }) => {
+    const level = skillState.activeLevel('Servant Weapon');
+    if (!level) return {
+      blocked: [{ key: 'servant-weapon', name: 'Espada Alada', icon: 5201,
+        reason: 'Selecione o nível de Espada Alada em Habilidades.' }],
+    };
+    const skill = skillById(5201);
+    if (!skill) return {};
+    const interval = 3.5 - level * 0.5;
+    return { sources: [{
+      key: 'servant-weapon', kind: 'passive', skillId: 5201, enablingSkillId: 5201,
+      skillLevel: level, chance: level * 3, trigger: 'melee-physical-attack',
+      sourceName: 'Espada Alada', skillData: skill,
+      maxActivationsPerSecond: 1 / interval,
+      chanceBreakdown: [
+        { label: 'Espada Alada', value: `Nv. ${level} · ${level * 3}% por ataque básico corpo a corpo` },
+        { label: 'Regeneração', value: `1 espada a cada ${String(interval).replace('.', ',')} s` },
+        { label: 'DPS sustentado', value: 'Estimativa limitada pela regeneração; reserva inicial de 5 espadas não incluída.' },
+      ],
+    }] };
+  },
+};
 
 export class DragonKnight extends RuneKnight {
   protected override CLASS_NAME = ClassName.DragonKnight;
@@ -316,6 +343,15 @@ export class DragonKnight extends RuneKnight {
         { label: 'Não', value: 0, isUse: false },
       ],
     },
+    {
+      name: 'Servant Weapon',
+      label: 'Espada Alada',
+      inputType: 'dropdown',
+      dropdown: [
+        { label: '-', value: 0, isUse: false },
+        ...[5, 4, 3, 2, 1].map((level) => ({ label: `Nv ${level}`, value: level, isUse: true })),
+      ],
+    },
   ];
   private readonly passiveSkillList4th: PassiveSkillModel[] = [
     {
@@ -343,5 +379,6 @@ export class DragonKnight extends RuneKnight {
       passiveSkillList: this.passiveSkillList4th,
       classNames: this.classNames4th,
     });
+    this.inheritAutoCasts([SERVANT_WEAPON_AUTO_CAST]);
   }
 }
