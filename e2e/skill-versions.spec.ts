@@ -44,6 +44,9 @@ test('formula selectors stay synchronized in battle, PVP and autocast and surviv
   const searchButtonBounds = await page.getByRole('button', { name: 'Buscar itens', exact: true }).boundingBox();
   expect(settingsButtonBounds!.height).toBe(searchButtonBounds!.height);
   expect(settingsButtonBounds!.y).toBe(searchButtonBounds!.y);
+  const saveButton = page.getByRole('button', { name: 'Salvar', exact: true });
+  expect(settingsButtonBounds!.width).toBe((await saveButton.boundingBox())!.width);
+  expect((await settingsButton.locator('app-icon').boundingBox())!.width).toBe((await saveButton.locator('app-icon').boundingBox())!.width);
   // Text metrics vary by platform; the icon-only button must follow its neighbors.
   await page.evaluate(() => document.documentElement.style.setProperty('--font-family', 'Arial, sans-serif'));
   const alternateSettingsBounds = await settingsButton.boundingBox();
