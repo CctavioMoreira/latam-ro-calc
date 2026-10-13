@@ -60,7 +60,7 @@ return <><Render tag="div" props={{"className": ["layout-topbar"].filter(Boolean
 "button": true}}><Render tag="app-icon" props={{"name": "search"}}></Render>
 <Render tag="span" props={{"className": ["pl-1"].filter(Boolean).join(' ')}}>{"Buscar itens"}</Render></Render>
 <Button icon="cog" aria-label="Configurações" aria-haspopup="dialog" aria-expanded={vm.visibleSettings}
-  className="ui-button-text" onClick={() => vm.action(() => { vm.visibleSettings = true; })} />
+  className="ui-button-success ui-button-raised" onClick={() => vm.action(() => { vm.visibleSettings = true; })} />
 </Render>
 <Dialog header="Configurações" visible={vm.visibleSettings} modal dismissableMask position="right"
   onVisibleChange={visible => vm.action(() => { vm.visibleSettings = visible; })}>
