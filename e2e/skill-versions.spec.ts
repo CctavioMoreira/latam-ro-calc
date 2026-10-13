@@ -34,6 +34,22 @@ test('formula selectors stay synchronized in battle, PVP and autocast and surviv
   await pvpSelector.selectOption('rebalance-2026-02');
   await expect(selector).toHaveValue('rebalance-2026-02');
   await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('ro-set')!).skillFormulaVersion)).toBe('rebalance-2026-02');
+  const previews = page.getByRole('switch', { name: 'Mostrar prévias' });
+  await expect(previews).toBeChecked();
+  expect(await previews.evaluate(element => element.nextElementSibling?.getAttribute('aria-label'))).toBe('Servidor MCP');
+  await previews.click();
+  await expect(previews).not.toBeChecked();
+  await expect(page.getByRole('combobox', { name: 'Versão das fórmulas de habilidades' })).toHaveCount(0);
+  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('ro-set')!).skillFormulaVersion)).toBe('current');
+  await page.reload();
+  await expect(page.locator('#ro-splash')).toHaveCount(0, { timeout: 40000 });
+  await expect(previews).not.toBeChecked();
+  await expect(page.getByRole('combobox', { name: 'Versão das fórmulas de habilidades' })).toHaveCount(0);
+  await previews.click();
+  await page.getByRole('button', { name: 'Batalha', exact: true }).click();
+  await expect(selector).toHaveValue('current');
+  await selector.selectOption('rebalance-2026-02');
+  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('ro-set')!).skillFormulaVersion)).toBe('rebalance-2026-02');
   await page.reload();
   await expect(page.locator('#ro-splash')).toHaveCount(0,{timeout:40000});
   await page.getByRole('button',{name:'Batalha',exact:true}).click();
@@ -48,6 +64,44 @@ test('formula selectors stay synchronized in battle, PVP and autocast and surviv
   expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(390);
   await page.screenshot({path:'.tmp/skill-versions-mobile.png'});
   await expect.poll(() => errors).toEqual([]);
+});
+
+test('preview switch filters both skill generations and item search and restores the catalogs', async ({ page }) => {
+  await page.addInitScript(() => {
+    if (!localStorage.getItem('ro-set')) localStorage.setItem('ro-set', JSON.stringify({ class: 4304, level: 250, jobLevel: 1,
+      selectedAtkSkill: 'Shadow Torrent==10', rotation: ['Shadow Torrent==10'], activeSkillMap: { Surge: 5 } }));
+    localStorage.setItem('ro-right-accordion-active', '[]');
+  });
+  await page.goto('/');
+  await expect(page.locator('#ro-splash')).toHaveCount(0, { timeout: 40000 });
+  await page.getByRole('button', { name: 'Habilidades', exact: true }).click();
+  const surge = page.locator('.skill-control-row').filter({ hasText: 'Surge (Prévia)' });
+  await expect(surge).toBeVisible();
+  const search = async (present: boolean) => {
+    await page.getByRole('button', { name: 'Buscar itens', exact: true }).click();
+    const dialog = page.getByRole('dialog').filter({ has: page.getByPlaceholder('Nome do item') });
+    await dialog.getByPlaceholder('Nome do item').fill('Issgard Warrior Crown');
+    await dialog.getByRole('button', { name: 'Buscar', exact: true }).click();
+    await expect(dialog.locator('.item-search-result-row').filter({ hasText: 'Issgard Warrior Crown' })).toHaveCount(present ? 1 : 0);
+    await dialog.getByRole('button', { name: 'Fechar', exact: true }).click();
+  };
+  await search(true);
+  await page.getByRole('switch', { name: 'Mostrar prévias' }).click();
+  await expect(page.locator('.skill-control-row').filter({ hasText: 'Prévia' })).toHaveCount(0);
+  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('ro-set')!).activeSkillMap.Surge)).toBe(0);
+  await page.getByRole('button', { name: 'Batalha', exact: true }).click();
+  const battle = page.getByRole('region', { name: 'Batalha', exact: true });
+  await expect(battle.locator('.rot-name').filter({ hasText: 'Shadow Torrent' })).toHaveCount(0);
+  await battle.getByRole('button', { name: 'Adicionar habilidade', exact: true }).click();
+  await battle.locator('.rot-add-dd').click();
+  await expect(page.getByRole('option').filter({ hasText: 'Prévia' })).toHaveCount(0);
+  await page.keyboard.press('Escape');
+  await search(false);
+  await page.getByRole('switch', { name: 'Mostrar prévias' }).click();
+  await expect(surge).toBeVisible();
+  await expect(surge.getByRole('combobox')).toContainText('Não');
+  await search(true);
+  await page.screenshot({ path: '.tmp/preview-visibility.png', fullPage: true });
 });
 
 test('new support buffs appear as Prévia and affect the saved build', async ({ page }) => {
@@ -115,7 +169,9 @@ test('285 previews expose Surge, persist it and explain unavailable timing', asy
   await page.getByRole('button', { name: 'Batalha', exact: true }).click();
   const battle = page.getByRole('region', { name: 'Batalha', exact: true });
   await expect(battle.getByText('Prévia: tempos ainda não publicados.', { exact: false })).toBeVisible();
+  await expect(battle.locator('.loading_block')).toHaveCount(0);
   await battle.getByRole('button', { name: 'Detalhes da habilidade', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Descrição da habilidade', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Descrição da habilidade', exact: true }).click();
   await expect(page.locator('.pd-desc')).toContainText('Shadow Torrent (Prévia)');
   await expect(page.locator('.pd-desc')).toContainText('4 melee physical hits');

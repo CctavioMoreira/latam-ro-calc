@@ -658,7 +658,22 @@ export class CalculatorSession extends Store<number> {
     private readonly slotColorPicker: SlotColorPickerService,
     private readonly layoutService: LayoutService,
     private readonly customLibrary: CustomItemLibraryService,
-  ) { super(0); }
+  ) {
+    super(0);
+    const unsubscribe = this.layoutService.previews.subscribe(() => this.action(() => {
+      if (!this.items || !this.selectedCharacter) return;
+      this.setItemList();
+      this.setItemDropdownList();
+      this.setAmmoDropdownList();
+      this.setClassSkill();
+      this.setDefaultSkill();
+      this.updateItemEvent.next(true);
+    }));
+    this.allSubs.push({ unsubscribe });
+  }
+
+  get showPreviews(): boolean { return this.layoutService.previews.getSnapshot(); }
+  isSkillVisible(skill: { preview?: boolean }): boolean { return this.showPreviews || !skill.preview; }
 
   private started = false;
   start() {
@@ -1252,7 +1267,7 @@ await ((_event?: unknown) => {
   }
 
   onSkillFormulaVersionChange(version: 'current' | 'rebalance-2026-02') {
-    this.model.skillFormulaVersion = version === 'rebalance-2026-02' ? version : 'current';
+    this.model.skillFormulaVersion = this.showPreviews && version === 'rebalance-2026-02' ? version : 'current';
     this.setClassSkill();
     const rotation = this.model.rotation ?? [];
     const kept = rotation.flatMap((value, index) => pruneRotationForClass([value], this.atkSkills).length ? [index] : []);
@@ -1505,12 +1520,12 @@ await ((_event?: unknown) => {
   /** The skill panel groups every target-side effect together without changing the
    * source arrays: the template keeps each row's original index for its model binding. */
   get hasSkillDebuffs(): boolean {
-    return this.skillBuffs.some((skill) => skill.isDebuff) || this.activeSkills.some((skill) => skill.isDebuff);
+    return this.skillBuffs.some((skill) => skill.isDebuff && this.isSkillVisible(skill)) || this.activeSkills.some((skill) => skill.isDebuff && this.isSkillVisible(skill));
   }
 
   /** Class-specific active effects stay separate from target-side debuffs. */
   get hasActiveSkillEffects(): boolean {
-    return this.activeSkills.some((skill) => !skill.isDebuff);
+    return this.activeSkills.some((skill) => !skill.isDebuff && this.isSkillVisible(skill));
   }
 
   private resetModel() {
@@ -2452,6 +2467,21 @@ await ((_event?: unknown) => {
   }
 
   private setClassSkill() {
+    if (!this.showPreviews) {
+      this.model.skillFormulaVersion = 'current';
+      // Keep positional skill arrays intact; hidden buffs must not affect LATAM damage.
+      for (const [definitions, values, map] of [
+        [this.selectedCharacter.activeSkills, this.model.activeSkills, this.model.activeSkillMap],
+        [this.selectedCharacter.passiveSkills, this.model.passiveSkills, this.model.passiveSkillMap],
+        [JobBuffs, this.model.skillBuffs, this.model.skillBuffMap],
+      ] as const) {
+        definitions.forEach((skill, index) => {
+          if (!(skill as ActiveSkillModel).preview) return;
+          if (values) values[index] = 0;
+          if (map) map[skill.name] = 0;
+        });
+      }
+    }
     // Overlay pt-BR skill names + ragassets skill-icon id (from the GRF skill map)
     // on every skill panel. Skills missing from the map keep their English label
     // and render no icon (the template guards on `icon`).
@@ -2502,7 +2532,7 @@ await ((_event?: unknown) => {
     // Atk skills can repeat the same name with different fixed properties (e.g. Adoramus
     // cast as Holy vs Neutral). After localizing the bare skill name, disambiguate any
     // repeated name by appending its element, so the picker reads "Adoramus - Sagrado".
-    const catalog = this.selectedCharacter.getAtkSkills(this.model.skillFormulaVersion);
+    const catalog = this.selectedCharacter.getAtkSkills(this.model.skillFormulaVersion).filter(skill => this.isSkillVisible(skill));
     const localizedAtkSkills = catalog.map(localize);
     const seenLabel = new Set<string>();
     const dupLabels = new Set<string>();
@@ -2759,6 +2789,9 @@ await ((_event?: unknown) => {
   }
 
   private setItemList() {
+    this.enchants = [...(this.mapEnchant?.values() ?? [])]
+      .filter(item => this.showPreviews || !item.preRelease)
+      .map(item => ({ label: item.name, value: item.id, preRelease: item.preRelease }));
     const weaponList: ItemModel[] = [];
     const leftWeaponList: ItemModel[] = [];
     const weaponCardList: ItemModel[] = [];
@@ -2807,7 +2840,7 @@ await ((_event?: unknown) => {
     // the GRF extract). Non-LATAM items stay in the map for id lookups but are
     // hidden from the selection dropdowns.
     const sortedItems = Object.values(this.items)
-      .filter((item: any) => item.presentInLatam && !this.hiddenCustomIds.has(item.id))
+      .filter((item: any) => item.presentInLatam && !this.hiddenCustomIds.has(item.id) && (this.showPreviews || !item.preRelease))
       .sort((a, b) => Number(!!(b as any).custom) - Number(!!(a as any).custom) || compareItemNames(a.name, b.name));
     for (const item of sortedItems) {
       const { itemTypeId, itemSubTypeId, compositionPos } = item;

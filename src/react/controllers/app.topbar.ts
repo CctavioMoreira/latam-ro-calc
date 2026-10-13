@@ -233,4 +233,7 @@ export class AppTopBarComponent extends ViewState {
   }
 
   openCustomItems() { this.layoutService.openCustomItems(); }
+
+  get showPreviews(): boolean { return this.layoutService.previews.getSnapshot(); }
+  togglePreviews(): void { this.layoutService.previews.set(!this.showPreviews); }
 }

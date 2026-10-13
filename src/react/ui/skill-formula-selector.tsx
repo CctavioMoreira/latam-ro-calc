@@ -1,6 +1,11 @@
 import { SKILL_FORMULA_VERSION_OPTIONS, normalizeSkillFormulaVersion, SkillFormulaVersion } from '../../app/skills/skill-formula-version';
+import { useSyncExternalStore } from 'react';
+import { useServices } from '../services/application';
 
 export function SkillFormulaSelector({ value, onChange, disabled = false }: { value?: SkillFormulaVersion; onChange: (value: SkillFormulaVersion) => void; disabled?: boolean }) {
+  const { previews } = useServices().layout;
+  const visible = useSyncExternalStore(previews.subscribe, previews.getSnapshot);
+  if (!visible) return null;
   return <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6, maxWidth: '100%', fontSize: 12 }}>
     <span>Fórmulas</span>
     <select aria-label="Versão das fórmulas de habilidades" value={normalizeSkillFormulaVersion(value)} disabled={disabled}

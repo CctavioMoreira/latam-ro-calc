@@ -36,7 +36,15 @@ return <><Render tag="div" props={{"className": ["layout-topbar"].filter(Boolean
 "style": normalizeStyle(Object.assign({}, parseStyle("background: #5865f2; border-color: #5865f2"))),
 "button": true}}><Render tag="app-icon" props={{"name": "discord"}}></Render>
 <Render tag="span" props={{"className": ["pl-1"].filter(Boolean).join(' ')}}>{"Discord"}</Render></Render></Render></Render>
-<Render tag="div" props={{"className": ["topbar-actions flex align-items-center gap-2"].filter(Boolean).join(' ')}}><Render tag="button" props={{"aria-label": "Servidor MCP",
+<Render tag="div" props={{"className": ["topbar-actions flex align-items-center gap-2"].filter(Boolean).join(' ')}}>
+<button type="button" role="switch" aria-label="Mostrar prévias" aria-checked={vm.showPreviews}
+  className="ui-button-text px-2" onClick={() => vm.action(() => vm.togglePreviews())}
+  style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+  <span aria-hidden="true" style={{ width: 28, height: 16, borderRadius: 8, padding: 2, background: vm.showPreviews ? 'var(--primary-color)' : 'var(--surface-400)' }}>
+    <span style={{ display: 'block', width: 12, height: 12, borderRadius: '50%', background: 'white', transform: vm.showPreviews ? 'translateX(12px)' : undefined }} />
+  </span>Prévias
+</button>
+<Render tag="button" props={{"aria-label": "Servidor MCP",
 "click": (event: any) => vm.action(() => { const $event = event; vm.showMcpDialog() }),
 "className": ["ui-button-help ui-button-raised px-2"].filter(Boolean).join(' '),
 "button": true}}><Render tag="app-icon" props={{"aria-hidden": "true",

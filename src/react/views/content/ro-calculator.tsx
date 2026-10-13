@@ -513,10 +513,12 @@ const i = context["index"]; return <><Render tag="div" props={{"className": ["sk
 
 {(() => { const __condition47 = vm.hasActiveSkillEffects;  return __condition47 ? <><Render tag="section" props={{"className": ["calc-panel-section"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["calc-section-heading"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"Habilidades e efeitos ativos"}</Render></Render>
 {(vm.activeSkills ?? []).map((__entry48: any, __index48: number, __array48: any[]) => { const skill = __entry48;
+if (!vm.isSkillVisible(skill)) return null;
 const i = __index48; return <Fragment key={identityKey(__entry48)}><>{(() => { const __condition49 = !(skill.isDebuff);  return __condition49 ? <>{activeSkillRow({"skill": skill,"index": i})}</> : null; })()}</></Fragment>; })}</Render></> : null; })()}
-<Render tag="section" props={{"hidden": (vm.passiveSkills.length === 0),
+<Render tag="section" props={{"hidden": !vm.passiveSkills.some((skill: any) => vm.isSkillVisible(skill)),
 "className": ["calc-panel-section"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["calc-section-heading"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"Aprenda para ganhar bônus"}</Render></Render>
 {(vm.passiveSkills ?? []).map((__entry50: any, __index50: number, __array50: any[]) => { const skill = __entry50;
+if (!vm.isSkillVisible(skill)) return null;
 const i = __index50; return <Fragment key={identityKey(__entry50)}><Render tag="div" props={{"className": ["skill-control-row"].filter(Boolean).join(' ')}}><Render tag="span" props={{"tooltipPosition": "top",
 "tooltipStyleClass": "item_desc_tooltip",
 "className": ["skill-control-label"].filter(Boolean).join(' '),
@@ -540,11 +542,14 @@ const i = __index50; return <Fragment key={identityKey(__entry50)}><Render tag="
 "onModelChange": (value: any, event: any) => vm.action(() => { ((event: any) => vm.action(() => { const $event = event; (vm.model.passiveSkills[i] = $event);vm.onSkillClassChange() }))(value); })}}></Render></>}</Render></Fragment>; })}</Render>
 <Render tag="section" props={{"className": ["calc-panel-section"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["calc-section-heading"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"Buffs"}</Render></Render>
 {(vm.skillBuffs ?? []).map((__entry54: any, __index54: number, __array54: any[]) => { const skill = __entry54;
+if (!vm.isSkillVisible(skill)) return null;
 const i = __index54; return <Fragment key={identityKey(__entry54)}><>{(() => { const __condition55 = !(skill.isDebuff);  return __condition55 ? <>{sharedSkillRow({"skill": skill,"index": i})}</> : null; })()}</></Fragment>; })}</Render>
 {(() => { const __condition56 = vm.hasSkillDebuffs;  return __condition56 ? <><Render tag="section" props={{"className": ["calc-panel-section"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["calc-section-heading"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"Debuffs no monstro"}</Render></Render>
 {(vm.skillBuffs ?? []).map((__entry57: any, __index57: number, __array57: any[]) => { const skill = __entry57;
+if (!vm.isSkillVisible(skill)) return null;
 const i = __index57; return <Fragment key={identityKey(__entry57)}><>{(() => { const __condition58 = skill.isDebuff;  return __condition58 ? <>{sharedSkillRow({"skill": skill,"index": i})}</> : null; })()}</></Fragment>; })}
 {(vm.activeSkills ?? []).map((__entry59: any, __index59: number, __array59: any[]) => { const skill = __entry59;
+if (!vm.isSkillVisible(skill)) return null;
 const i = __index59; return <Fragment key={identityKey(__entry59)}><>{(() => { const __condition60 = skill.isDebuff;  return __condition60 ? <>{activeSkillRow({"skill": skill,"index": i})}</> : null; })()}</></Fragment>; })}</Render></> : null; })()}</>; })()}</Render></Render>
 <Render tag="app-ui-accordion-tab" props={{"header": "PVP"}}><Render tag="div" props={{"className": ["grid grid-nogutter battle_summary"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["col-12"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["hud-selectors-row"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["hud-selectors-col"].filter(Boolean).join(' ')}}><Render tag="app-ui-select-button" props={{"optionLabel": "label",
 "optionValue": "value",

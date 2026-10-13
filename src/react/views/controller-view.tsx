@@ -21,6 +21,7 @@ export function controllerView<T extends ViewController>(factory: (services: App
     useSyncExternalStore(vm.subscribe, vm.getSnapshot);
     useSyncExternalStore(services.data.descriptions.subscribe, services.data.descriptions.getSnapshot);
     useSyncExternalStore(services.customItems.subscribe, services.customItems.getSnapshot);
+    useSyncExternalStore(services.layout.previews.subscribe, services.layout.previews.getSnapshot);
     useLayoutEffect(() => {
       for (const name of inputs) if (Object.prototype.hasOwnProperty.call(props, name)) (vm as any)[name] = props[name];
       if (!initialized.current) { initialized.current = true; vm.ngOnInit?.(); }
