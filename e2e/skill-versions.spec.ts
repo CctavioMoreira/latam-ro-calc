@@ -40,6 +40,11 @@ test('formula selectors stay synchronized in battle, PVP and autocast and surviv
   const settingsButton = page.getByRole('button', { name: 'Configurações', exact: true });
   const settings = page.getByRole('dialog', { name: 'Configurações', exact: true });
   await expect(previews).toHaveCount(0);
+  const settingsButtonBounds = await settingsButton.boundingBox();
+  const searchButtonBounds = await page.getByRole('button', { name: 'Buscar itens', exact: true }).boundingBox();
+  expect(settingsButtonBounds!.height).toBe(searchButtonBounds!.height);
+  expect(settingsButtonBounds!.y).toBe(searchButtonBounds!.y);
+  expect(settingsButtonBounds!.width).toBe(settingsButtonBounds!.height);
   expect(await settingsButton.evaluate(element => element.nextElementSibling)).toBeNull();
   await settingsButton.click();
   await expect(settingsButton).toHaveAttribute('aria-expanded', 'true');
