@@ -178,7 +178,8 @@ let sharedDamagePopovers: any = vm["sharedDamagePopovers"]; return <>{(() => { c
 "critBreakdownClick": (event: any) => vm.action(() => { const $event = event; vm.openStepCritRate($event,critRatePanel) }),
 "damageClick": (event: any) => vm.action(() => { const $event = event; vm.openSharedDamage($event,sharedDamagePopovers) }),
 "className": ["hud-rot-col"].filter(Boolean).join(' ')}}></Render>
-{(() => { const __condition26 = vm.cycle; const c = __condition26; return __condition26 ? <><Render tag="div" props={{"className": ["hud-dps-col",(!(vm.rotation.length) ? "hud-dps-col--empty" : '')].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["hud-hero-strip"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["hud-hero-fig"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["cap2"].filter(Boolean).join(' ')}}>{interpolate(["",""], [(vm.isSingleEntryRotation ? "DPS" : "DPS DO COMBO")])}</Render>
+{(vm.rotationView?.timingUnknown || vm.rotationView2?.timingUnknown) && <p className="pd-note">Prévia: tempos ainda não publicados. DPS, duração do combo e tempo para derrotar o alvo indisponíveis.</p>}
+{(() => { const __condition26 = !vm.rotationView?.timingUnknown && !vm.rotationView2?.timingUnknown && vm.cycle; const c = __condition26; return __condition26 ? <><Render tag="div" props={{"className": ["hud-dps-col",(!(vm.rotation.length) ? "hud-dps-col--empty" : '')].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["hud-hero-strip"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["hud-hero-fig"].filter(Boolean).join(' ')}}><Render tag="div" props={{"className": ["cap2"].filter(Boolean).join(' ')}}>{interpolate(["",""], [(vm.isSingleEntryRotation ? "DPS" : "DPS DO COMBO")])}</Render>
 <Render tag="div" props={{"className": ["hud-hero-nums"].filter(Boolean).join(' ')}}><Render tag="span" props={{"tooltipPosition": "top",
 "click": (event: any) => vm.action(() => { const $event = event; dpsStepsPanel.toggle($event) }),
 "className": ["pnum clickable"].filter(Boolean).join(' '),
@@ -468,14 +469,14 @@ const noFormulaTrace = (context: any) => {  return <><Render tag="div" props={{"
 {statRow({"label": "Vel.Atq","cur": vm.totalSummary?.calc?.hitPerSecs,"sim": vm.totalSummary2?.calc?.hitPerSecs,"unit": " Hits/s"})}
 {statRow({"label": "Penal. Tam.","cur": vm.dmg?.skillSizePenalty,"sim": vm.dmg2?.skillSizePenalty,"unit": "%","hidden": (vm.calcSkill?.dmgType === "Magical")})}
 {statRow({"label": "Prec.","cur": vm.dmg?.skillAccuracy,"sim": vm.dmg2?.skillAccuracy,"unit": "%","hidden": (vm.calcSkill?.dmgType === "Magical")})}</Render></Render>
-<Render tag="div" props={{"className": ["psec"].filter(Boolean).join(' ')}}>{"Conjuração/Espera"}</Render>
+{vm.calcSkill?.timingUnknown ? <p className="pd-note">Prévia: tempos de conjuração e espera ainda não publicados.</p> : <><Render tag="div" props={{"className": ["psec"].filter(Boolean).join(' ')}}>{"Conjuração/Espera"}</Render>
 <Render tag="table" props={{"className": ["ptable cast"].filter(Boolean).join(' ')}}><Render tag="thead" props={{}}>{castHead(undefined)}</Render>
 <Render tag="tbody" props={{}}>{castRow({"lv": vm.calcSkill?.skillLevel,"fct": vm.calcSkill?.reducedFct,"vct": vm.calcSkill?.reducedVct,"acd": vm.calcSkill?.reducedAcd,"cd": vm.calcSkill?.reducedCd})}
 {(() => { const __condition92 = vm.isComparing;  return __condition92 ? <>{castRow({"lv": vm.totalSummary2?.calcSkill?.skillLevel,"fct": vm.totalSummary2?.calcSkill?.reducedFct,"vct": vm.totalSummary2?.calcSkill?.reducedVct,"acd": vm.totalSummary2?.calcSkill?.reducedAcd,"cd": vm.totalSummary2?.calcSkill?.reducedCd,"cls": "sim"})}</> : null; })()}</Render></Render>
 <Render tag="div" props={{"className": ["psec"].filter(Boolean).join(' ')}}>{"Conjuração/Espera - Base"}</Render>
 <Render tag="table" props={{"className": ["ptable cast"].filter(Boolean).join(' ')}}><Render tag="thead" props={{}}>{castHead(undefined)}</Render>
 <Render tag="tbody" props={{}}>{castRow({"lv": vm.calcSkill?.skillLevel,"fct": vm.calcSkill?.clientFct,"vct": vm.calcSkill?.clientVct,"acd": vm.calcSkill?.clientAcd,"cd": vm.calcSkill?.clientCd,"cls": "base"})}</Render></Render>
-{(() => { const __condition93 = (vm.dmg?.isUsedCurrentHP || vm.dmg?.isUsedCurrentSP);  return __condition93 ? <><><Render tag="div" props={{"className": ["psec"].filter(Boolean).join(' ')}}>{"Consumo"}</Render>
+</>}{(() => { const __condition93 = (vm.dmg?.isUsedCurrentHP || vm.dmg?.isUsedCurrentSP);  return __condition93 ? <><><Render tag="div" props={{"className": ["psec"].filter(Boolean).join(' ')}}>{"Consumo"}</Render>
 <Render tag="table" props={{"className": ["ptable"].filter(Boolean).join(' ')}}><Render tag="tbody" props={{}}>{statRow({"label": "HP Atual","cur": vm.dmg?.currentHp,"sim": vm.dmg2?.currentHp,"hidden": !(vm.dmg?.isUsedCurrentHP)})}
 {statRow({"label": "SP Atual","cur": vm.dmg?.currentSp,"sim": vm.dmg2?.currentSp,"hidden": !(vm.dmg?.isUsedCurrentSP)})}</Render></Render></></> : null; })()}
 {(() => { const __condition94 = vm.optimizeInfo; const info = __condition94; return __condition94 ? <><><Render tag="div" props={{"className": ["cap2 pd-cap"].filter(Boolean).join(' ')}}>{"O QUE DÁ PARA MELHORAR"}</Render>

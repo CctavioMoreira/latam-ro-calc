@@ -34,6 +34,7 @@ const TAIL_WINDOW = 16;
 const MAX_PERIOD = 8;
 
 export interface RotationScheduleStep {
+  timingUnknown?: boolean;
   /**
    * Recarga identity. Use the skill *name*, not the `"Name==Level"` value: a cooldown is
    * per skill and shared across its levels. Ataque básico gets its own key and a zero
@@ -181,7 +182,7 @@ export function simulateRotation(input: {
   maxCycles?: number;
 }): RotationCycle {
   const { steps, aspdPeriod } = input;
-  if (!steps?.length) return emptyCycle();
+  if (!steps?.length || steps.some(step => step.timingUnknown)) return emptyCycle();
 
   const maxCycles = Math.max(2, input.maxCycles ?? DEFAULT_MAX_CYCLES);
   const floor = aspdPeriod > 0 ? aspdPeriod : 0;

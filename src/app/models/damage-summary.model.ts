@@ -229,6 +229,7 @@ export interface SkillDamageSummaryModel {
 }
 
 export interface SkillAspdModel {
+  timingUnknown?: boolean;
   cd: number;
   reducedCd: number;
   vct: number;

@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "logs": [
+    "Adicionadas as habilidades de nível 285/65 das classes já disponíveis como Prévia, incluindo Surge, Shadow Torrent, as quatro Primed Traps, as ressonâncias do Mestre Espiritual e os cinco disparos de Elemental Integration.",
+    "As novas prévias usam os efeitos e valores publicados, com descrições em inglês. Tempos e coeficientes ainda desconhecidos são sinalizados; o DPS de rotações com essas habilidades fica indisponível. Plume Pierce e Nature Rage estão documentadas no catálogo e dependem da implementação de Alitea."
+  ]
+}

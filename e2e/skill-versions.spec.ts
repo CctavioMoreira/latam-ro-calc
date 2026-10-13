@@ -89,3 +89,40 @@ test('preview attack details show the English description', async ({ page }) => 
   await expect(page.locator('.pd-desc')).toContainText('5 hits around the target and 3 around the caster');
   await expect(page.locator('.pd-desc')).toContainText('Max level: 5');
 });
+
+test('285 previews expose Surge, persist it and explain unavailable timing', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.addInitScript(() => {
+    if (!localStorage.getItem('ro-set')) localStorage.setItem('ro-set', JSON.stringify({ class: 4304, level: 250, jobLevel: 1, str: 130, selectedAtkSkill: 'Shadow Torrent==10', rotation: ['Shadow Torrent==10'] }));
+    localStorage.setItem('ro-right-accordion-active', '[]');
+  });
+  await page.goto('/');
+  await expect(page.locator('#ro-splash')).toHaveCount(0, { timeout: 40000 });
+  await page.getByRole('button', { name: 'Habilidades', exact: true }).click();
+  const label = page.locator('.skill-control-label').filter({ hasText: 'Surge (Prévia)' });
+  await expect(label).toBeVisible();
+  await expect(label.locator('img')).toHaveCount(0);
+  const control = page.locator('.skill-control-row').filter({ hasText: 'Surge (Prévia)' }).getByRole('combobox');
+  await expect(control).toContainText('Não');
+  await label.hover();
+  await expect(page.getByRole('tooltip')).toContainText('non-critical physical damage');
+  await expect(page.getByRole('tooltip')).toContainText('285/65');
+  await expect(page.getByRole('tooltip')).not.toContainText('275/60');
+  await control.click();
+  await page.getByRole('option', { name: 'Nv 5', exact: true }).click();
+  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('ro-set')!).activeSkillMap.Surge)).toBe(5);
+  await page.getByRole('button', { name: 'Batalha', exact: true }).click();
+  const battle = page.getByRole('region', { name: 'Batalha', exact: true });
+  await expect(battle.getByText('Prévia: tempos ainda não publicados.', { exact: false })).toBeVisible();
+  await battle.getByRole('button', { name: 'Detalhes da habilidade', exact: true }).click();
+  await page.getByRole('button', { name: 'Descrição da habilidade', exact: true }).click();
+  await expect(page.locator('.pd-desc')).toContainText('Shadow Torrent (Prévia)');
+  await expect(page.locator('.pd-desc')).toContainText('4 melee physical hits');
+  await page.screenshot({ path: '.tmp/skill-preview-285.png', fullPage: true });
+  await page.reload();
+  await expect(page.locator('#ro-splash')).toHaveCount(0, { timeout: 40000 });
+  await page.getByRole('button', { name: 'Habilidades', exact: true }).click();
+  await expect(page.locator('.skill-control-row').filter({ hasText: 'Surge (Prévia)' }).getByRole('combobox')).toContainText('Nv 5');
+  await expect.poll(() => errors).toEqual([]);
+});

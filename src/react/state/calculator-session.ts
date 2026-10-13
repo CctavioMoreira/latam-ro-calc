@@ -1279,6 +1279,10 @@ await ((_event?: unknown) => {
    * is purely about the recarga stalls — see core/rotation-optimize.ts.
    */
   onOptimizeRotation() {
+    if (this.rotationView?.timingUnknown) {
+      this.messageService.add({ severity: 'info', summary: 'Prévia', detail: 'Os tempos destas habilidades ainda não estão disponíveis para calcular ou otimizar o DPS.' });
+      return;
+    }
     const cycle = this.rotationView?.cycle;
     if (!cycle) return;
 
@@ -3611,7 +3615,7 @@ await ((_event?: unknown) => {
    *  themselves skills, the group label ("Espírito Elemental") describes nothing on its
    *  own, so the popover follows whichever summon is selected. The cache key has to carry
    *  that value, or the first selection would stick for the rest of the session. */
-  buffTooltip(buff: { name: string; label: string; icon?: number; isDebuff?: boolean; preview?: boolean; previewDescription?: string; dropdown: any[] }, selectedValue?: number): string {
+  buffTooltip(buff: { name: string; label: string; icon?: number; isDebuff?: boolean; preview?: boolean; previewVersion?: string; previewDescription?: string; dropdown: any[] }, selectedValue?: number): string {
     // A fallback rendered during startup must not outlive the deferred skill prose.
     if (this.buffTooltipVersion !== this.itemDescriptionStore.version) {
       this.buffTooltipCache.clear();
@@ -3637,14 +3641,14 @@ await ((_event?: unknown) => {
       const lines = (buff.dropdown || [])
         .filter((d) => d.isUse && d.bonus && Object.keys(d.bonus).length)
         .map((d) => {
-          const parts = Object.entries(d.bonus).map(([k, v]) => `${buff.preview ? ({ hp: 'Max HP', pAtk: 'P.Atk', sMatk: 'S.Matk', flee: 'Flee' }[k] ?? k) : BUFF_BONUS_LABELS[k] ?? bonusKeyLabel(k)} ${fmt(v)}`);
+          const parts = Object.entries(d.bonus).map(([k, v]) => `${buff.preview ? ({ hp: 'Max HP', pAtk: 'P.Atk', sMatk: 'S.Matk', flee: 'Flee', hit: 'HIT', nonCriticalDamage: 'Non-critical physical damage %', criDmg: 'Critical damage %', melee: 'Melee physical damage %', range: 'Ranged physical damage %' }[k] ?? bonusKeyLabel(k)) : BUFF_BONUS_LABELS[k] ?? bonusKeyLabel(k)} ${fmt(v)}`);
           return `<div>${d.label}: ${parts.join(', ')}</div>`;
         });
       const title = `<div class="item_desc_title"><b>${buff.label}</b></div>`;
       const debuff = buff.isDebuff ? `<div style="color:#b00000">Debuff no monstro</div>` : '';
-      html = `${title}${debuff}${buff.previewDescription ? `<div>${buff.previewDescription}</div>` : ''}${lines.length ? lines.join('') : buff.preview ? '' : '<div>—</div>'}`;
+      html = `${title}${debuff}${buff.previewDescription ? `<div>${prettyItemDesc(buff.previewDescription)}</div>` : ''}${lines.length ? lines.join('') : buff.preview ? '' : '<div>—</div>'}`;
     }
-    if (buff.preview && !desc) html += '<div>Preview kRO 275/60. Unannounced coefficients and timings are provisional and may change.</div>';
+    if (buff.preview && !desc) html += `<div>Preview kRO ${buff.previewVersion ?? '275/60'}. Unannounced coefficients and timings are provisional and may change.</div>`;
 
     this.buffTooltipCache.set(cacheKey, html);
     return html;
@@ -3655,12 +3659,13 @@ await ((_event?: unknown) => {
    *  and the "Resumo de Batalha" skill picker (which labels via `label`). With no dropdown
    *  buffTooltip falls through to the pt-BR client description.
    *  Arrow property, not a prototype method — it is passed by reference as an @Input. */
-  skillTooltip = (skill: { name?: string; label?: string; displayName?: string; icon?: number; preview?: boolean; previewDescription?: string }): string =>
+  skillTooltip = (skill: { name?: string; label?: string; displayName?: string; icon?: number; preview?: boolean; previewVersion?: string; previewDescription?: string }): string =>
     this.buffTooltip({
       name: skill?.name,
       label: skill?.label || skill?.displayName || skill?.name,
       icon: skill?.icon,
       preview: skill?.preview,
+      previewVersion: skill?.previewVersion,
       previewDescription: skill?.previewDescription,
       dropdown: [],
     });

@@ -86,6 +86,7 @@ export const calcSkillAspd = (params: {
   // console.log({ vctByStat, reducedVct, reducedCd, reducedAcd, hitPeriod });
 
   return {
+    timingUnknown: skillData.timingUnknown,
     cd: skillCd,
     reducedCd,
     vct: skillVct,
@@ -104,6 +105,6 @@ export const calcSkillAspd = (params: {
     clientCd: client.cd,
     castPeriod: castPeriod,
     hitPeriod,
-    totalHitPerSec: floor(1 / hitPeriod, HIT_PER_SEC_PRECISION),
+    totalHitPerSec: skillData.timingUnknown ? 0 : floor(1 / hitPeriod, HIT_PER_SEC_PRECISION),
   };
 };

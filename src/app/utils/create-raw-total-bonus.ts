@@ -84,6 +84,7 @@ export const createRawTotalBonus = (): EquipmentSummaryModel => {
     // (see damage-calculator getBaseCriRate / the skill branch), and this one must not.
     criRange: 0,
     criDmg: 0,
+    nonCriticalDamage: 0,
     perfectHit: 0,
     hit: 0,
     flee: 0,

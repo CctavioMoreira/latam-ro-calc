@@ -18,7 +18,7 @@ describe('class-owned auto-cast definitions', () => {
   it('inherits Scholar definitions through Sorcerer and Elemental Master', () => {
     expect(keysOf(new Scholar())).toEqual(['auto-spell']);
     expect(keysOf(new Sorcerer())).toEqual(['auto-spell']);
-    expect(keysOf(new ElementalMaster())).toEqual(['auto-spell']);
+    expect(keysOf(new ElementalMaster())).toEqual(['auto-spell', 'preview-elemental-integration']);
   });
 
   it('inherits Shadow Chaser definitions through Abyss Chaser', () => {
