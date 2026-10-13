@@ -1,6 +1,7 @@
 import { DropdownModel } from '../models/dropdown.model';
 import { ItemModel, itemAutoCastEffectScripts, itemAutoCastScripts, itemBonusScriptEntries } from '../models/item.model';
 import { bonusKeyLabel } from './bonus-key-label';
+import { createFuzzyRanker } from '../utils/fuzzy-search';
 
 export type ItemSearchRow = DropdownModel & { id: number; position: string };
 export interface ItemSearchFilters {
@@ -91,10 +92,9 @@ export function isSearchableItemBonusKey(key: string): boolean {
   return entry.skillId != null || optionsByValue.get(entry.key)?.kind === 'key';
 }
 
-const normalizedName = (name: string) => name.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR');
-
 export function filterSearchItems(items: Readonly<Record<number, ItemModel>>, rows: readonly ItemSearchRow[], filters: ItemSearchFilters): ItemSearchRow[] {
-  const query = normalizedName(filters.name);
+  const rankName = createFuzzyRanker(filters.name);
+  const ranks = new Map<number, number>();
   const positions = new Set(filters.positions);
   const skills = new Set(filters.skillIds);
   const bonuses = [...new Set(filters.bonuses.filter((value): value is string => !!value))];
@@ -102,7 +102,9 @@ export function filterSearchItems(items: Readonly<Record<number, ItemModel>>, ro
   return rows.filter(row => {
     const item = items[row.id];
     if (!item || listed.has(row.id) || positions.size && !positions.has(row.position)) return false;
-    if (query && !normalizedName(item.name).includes(query)) return false;
+    const rank = rankName(item.name);
+    if (!Number.isFinite(rank)) return false;
+    ranks.set(row.id, rank);
     const entries = itemBonusScriptEntries(item.script).filter(([, expressions]) => expressions.length).map(([key]) => readKey(key));
     const casts = itemAutoCastScripts(item.script);
     const effects = itemAutoCastEffectScripts(item.script);
@@ -123,5 +125,5 @@ export function filterSearchItems(items: Readonly<Record<number, ItemModel>>, ro
     if (bonuses.length && !(filters.matchAllBonuses ? bonuses.every(matches) : bonuses.some(matches))) return false;
     listed.add(row.id);
     return true;
-  });
+  }).sort((a, b) => ranks.get(a.id)! - ranks.get(b.id)!);
 }

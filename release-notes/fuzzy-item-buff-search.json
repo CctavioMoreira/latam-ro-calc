@@ -1,0 +1,6 @@
+{
+  "type": "patch",
+  "logs": [
+    "Adicionada busca por consumíveis, habilidades e buffs, com opção de limpar o filtro. As buscas de itens e seletores agora usam filtro fuzzy, ignorando maiúsculas, minúsculas e acentos."
+  ]
+}

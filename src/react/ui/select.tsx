@@ -13,6 +13,7 @@ export interface SelectProps {
   optionLabel?: string; optionValue?: string; group?: boolean;
   disabled?: boolean; inputId?: string; ariaLabel?: string; ariaLabelledBy?: string;
   filter?: boolean; filterBy?: string; filterPlaceholder?: string;
+  optionFilter?: (option: any) => boolean;
   placeholder?: string; defaultLabel?: string; selectedItemsLabel?: string;
   showClear?: boolean; showToggleAll?: boolean; resetFilterOnHide?: boolean;
   autoDisplayFirst?: boolean; autofocus?: boolean; scrollHeight?: string;
@@ -30,7 +31,7 @@ export function Select({ options, value, onChange, kind = 'dropdown', optionLabe
   resetFilterOnHide = false, autoDisplayFirst = true, autofocus = false, scrollHeight = '200px', className = '', panelClassName = '',
   emptyFilterMessage = 'Nenhum resultado encontrado', virtualScroll = false, virtualScrollItemSize = 38,
   optionGroupLabel = 'label', optionGroupChildren = ['items'], renderItem, renderSelected, renderGroup, renderFilterIcon,
-  onOpened, onClosed, onCleared, onBlur, ref }: SelectProps) {
+  onOpened, onClosed, onCleared, onBlur, optionFilter, ref }: SelectProps) {
   const id = `ui-select-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
   const multi = kind === 'multiselect';
   const cascade = kind === 'cascadeselect';
@@ -53,7 +54,7 @@ export function Select({ options, value, onChange, kind = 'dropdown', optionLabe
     const collect = (entries: any[], depth = 0): any[] => entries.flatMap(option => cascade && childrenOf(option, depth).length ? collect(childrenOf(option, depth), depth + 1) : [option]);
     return group ? options.flatMap(option => option.items ?? []) : collect(options);
   }, [options, group, cascade, optionGroupChildren.join(',')]);
-  const rows = useMemo<Row[]>(() => filteredRows(options, query, group, filterBy, labelKey), [options, query, group, filterBy, labelKey]);
+  const rows = useMemo<Row[]>(() => filteredRows(options, query, group, filterBy, labelKey, optionFilter), [options, query, group, filterBy, labelKey, optionFilter]);
   const selectedOption = leaves.find(selected) ?? (!multi && !placeholder && autoDisplayFirst && value == null ? leaves[0] : null);
   useLayoutEffect(() => {
     if (previousQuery.current === query) return;
@@ -194,7 +195,10 @@ export function Select({ options, value, onChange, kind = 'dropdown', optionLabe
             aria-activedescendant={active >= 0 ? `${id}-option-${active}` : undefined} name="ui-option-search" autoComplete="off"
             data-lpignore="true" data-1p-ignore data-bwignore="true" data-form-type="other" onChange={event => {
               setQuery(event.target.value); setKeyboardActive(false); setActive(-1);
-            }} />{renderFilterIcon ? renderFilterIcon() : <Icon className="ui-dropdown-filter-icon" name="search" />}</div>}
+            }} onKeyDown={event => { if (event.key === 'Tab' && query && !event.shiftKey) event.stopPropagation(); }} />{query ? <button type="button" className="ui-link ui-dropdown-filter-icon" aria-label="Limpar busca"
+              onKeyDown={event => { if (['Enter', ' ', 'Tab'].includes(event.key)) event.stopPropagation(); }}
+              onClick={() => { setQuery(''); panel.current?.querySelector('input')?.focus(); }}><Icon name="times" /></button>
+              : renderFilterIcon ? renderFilterIcon() : <Icon className="ui-dropdown-filter-icon" name="search" />}</div>}
           {multi && <button type="button" className="ui-link" aria-label="Fechar opções" onClick={() => hide(true)}><Icon name="times" /></button>}
         </div>}
         {cascade ? tree(options) : virtualScroll && rows.length > 0

@@ -3,6 +3,13 @@ import { ExtraOptionMap } from '../utils/create-extra-option-list';
 import { buildFilterIndex, filterOptions, searchOptionLeaves } from './picker-filter';
 
 describe('filterOptions', () => {
+  it('uses accent-insensitive fuzzy matching and prioritizes literal item names', () => {
+    const items = [{ label: 'Botas Rochosas Elegantes' }, { label: 'Broche' }, { label: 'Chapéu de Teste' }];
+    const index = buildFilterIndex(items, ['label']);
+    expect(filterOptions(items, 'BROCHE', index)).toEqual([items[1], items[0]]);
+    expect(filterOptions(items, 'CHP TSTE', index)).toEqual([items[2]]);
+    expect(filterOptions(items, 'CHAPEU', index)).toEqual([items[2]]);
+  });
   const options = [
     { label: 'Arco de Apoio Certeiro', value: 1748, cardPrefix: '' },
     { label: 'Balestra Ilusional', value: 1745, cardPrefix: '' },

@@ -34,7 +34,10 @@ const i = context["i"]; return <><Render tag="button" props={{"type": "button",
 "value": vm.query,
 "input": (event: any) => vm.action(() => { const $event = event; vm.onQuery(filter.value) }),
 "className": ["picker__input"].filter(Boolean).join(' '),
-"reference": (value: any) => { filter = value; vm["filter"] = value; }}}></Render></>; })()}</Render>
+"reference": (value: any) => { filter = value; vm["filter"] = value; }}}></Render>
+{vm.query && <Button icon="times" aria-label="Limpar busca" className="ui-button-text ui-button-sm"
+  onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') event.stopPropagation(); }}
+  onClick={() => vm.action(() => { vm.onQuery(''); filter?.focus(); })} />}</>; })()}</Render>
 {(() => { const __condition5 = vm.breadcrumb.length;  return __condition5 ? <><Render tag="div" props={{"className": ["picker__crumbs"].filter(Boolean).join(' ')}}><Render tag="button" props={{"type": "button",
 "click": (event: any) => vm.action(() => { const $event = event; vm.goToLevel(-(1)) }),
 "className": ["picker__crumb"].filter(Boolean).join(' ')}}>{"Todos"}</Render>
