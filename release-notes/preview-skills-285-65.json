@@ -3,6 +3,6 @@
   "logs": [
     "A pedido de Oden, adicionadas as habilidades de nível 285/65 das classes já disponíveis como Prévia, incluindo Surge, Shadow Torrent, as quatro Primed Traps, as ressonâncias do Mestre Espiritual e os cinco disparos de Elemental Integration.",
     "As novas prévias usam os efeitos e valores publicados, com descrições em inglês. Tempos e coeficientes ainda desconhecidos são sinalizados; o DPS de rotações com essas habilidades fica indisponível. Plume Pierce e Nature Rage estão documentadas no catálogo e dependem da implementação de Alitea.",
-    "Adicionado o controle Prévias antes do botão MCP, usando os botões Sim/Não do design system, com Sim por padrão e a escolha salva no navegador. Um tooltip explica seu funcionamento. Em Não, itens e habilidades de prévia ficam ocultos nas seleções, os buffs de prévia são desativados e as fórmulas voltam ao LATAM, com o seletor de rebalanceamento oculto."
+    "Adicionado o botão de configurações com ícone de engrenagem no canto direito da barra superior. Ele abre uma barra lateral à direita com o controle Prévias, usando os botões Sim/Não do design system, com Sim por padrão e a escolha salva no navegador. Um tooltip explica seu funcionamento. Em Não, itens e habilidades de prévia ficam ocultos nas seleções, os buffs de prévia são desativados e as fórmulas voltam ao LATAM, com o seletor de rebalanceamento oculto."
   ]
 }

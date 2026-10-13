@@ -18,6 +18,7 @@ export const ICON_NAMES = [
   "chevron-right",
   "chevron-up",
   "circle-fill",
+  "cog",
   "comment",
   "copy",
   "discord",
