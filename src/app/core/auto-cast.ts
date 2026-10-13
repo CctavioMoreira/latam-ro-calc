@@ -300,7 +300,8 @@ export function buildAutoCastSimulation(input: {
       ? Math.min(attacksPerSecond, Number(summary?.calcSkill?.totalHitPerSec ?? 0))
       : source.trigger === 'physical-attack' || source.trigger === 'melee-physical-attack'
         ? attacksPerSecond : eligibleAttacksPerSecond;
-    const activationsPerSecond = triggerRate * source.chance / 100;
+    const activationsPerSecond = Math.min(triggerRate * source.chance / 100,
+      source.maxActivationsPerSecond ?? Infinity);
 
     if (source.kind === 'extra-hit' && source.extraHitOutcomes?.length) {
       const extraHits = source.extraHitOutcomes.reduce((sum, outcome) => sum + outcome.chance * (outcome.totalHits - 1), 0);

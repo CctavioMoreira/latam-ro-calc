@@ -326,6 +326,7 @@ const first = __index20 === 0; return <Fragment key={identityKey(vm.trackDetail(
 <Render tag="span" props={{}}>{interpolate(["",""], [displayPipe("number", vm.activeSource.triggerAttacksPerSecond, ["1.2-2"], services)])}</Render></Render>
 <Render tag="div" props={{"className": ["kv"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"× Chance da fonte"}</Render>
 <Render tag="span" props={{}}>{interpolate(["","%"], [displayPipe("number", vm.activeSource.result?.source?.chance, ["1.1-1"], services)])}</Render></Render>
+{vm.activeSource.result?.source?.maxActivationsPerSecond != null && <Render tag="div" props={{ className: 'kv', title: vm.activeSource.info }}><Render tag="span" props={{}}>Teto estimado pela regeneração/s</Render><Render tag="span" props={{}}>{displayPipe('number', vm.activeSource.result.source.maxActivationsPerSecond, ['1.2-2'], services)}</Render></Render>}
 <Render tag="div" props={{"className": ["kv"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"= Ativações/s"}</Render>
 <Render tag="span" props={{}}>{interpolate(["",""], [displayPipe("number", vm.activeSource.activationsPerSecond, ["1.2-2"], services)])}</Render></Render>
 <Render tag="div" props={{"className": ["kv"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"× Dano esperado por ativação"}</Render>
@@ -334,6 +335,7 @@ const autoCastDpsFallback = (context: any) => {  return <><Render tag="div" prop
 <Render tag="span" props={{}}>{interpolate(["",""], [displayPipe("number", vm.activeSource.triggerAttacksPerSecond, ["1.2-2"], services)])}</Render></Render>
 <Render tag="div" props={{"className": ["kv"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"× Chance da fonte"}</Render>
 <Render tag="span" props={{}}>{interpolate(["","%"], [displayPipe("number", vm.activeSource.result?.source?.chance, ["1.1-1"], services)])}</Render></Render>
+{vm.activeSource.result?.source?.maxActivationsPerSecond != null && <Render tag="div" props={{ className: 'kv', title: vm.activeSource.info }}><Render tag="span" props={{}}>Teto estimado pela regeneração/s</Render><Render tag="span" props={{}}>{displayPipe('number', vm.activeSource.result.source.maxActivationsPerSecond, ['1.2-2'], services)}</Render></Render>}
 <Render tag="div" props={{"className": ["kv"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"= Ativações/s"}</Render>
 <Render tag="span" props={{}}>{interpolate(["",""], [displayPipe("number", vm.activeSource.activationsPerSecond, ["1.2-2"], services)])}</Render></Render>
 <Render tag="div" props={{"className": ["kv"].filter(Boolean).join(' ')}}><Render tag="span" props={{}}>{"× Dano esperado por ativação"}</Render>

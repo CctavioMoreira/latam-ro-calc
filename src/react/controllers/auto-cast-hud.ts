@@ -207,7 +207,11 @@ public readonly itemDescriptions: ItemDescriptionStore,
       ...(source.canCrit ? [{ text: `${source.criticalRate.toFixed(1).replace('.', ',')}%`, critical: true, critical2: compared?.criticalRate }] : []),
     ];
   }
-  sourceInfo(source: AutoCastResult): string { return `${source.source.sourceName}: chance independente por ataque elegível.`; }
+  sourceInfo(source: AutoCastResult): string {
+    const limit = source.source.maxActivationsPerSecond;
+    return `${source.source.sourceName}: chance independente por ataque elegível.`
+      + (limit == null ? '' : ` DPS sustentado estimado, limitado a ${limit.toFixed(2).replace('.', ',')} ativações/s pela regeneração de espadas; reserva inicial não incluída.`);
+  }
   originTooltip(source: any, descriptionVersion?: number): string {
     void descriptionVersion;
     const itemId = source?.result?.source?.sourceItemId;

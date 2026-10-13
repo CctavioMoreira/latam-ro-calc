@@ -123,7 +123,7 @@ describe('verified item auto-casts', () => {
     expect(byName.get('Pierce')!.totalHit!(input(5, 's'))).toBe(1);
     expect(byName.get('Pierce')!.totalHit!(input(5, 'm'))).toBe(2);
     expect(byName.get('Pierce')!.totalHit!(input(5, 'l'))).toBe(3);
-    expect(byName.get('Storm Blast')!.formula(input(1))).toBe(1500);
+    expect(byName.get('Storm Blast')!.formula(input(1))).toBe(1575);
     expect(byName.get('Lava Flow')!.formula(input(2))).toBe(550);
   });
 

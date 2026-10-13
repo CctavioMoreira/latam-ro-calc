@@ -98,6 +98,8 @@ export interface AutoCastSource {
   skillData?: AtkSkillModel;
   chanceBreakdown?: { label: string; value: string }[];
   extraHitOutcomes?: ExtraHitOutcome[];
+  /** Sustained proc-rate estimate capped by replenishment of a consumed resource. */
+  maxActivationsPerSecond?: number;
 }
 
 export interface BlockedAutoCastSource {
