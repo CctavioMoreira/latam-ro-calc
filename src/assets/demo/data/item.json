@@ -373475,5 +373475,69 @@
         "15"
       ]
     }
+  },
+  "102985": {
+    "id": 102985,
+    "aegisName": "Speed_Booster",
+    "name": "Elixir Celestial",
+    "unidName": "Elixir Celestial",
+    "resName": "",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 3,
+    "itemSubTypeId": 768,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 1,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": null,
+    "usableClass": [
+      "all"
+    ],
+    "script": {
+      "flee": [
+        "50"
+      ],
+      "aspd": [
+        "1"
+      ]
+    }
+  },
+  "12354": {
+    "id": 12354,
+    "aegisName": "201112_Buche_De_Noel",
+    "name": "Sobremesa de Noel",
+    "unidName": "Sobremesa de Noel",
+    "resName": "",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 3,
+    "itemSubTypeId": 768,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 50,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": null,
+    "usableClass": [
+      "all"
+    ],
+    "script": {
+      "cri": [
+        "7"
+      ],
+      "hit": [
+        "3"
+      ],
+      "hpRecovRate": [
+        "3"
+      ],
+      "spRecovRate": [
+        "3"
+      ]
+    }
   }
 }
