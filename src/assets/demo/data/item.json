@@ -45176,6 +45176,9 @@
       "2288": [
         "EQUIP[Booster Shadow Armor&&Booster Shadow Shield&&Booster Shadow Shoes&&Booster Shadow Earring&&Booster Shadow Pendant]15"
       ],
+      "aspd": [
+        "EQUIP_ID[24586&&24585&&24584&&24588&&24587]2"
+      ],
       "atk": [
         "1---1",
         "10"
