@@ -321,7 +321,8 @@ export class Inquisitor extends Sura {
       fct: 0,
       vct: 0,
       cd: 2,
-      totalHit: 3,
+      // Each hit applies the full ratio: 0–5 spheres = 1, 6–10 = 2, 11–15 = 3.
+      totalHit: input => Math.max(1, Math.min(3, Math.ceil(input.skills.activeLevel('Total Spirit') / 5))),
       isMelee: true,
       formula: (input: AtkSkillFormulaInput): number => {
         const { model, skillLevel, status, maxHp } = input;
