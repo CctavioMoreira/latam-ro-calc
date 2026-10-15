@@ -2,6 +2,14 @@ import { describe, expect, it } from 'vitest';
 import { buildReductionCategories } from './reduction-breakdown';
 
 describe('buildReductionCategories', () => {
+  it('shows the selected-monster reduction on the self popover only', () => {
+    const bonus = { submonster: 25 };
+    expect(buildReductionCategories(bonus, 'none', 'self').flatMap(category => category.rows))
+      .toContainEqual({ label: 'Monstros específicos', keys: ['submonster'], percent: 25 });
+    expect(buildReductionCategories(bonus, 'pvp', 'pvp').flatMap(category => category.rows)
+      .some(row => row.keys.includes('submonster'))).toBe(false);
+  });
+
   it('surfaces only nonzero rows/categories, with drill keys', () => {
     const cats = buildReductionCategories(
       { subrace_player_human: 17, subele_neutral: 20, dmg_taken_all: 5 } as any,

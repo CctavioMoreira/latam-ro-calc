@@ -374,6 +374,22 @@ describe('the sustain family', () => {
 });
 
 describe('the sustain family stays out of the damage pipeline', () => {
+  it('periodic recovery and status tolerance leave solved damage unchanged', () => {
+    const solve = (script: Record<string, string[]>) => {
+      const calc = makeCalculator({
+        1201: db[1201], 480956: { ...db[480956], script },
+      });
+      calc.setHpSpTable(JSON.parse(readFileSync('src/assets/demo/data/hp_sp_table.json', 'utf8')))
+        .setMonster(JSON.parse(readFileSync('src/assets/demo/data/monster.json', 'utf8'))[1038]);
+      calc.loadItemFromModel({ ...createMainModel(), level: 200, str: 100, weapon: 1201, garment: 480956 })
+        .prepareAllItemBonus().calcAllAtk().calcAllDefs()
+        .calculateHpSp({ isUseHpL: false }).calculateAllDamages('');
+      return calc.getTotalSummary().dmg;
+    };
+    expect(solve({ hpRegenPerSecond: ['100'], spRegenPerSecond: ['4'],
+      petrificationResist: ['100'], freezeResist: ['100'] })).toEqual(solve({}));
+  });
+
   it('a build stacked with every sustain key deals the same damage as one with none', () => {
     const SUSTAIN = ['hpRecovRate', 'spRecovRate', 'hpDrain', 'spDrain', 'reduceDamageReturn', 'magicHealHp', 'magicHealSp', 'hpRestoreOnKill', 'spRestoreOnKill', 'spCostPercent'];
     const model = { ...createMainModel(), level: 200, shield: 2124 };

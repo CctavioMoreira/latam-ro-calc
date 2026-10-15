@@ -38,5 +38,9 @@ const BETELGEUSE_SKILLS: readonly MonsterOffensiveSkill[] = [
 const MONSTER_SKILLS: Readonly<Record<number, readonly MonsterOffensiveSkill[]>> = { 20994: BETELGEUSE_SKILLS };
 
 export function getMonsterOffensiveSkills(monsterId: number): readonly MonsterOffensiveSkill[] {
-  return MONSTER_SKILLS[monsterId] ?? [];
+  // Every monster with an attack profile can use the shared basic-attack formula.
+  // This also exposes the Q enchants' reductions outside Betelgeuse's skill catalog.
+  return MONSTER_SKILLS[monsterId] ?? (monsterId > 0 ? BASIC_ATTACK : []);
 }
+
+const BASIC_ATTACK = BETELGEUSE_SKILLS.filter(skill => skill.formula === 'basic-attack');

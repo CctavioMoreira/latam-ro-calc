@@ -95,6 +95,7 @@ import {
   vit,
 } from './_basic';
 import { angelRibbonWing3, angelRibbonWing4 } from './angel_ribbon_wing';
+import { explorerEngineEnchants, littleGardenSlot4 } from './explorer_league';
 import { anni5th } from './anniversary5th';
 import { bp7_2, bp7_4 } from './bp7';
 import { cirAutumnGarment2, cirAutumnGarment3, cirAutumnGarment4, cirAutumnSummer2, cirAutumnWinter2, cirSpringGarment2, cirSpringGarment3, cirSpringGarment4, manAutumnGarment2, manAutumnGarment3, manAutumnGarment4, manAutumnSummer2, manAutumnWinter2, manSpringGarment2, manSpringGarment3, manSpringGarment4, signetAcc3, signetAcc4, stellarAcc2, stellarAcc3, stellarAcc4 } from './constellation_tower';
@@ -760,6 +761,8 @@ const shoeOfJudge = [...dex(2, 4), ...int(1, 2), AtkPercent._2];
 const heroRing4 = [Spell._3, Spell._5, EA._3, EA._5, AttackDelay._2, AttackDelay._4, ExpertFighter._3, ExpertFighter._5, ExpertMagician._3, ExpertMagician._5];
 
 export const EnchantTable: EntTable[] = [
+  { name: 'LittleGarden_LT', enchants: [null, null, null, littleGardenSlot4] },
+  { name: 'Explorer_Engine_LT', enchants: [null, explorerEngineEnchants, explorerEngineEnchants, explorerEngineEnchants] },
   { name: 'Lush_Rose', enchants: [null, null, BaseState._1_3, toyFactory] },
   { name: 'Celines_Ribbon', enchants: [null, null, BaseState._1_3, toyFactory] },
 

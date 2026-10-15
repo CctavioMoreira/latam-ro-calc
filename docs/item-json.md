@@ -19,6 +19,19 @@ sintaxe do campo `script` é compacta e pouco óbvia.
 
 ---
 
+### Bônus contra monstros específicos
+
+`MONSTER_ID[20801||20802]5` aplica o valor somente quando o alvo selecionado tem
+um dos IDs listados. Pode preceder um limiar de refino, como
+`MONSTER_ID[20801||20802]9===15`; o refino é o do equipamento que contém o encanto.
+Os encantamentos Q do Motor Desbravador usam listas de IDs resolvidas pelos nomes
+da descrição do cliente (incluindo `Farmiliar Intrépido`, grafia do banco de monstros
+para `Familiar Intrépido`).
+
+As chaves `p_monster` e `m_monster` são multiplicadores de dano físico e mágico
+separados de raça, tamanho, elemento e classe do monstro. `submonster` reduz o dano
+recebido do monstro selecionado em uma categoria própria, sem efeito em PvP.
+
 ## 1. Estrutura de uma entrada
 
 O arquivo é um objeto cuja **chave é o id do item**. Exemplo mínimo:

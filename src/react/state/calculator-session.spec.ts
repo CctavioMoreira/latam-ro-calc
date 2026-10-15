@@ -9,6 +9,7 @@ import { DataKey, DataManifest, manifestPath } from '../../app/core/data-manifes
 import { SKILL_DESC_BY_ID } from '../../app/skills';
 import { previewBuffsForClass } from '../../app/skills/preview-275';
 import { ClassName } from '../../app/jobs/_class-name';
+import { ItemTypeEnum } from '../../app/constants/item-type.enum';
 
 function makeSession(overrides: Partial<Record<DataKey, Promise<unknown>>> = {}) {
   const values = new Map<string, string>();
@@ -34,6 +35,73 @@ function makeSession(overrides: Partial<Record<DataKey, Promise<unknown>>> = {})
 describe('plain calculator session', () => {
   beforeEach(() => vi.useFakeTimers());
   afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); });
+  it.each([
+    [315757, 20773], [315758, 21386], [315759, 20801], [315760, 20612],
+  ])('keeps %i target bonuses visible and marks them inactive outside their target list', async (enchant, target) => {
+    const { session, storage } = makeSession();
+    storage.setItem('monster', '1038');
+    storage.setItem('ro-set', JSON.stringify({ class: 4256, level: 200, jobLevel: 1,
+      garment: 480956, garmentRefine: 10, garmentEnchant1: enchant }));
+    session.start();
+    await vi.advanceTimersByTimeAsync(1500);
+    session.selectedItemDesc = ItemTypeEnum.garmentEnchant1;
+    session.onSelectItemDescription();
+    const targetRows = () => session.itemBonusRows.filter(row => /monstros específicos/.test(row.label));
+    expect(targetRows()).toHaveLength(3);
+    expect(targetRows().every(row => row.display === '+25%' && row.note?.startsWith('Inativo para o alvo selecionado.'))).toBe(true);
+    expect(session.totalSummary?.['p_monster'] ?? 0).toBe(0);
+    expect(session.itemBonus['p_monster'] ?? 0).toBe(0);
+    session.selectedMonster = target;
+    session.onMonsterChange();
+    await vi.advanceTimersByTimeAsync(1000);
+    expect(targetRows()).toHaveLength(3);
+    expect(targetRows().every(row => row.display === '+25%' && !row.note)).toBe(true);
+    expect(session.totalSummary?.['p_monster']).toBe(25);
+    session.selectedMonster = 1038;
+    session.onMonsterChange();
+    await vi.advanceTimersByTimeAsync(1000);
+    expect(targetRows().every(row => row.note?.startsWith('Inativo para o alvo selecionado.'))).toBe(true);
+    expect(session.totalSummary?.['p_monster'] ?? 0).toBe(0);
+    session.dispose();
+  });
+
+  it.each([[0, 5], [7, 10], [8, 10], [9, 25]])('uses Motor refine +%i for inactive target bonuses', async (refine, expected) => {
+    const { session, storage } = makeSession();
+    storage.setItem('monster', '1038');
+    storage.setItem('ro-set', JSON.stringify({ class: 4256, level: 200, jobLevel: 1,
+      garment: 480956, garmentRefine: refine, garmentEnchant1: 315760 }));
+    session.start();
+    await vi.advanceTimersByTimeAsync(1500);
+    session.selectedItemDesc = ItemTypeEnum.garmentEnchant1;
+    session.onSelectItemDescription();
+    const rows = session.itemBonusRows.filter(row => /monstros específicos/.test(row.label));
+    expect(rows).toHaveLength(3);
+    expect(rows.every(row => row.display === `+${expected}%` && !!row.note)).toBe(true);
+    session.dispose();
+  });
+
+  it('uses the compared Motor refine for its inactive Q bonuses', async () => {
+    const { session, storage } = makeSession();
+    storage.setItem('monster', '1038');
+    storage.setItem('ro-set', JSON.stringify({ class: 4256, level: 200, jobLevel: 1,
+      garment: 480956, garmentRefine: 10, garmentEnchant1: 315760 }));
+    session.start();
+    await vi.advanceTimersByTimeAsync(1500);
+    session.isEnableCompare = true;
+    session.compareItemNames = [ItemTypeEnum.garment];
+    session.model2 = { rawOptionTxts: [], garment: 480956, garmentRefine: 7, garmentEnchant1: 315759 };
+    session.onCompareItemChange();
+    await vi.advanceTimersByTimeAsync(1000);
+    session.selectedCompareItemDesc = ItemTypeEnum.garmentEnchant1;
+    session.onSelectItemDescription(true);
+    expect(session.itemId).toBe(315759);
+    const rows = session.itemBonusRows.filter(row => /monstros específicos/.test(row.label));
+    expect(rows).toHaveLength(3);
+    expect(rows.every(row => row.display === '+10%' && !!row.note)).toBe(true);
+    expect(session.totalSummary2?.['p_monster'] ?? 0).toBe(0);
+    session.dispose();
+  });
+
   it('boots the real datasets, completes the solve and persists the existing autosave format', async () => {
     const { session, storage } = makeSession();
     session.start();

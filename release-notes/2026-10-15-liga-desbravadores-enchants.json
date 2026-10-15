@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "logs": [
+    "Adicionados os encantamentos do Jardinzinho (Florzinha 1, 2 e 3) e do Motor Desbravador (X-Voz, X-Acerto, X-Salvaguarda, X-Técnica, Q-Torre, Q-Gêmea, Q-Mar e Q-Abismo). Obrigado a Incarcerous pela sugestão!",
+    "Os bônus Q agora aparecem nas descrições dos itens mesmo quando não se aplicam ao alvo selecionado, com o valor do refino equipado e uma indicação de que estão inativos."
+  ]
+}
