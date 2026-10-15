@@ -1,7 +1,7 @@
 import { ClassName } from '../jobs/_class-name';
 import type { RebalanceClassReference } from './rebalance-2026-reference';
 
-// kRO June 8, 2022: fourth jobs v3 and expanded jobs v2.
+// kRO June 2, 2022: fourth jobs v3 and expanded jobs v2 (maintenance notice 7600).
 // Full formula tables published by Sigma in February 2025; see docs/skill-versions.md.
 export const REBALANCE_2022_REFERENCE: RebalanceClassReference[] = [
   { classes: [ClassName.ArchMage], source: 'https://sigmathefallen.blogspot.com/2025/02/arch-mage-3rd-version.html', skills: {

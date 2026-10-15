@@ -385,7 +385,7 @@ export function rebalancedSkillCatalog(skills: AtkSkillModel[], className: Class
         acd: 0, cd: 0, vct: 0, fct: 0, formula: patch.formula,
         isMatk: data.isMatk, isMelee: data.isMelee,
         element: data.element ? data.element[0].toUpperCase() + data.element.slice(1) as ElementType : undefined,
-        labelSuffix: historical ? 'Rebalance · jun/2022 · Prévia' : 'Rebalance · fev/2026',
+        labelSuffix: historical ? 'Rebalance - 02/06/2022 - (kRO)' : 'Rebalance - 21/12/2022 - (kRO)',
       }, version));
     }
   }

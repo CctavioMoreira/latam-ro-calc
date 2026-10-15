@@ -1,6 +1,8 @@
 # Skill formula versions and 275/60 previews
 
-The **Fórmulas** selector in Batalha, PVP and Auto-conjuração controls one build setting. **Atual (LATAM)** is the default, including old saved builds and unknown version values. **Rebalance 3rd · jun/2022 (Prévia)** selects the earlier bundle; **Rebalance 4th · fev/2026** selects the later February article ratios, hit counts and cast timings. The setting travels with named saves and shared builds. Comparing two builds resolves each build's version independently.
+The **Fórmulas** selector in Batalha, PVP and Auto-conjuração controls one build setting. **Atual (LATAM)** is the default, including old saved builds and unknown version values. **Rebalance - 02/06/2022 - (kRO)** selects the earlier bundle; **Rebalance - 21/12/2022 - (kRO)** selects the later ratios, hit counts and cast timings. Dates are the kRO deployment dates, verified against Gravity's maintenance notices [7600](https://ro.gnjoy.com/news/notice/View.asp?BBSMode=10001&seq=7600&curpage=1) and [7670](https://ro.gnjoy.com/news/notice/View.asp?BBSMode=10001&seq=7670&curpage=1). The adjacent info button opens a popover explaining the dates and linking each rebalance's Korean maintenance notice, English announcement and full formula archive. It is available in all three panels and closes on Escape or an outside click. The setting travels with named saves and shared builds. Comparing two builds resolves each build's version independently.
+
+The persisted version IDs `rebalance-2022-06` and `rebalance-2026-02` remain unchanged for saved/shared builds. The latter ID and the formula articles' February 2026 URLs describe when those references were published; they do not mean the rebalance arrived in kRO in 2026. The later announcement is [Sigma's fourth-rebalance post](https://www.divine-pride.net/forum/index.php?/topic/3723-kro-jobs-improvement-project/page/14/#comment-12421), followed by the final December 21, 2022 maintenance notice. Deployment dates were checked on 2026-10-15.
 
 The legacy class definitions remain the source for the current version. Each rebalance catalog uses copies and adds attacks absent from the current catalog only in the selected rebalance version. Preview attacks are available in all three versions and are explicitly labelled **Prévia**; all new buff/condition controls start disabled.
 
@@ -30,7 +32,7 @@ Earlier behavior includes Giant Growth's30% double-damage probability, Deft Stab
 
 `src/app/skills/rebalance-2022.spec.ts` covers every class, attack and level, independent numeric examples, Korean corrections, conditional packets, cast tables, traits/masteries, save round trips, version isolation, real damage and explicitly supplied autocast definitions. Session and browser tests exercise both rebalance settings and the Prévias reset.
 
-## February rebalance coverage
+## December 2022 rebalance coverage (formula references published February 2026)
 
 All 18 article groups in Sigma's dropdown are represented (20 classes because two articles cover pairs). Expanded classes call their February article the “3rd version.” The numeric timing reference is in `src/app/skills/rebalance-2026-reference.ts`; formulas and conditional states are in `rebalance-2026.ts`.
 
