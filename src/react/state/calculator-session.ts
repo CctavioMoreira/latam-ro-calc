@@ -71,7 +71,7 @@ import { DamageFormulaCalc } from '../../app/models/damage-summary.model';
 import { DropdownModel, ItemDropdownModel } from '../../app/models/dropdown.model';
 import { HpSpTable } from '../../app/models/hp-sp-table.model';
 import { ItemListModel } from '../../app/models/item-list.model';
-import { ItemModel } from '../../app/models/item.model';
+import { ItemModel, itemBonusScriptEntries } from '../../app/models/item.model';
 import { MonsterModel } from '../../app/models/monster.model';
 import { BETELGEUSE_HP_OPTIONS, normalizeBetelgeuseHp, withBetelgeuseHp } from '../../app/constants/betelgeuse-hp';
 import { BaseStateCalculator } from 'src/app/core/base-state-calculator';
@@ -551,7 +551,7 @@ export class CalculatorSession extends Store<number> {
   itemBonus = {};
   /** Visual rows for the item-bonus panel (replaces the raw JSON dump): each stat/skill
    *  bonus as a labelled row, skill-named bonuses carrying their pt-BR skill icon. */
-  itemBonusRows: { label: string; icon?: number; display: string; isSkill: boolean }[] = [];
+  itemBonusRows: { label: string; icon?: number; display: string; isSkill: boolean; note?: string }[] = [];
   itemDescription = '';
 
   /** LATAM shops are split per server; the market link below points at whichever is
@@ -3580,6 +3580,25 @@ await ((_event?: unknown) => {
     this.itemId = itemId;
     this.itemBonus = bonus; //{ script, bonus };
     this.itemBonusRows = this.buildItemBonusRows(bonus);
+    // The solved summary drops inactive target bonuses. Keep their refine-adjusted
+    // values visible in the description, clearly marked as inactive, without changing
+    // the bonus map used by the simulation or its breakdowns.
+    if (selectedType && this.items?.[itemId]) {
+      const calculator = isCompareItem ? this.calculator2 : this.calculator;
+      const model = isCompareItem ? { ...this.model, ...this.model2 } : this.model;
+      const parent = selectedType.replace(/Enchant\d|Card.*/, '');
+      const refine = model[`${parent}Refine`] ?? 0;
+      for (const [key, lines] of itemBonusScriptEntries(this.items[itemId].script)) {
+        if (bonus[key]) continue;
+        const value = lines.reduce((sum, line) => {
+          const condition = line.match(/^MONSTER_ID\[[\d|]+]/);
+          return condition ? sum + calculator.evaluateItemRule(selectedType, line.slice(condition[0].length), refine).value : sum;
+        }, 0);
+        if (!value) continue;
+        const [row] = this.buildItemBonusRows({ [key]: value });
+        this.itemBonusRows.push({ ...row, note: 'Inativo para o alvo selecionado. Aplica-se aos monstros listados na descrição.' });
+      }
+    }
     this.itemDescription = prettyItemDesc(this.itemDescriptionStore.get(itemId));
   }
 
