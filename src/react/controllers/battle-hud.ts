@@ -1,5 +1,6 @@
 import { ViewState } from '../state/view-state';
 import { Events } from '../services/events';
+import type { SkillFormulaVersion } from '../../app/skills/skill-formula-version';
 import { itemSlotLabelPtBr } from '../../app/constants/item-slot-i18n';
 import { DropdownModel } from '../../app/models/dropdown.model';
 import { dmgTypeLabel as dmgTypeLabelUtil, skillDescHtml } from '../../app/utils';
@@ -39,7 +40,7 @@ import { IncomingDamageStep } from '../../app/core/monster-damage-taken';
 
 
 export class BattleHudComponent extends ViewState {
-   skillFormulaVersionChange = new Events<'current' | 'rebalance-2026-02'>();
+   skillFormulaVersionChange = new Events<SkillFormulaVersion>();
    totalSummary = {} as any;
    totalSummary2 = {} as any;
    isEnableCompare: boolean;

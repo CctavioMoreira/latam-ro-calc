@@ -1,4 +1,5 @@
 import { Store } from '../state/store';
+import { normalizeSkillFormulaVersion, SkillFormulaVersion } from '../../app/skills/skill-formula-version';
 import { Lifetime } from '../state/lifetime';
 import { Events, Disposable, listenDebounced } from '../services/events';
 import { Messages as MessageService, Confirmations as ConfirmationService } from '../services/notifications';
@@ -1266,8 +1267,8 @@ await ((_event?: unknown) => {
     this.updateItemEvent.next(true);
   }
 
-  onSkillFormulaVersionChange(version: 'current' | 'rebalance-2026-02') {
-    this.model.skillFormulaVersion = this.showPreviews && version === 'rebalance-2026-02' ? version : 'current';
+  onSkillFormulaVersionChange(version: SkillFormulaVersion) {
+    this.model.skillFormulaVersion = this.showPreviews ? normalizeSkillFormulaVersion(version) : 'current';
     this.setClassSkill();
     const rotation = this.model.rotation ?? [];
     const kept = rotation.flatMap((value, index) => pruneRotationForClass([value], this.atkSkills).length ? [index] : []);

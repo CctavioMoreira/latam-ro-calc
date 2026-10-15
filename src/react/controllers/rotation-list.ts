@@ -1,5 +1,6 @@
 import { ViewState } from '../state/view-state';
 import { Events } from '../services/events';
+import type { SkillFormulaVersion } from '../../app/skills/skill-formula-version';
 import { moveItemInArray } from '../ui/reorder';
 import { BASIC_ATTACK_VALUE, MAX_ROTATION_LENGTH } from '../../app/core/rotation';
 import { buildRotationPickerOptions, elementTagClass as elementTagClassFn, RotationPickerOption } from '../../app/layout/pages/ro-calculator/battle-hud/battle-hud.logic';
@@ -21,8 +22,8 @@ export const BASIC_ATTACK_ICON = 'https://assets.latam-tools.com.br/maps/_u/4680
  */
 
 export class RotationListComponent extends ViewState {
-   skillFormulaVersion: 'current' | 'rebalance-2026-02' = 'current';
-   skillFormulaVersionChange = new Events<'current' | 'rebalance-2026-02'>();
+   skillFormulaVersion: SkillFormulaVersion = 'current';
+   skillFormulaVersionChange = new Events<SkillFormulaVersion>();
    entries: RotationEntryView[] = [];
   /** The compared build's entries, positionally aligned with `entries`. */
    entries2: RotationEntryView[] | null = null;
