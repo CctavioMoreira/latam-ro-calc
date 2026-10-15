@@ -130,7 +130,7 @@ const plain = (s) => (s || '').replace(/\^[0-9a-fA-F]{6}/g, '');
 
 /** Footer lines. "Utilização:" / "Equipado em:" are older spellings of "Equipa em:". */
 const FOOTER =
-  /^(Tipo|Equipa em|Equipado em|Utiliza[cç][aã]o|Peso|Classes|N[ií]vel necess[aá]rio|Composi[cç][aã]o|Grupo|Localiza[cç][aã]o)\s*[:.]/i;
+  /^(Tipo|Equipa em|Equipado em|Equipamento|Utiliza[cç][aã]o|Peso|Classes|N[ií]vel necess[aá]rio|Composi[cç][aã]o|Grupo|Localiza[cç][aã]o)\s*[:.]/i;
 
 // ── the bonus-key vocabulary ─────────────────────────────────────────────────────────
 
@@ -173,6 +173,8 @@ const TYPE_LINE = /Tipo\s*:\s*([^\n]*)/g;
 const CARD_POSITION = {
   'Arma': POS.Weapon, 'Armadura': POS.Armor, 'Escudo': POS.Shield, 'Capa': POS.Garment,
   'Calçado': POS.Boot, 'Acessório': POS.Acc, 'Aces. Direito': POS.AccR,
+  'Calçados': POS.Boot, 'Cabeça': POS.Head,
+  'Acessório (Esquerdo)': POS.AccL, 'Acessório (Direito)': POS.AccR,
   'Aces. Esquerdo': POS.AccL, 'Equip. para Cabeça': POS.Head,
   // Seen once, on 4610: the same slot spelled out. Kept separate so the label the client
   // actually printed survives into the JSON and nobody has to trust this line.
@@ -544,7 +546,7 @@ function resolveSlot(desc, id) {
   const modern = /Equipa em\s*:\s*([^\n]*)/.exec(desc)?.[1].trim();
   if (modern) return { label: modern, source: 'Equipa em' };
 
-  const older = /(?:Utiliza[cç][aã]o|Equipado em|Localiza[cç][aã]o)\s*:\s*([^\n]*)/.exec(desc)?.[1].trim();
+  const older = /(?:Utiliza[cç][aã]o|Equipado em|Equipamento|Localiza[cç][aã]o)\s*:\s*([^\n]*)/.exec(desc)?.[1].trim();
   if (older) return { label: older, source: 'older spelling' };
 
   const classes = /Classes\s*:\s*([^\n]*)/.exec(desc)?.[1].trim();

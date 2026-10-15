@@ -28,7 +28,7 @@ describe('LATAM item auto-cast audit', () => {
   it('accounts for the current attack-trigger candidate set', () => {
     // A client-data update must deliberately reclassify the changed set rather than
     // silently making a new proc eligible for production.
-    expect(candidates).toHaveLength(241);
+    expect(candidates).toHaveLength(243);
     const dispositions = candidates.map(([id]) => items[id].script?.autoCast ? 'verified-direct-damage' : 'pending-verification');
     expect(dispositions).toHaveLength(candidates.length);
   });

@@ -406,10 +406,10 @@ describe('the whole card catalogue', () => {
     .map(Number);
 
   it('holds a record for every card the LATAM client ships', () => {
-    // 1085 records are named "Carta …"; 19 of them are not cards. The other 1066 are all
+    // 1109 records are named "Carta …"; 19 of them are not cards. The other 1090 are all
     // here. A client update shipping a new card fails this line, which is the point.
-    expect(Object.keys(latam).filter((id) => /^Carta /.test(latam[id].name || ''))).toHaveLength(1085);
-    expect(CARDS).toHaveLength(1066);
+    expect(Object.keys(latam).filter((id) => /^Carta /.test(latam[id].name || ''))).toHaveLength(1109);
+    expect(CARDS).toHaveLength(1090);
     expect(CARDS.filter((id) => !items[id])).toEqual([]);
   });
 
@@ -433,11 +433,15 @@ describe('the whole card catalogue', () => {
       Escudo: CardPosition.Shield,
       Capa: CardPosition.Garment,
       Calçado: CardPosition.Boot,
+      Calçados: CardPosition.Boot,
       Acessório: CardPosition.Acc,
       'Aces. Direito': CardPosition.AccR,
       'Aces. Esquerdo': CardPosition.AccL,
       'Equip. para Cabeça': CardPosition.Head,
       'Equipamento para Cabeça': CardPosition.Head,
+      Cabeça: CardPosition.Head,
+      'Acessório (Esquerdo)': CardPosition.AccL,
+      'Acessório (Direito)': CardPosition.AccR,
       // The client's own typos, one card each: 27105 prints "Aces. DIreito" and 27116 the
       // Spanish "Accesorio".
       'Aces. DIreito': CardPosition.AccR,
@@ -457,7 +461,7 @@ describe('the whole card catalogue', () => {
     // "Classes:" names the equipment type on a card ("Classes: Arma" on 4421) though the
     // same label lists job classes on ordinary gear, and 4423 prints "Tipo:" twice — once
     // for "Carta", once for the slot. Both are read only when the value IS a slot.
-    const SLOT_LINE = /(?:Equipa em|Equipado em|Utiliza[cç][aã]o|Localiza[cç][aã]o)\s*:\s*([^\n]*)/;
+    const SLOT_LINE = /(?:Equipa em|Equipado em|Equipamento|Utiliza[cç][aã]o|Localiza[cç][aã]o)\s*:\s*([^\n]*)/;
     const FALLBACK_LINE = /(?:Classes|Tipo)\s*:\s*([^\n]*)/g;
 
     for (const id of CARDS) {

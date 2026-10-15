@@ -54198,6 +54198,9 @@
       "all"
     ],
     "script": {
+      "hp": [
+        "1---10"
+      ],
       "atkPercent": [
         "3",
         "EQUIP[Full Power Shadow Shoes]===2",
@@ -54245,13 +54248,16 @@
       "all"
     ],
     "script": {
+      "hp": [
+        "1---10"
+      ],
       "atkPercent": [
         "3",
-        "EQUIP[Physical Power Shadow Shield]===3"
+        "EQUIP_ID[24752]===3"
       ],
       "pAtk": [
         "10===2",
-        "EQUIP[Physical Power Shadow Shield]REFINE[shadowBoot,shadowShield==18]===3"
+        "EQUIP_ID[24752]REFINE[shadowBoot,shadowShield==18]===3"
       ],
       "melee": [
         "2---1"
@@ -54260,7 +54266,7 @@
         "2---1"
       ],
       "pow": [
-        "EQUIP[Physical Power Shadow Shield]REFINE[shadowBoot,shadowShield==18]===3"
+        "EQUIP_ID[24752]REFINE[shadowBoot,shadowShield==18]===3"
       ]
     }
   },
@@ -54285,6 +54291,9 @@
       "all"
     ],
     "script": {
+      "hp": [
+        "1---10"
+      ],
       "cri": [
         "3"
       ],
@@ -54330,6 +54339,9 @@
       "all"
     ],
     "script": {
+      "hp": [
+        "1---10"
+      ],
       "cri": [
         "3"
       ],
@@ -54369,6 +54381,9 @@
       "all"
     ],
     "script": {
+      "hp": [
+        "1---10"
+      ],
       "atkPercent": [
         "3",
         "EQUIP[Focusing Shadow Earring]===2",
@@ -54411,6 +54426,9 @@
       "all"
     ],
     "script": {
+      "hp": [
+        "1---10"
+      ],
       "atkPercent": [
         "3",
         "EQUIP[Concentration Shadow Shield]===3"
@@ -54448,6 +54466,9 @@
       "all"
     ],
     "script": {
+      "hp": [
+        "1---10"
+      ],
       "def": [
         "30",
         "EQUIP[Stout Shadow Earring]===15"
@@ -54488,6 +54509,9 @@
       "all"
     ],
     "script": {
+      "hp": [
+        "1---10"
+      ],
       "def": [
         "30"
       ],
@@ -197030,12 +197054,11 @@
   },
   "500054": {
     "id": 500054,
-    "preRelease": true,
     "aegisName": "D_Glacier_Sword",
     "name": "Dim Glacier Sword [1]",
     "unidName": "Bastard Sword",
     "resName": "D_Glacier_Sword",
-    "description": "A dim glacier sword tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nMATK +210\n------------------------\nType : Sword\nAttack : 220\nWeight : 160\nWeapon Level : 5\nRequired Level : 230\nClass : Swordman, Merchant Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 257,
@@ -197059,12 +197082,11 @@
   },
   "500055": {
     "id": 500055,
-    "preRelease": true,
     "aegisName": "D_Glacier_B_Sword",
     "name": "Dim Glacier Basic Sword [1]",
     "unidName": "Bastard Sword",
     "resName": "D_Glacier_B_Sword",
-    "description": "A dim glacier basic sword tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nMATK +210\n------------------------\nType : Sword\nAttack : 220\nWeight : 140\nWeapon Level : 5\nRequired Level : 230\nClass : Novice Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 257,
@@ -199740,12 +199762,11 @@
   },
   "510075": {
     "id": 510075,
-    "preRelease": true,
     "aegisName": "D_Glacier_R_Knife",
     "name": "Dim Glacier Rogue Knife [1]",
     "unidName": "Knife",
     "resName": "D_Glacier_R_Knife",
-    "description": "A dim glacier rogue knife tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nMATK +210\n------------------------\nType : Dagger\nAttack : 210\nWeight : 140\nWeapon Level : 5\nRequired Level : 230\nClass : Shadow Chaser Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 256,
@@ -199768,12 +199789,11 @@
   },
   "510076": {
     "id": 510076,
-    "preRelease": true,
     "aegisName": "D_Glacier_B_Knife",
     "name": "Dim Glacier Basic Knife [1]",
     "unidName": "Knife",
     "resName": "D_Glacier_B_Knife",
-    "description": "A dim glacier basic knife tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nMATK +210\n------------------------\nType : Dagger\nAttack : 210\nWeight : 120\nWeapon Level : 5\nRequired Level : 230\nClass : Novice Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 256,
@@ -200845,12 +200865,11 @@
   },
   "520021": {
     "id": 520021,
-    "preRelease": true,
     "aegisName": "D_Glacier_Axe",
     "name": "Dim Glacier Axe [1]",
     "unidName": "Axe",
     "resName": "D_Glacier_Axe",
-    "description": "A dim glacier axe tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nIndestructible in battle\n\nMATK +210\n------------------------\nType : One-handed Axe\nAttack : 240\nWeight : 500\nWeapon Level : 5\nRequired Level : 230\nClass : Swordman, Merchant Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 261,
@@ -201619,12 +201638,11 @@
   },
   "530034": {
     "id": 530034,
-    "preRelease": true,
     "aegisName": "D_Glacier_Spear",
     "name": "Dim Glacier Spear [1]",
     "unidName": "Javelin",
     "resName": "D_Glacier_Spear",
-    "description": "A dim glacier spear tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nMATK +210\n------------------------\nType : One-handed Spear\nAttack : 220\nWeight : 210\nWeapon Level : 5\nRequired Level : 230\nClass : Swordman Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 259,
@@ -203833,12 +203851,11 @@
   },
   "540056": {
     "id": 540056,
-    "preRelease": true,
     "aegisName": "D_Glacier_Book",
     "name": "Dim Glacier Book [1]",
     "unidName": "Book",
     "resName": "D_Glacier_Book",
-    "description": "A dim glacier book tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nIndestructible in battle\n\nMATK +210\n------------------------\nType : Book\nAttack : 210\nWeight : 120\nWeapon Level : 5\nRequired Level : 230\nClass : Sage, Priest, Taekwon Master Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 271,
@@ -207925,12 +207942,11 @@
   },
   "550089": {
     "id": 550089,
-    "preRelease": true,
     "aegisName": "D_Glacier_Wand",
     "name": "Dim Glacier Wand [1]",
     "unidName": "Rod",
     "resName": "D_Glacier_Wand",
-    "description": "A dim glacier wand tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nIndestructible in battle\n\nMATK +230\n------------------------\nType : One-Handed Staff\nAttack : 150\nWeight : 130\nWeapon Level : 5\nRequired Level : 230\nClass : Novice, Mage, Acolyte, Soul Linker Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 265,
@@ -207956,12 +207972,11 @@
   },
   "550090": {
     "id": 550090,
-    "preRelease": true,
     "aegisName": "D_Glacier_Foxtail",
     "name": "Dim Glacier Foxtail [1]",
     "unidName": "Rod",
     "resName": "D_Glacier_Foxtail",
-    "description": "A dim glacier foxtail tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nIndestructible in battle\n\nMATK +400\n------------------------\nType : One-Handed Staff\nAttack : 400\nWeight : 200\nWeapon Level : 5\nRequired Level : 230\nClass : Summoner (Doram) Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 265,
@@ -210622,12 +210637,11 @@
   },
   "560036": {
     "id": 560036,
-    "preRelease": true,
     "aegisName": "Demonic_Claw",
     "name": "Demonic Claw [2]",
     "unidName": "Waghnak",
     "resName": "Sins_Finger",
-    "description": "Knuckles imbued with the power of one who has vanquished countless demons.\n------------------------\nATK + 5%, POW + 2.\n------------------------\nIncreases Explosion Blaster damage by 5%.\n------------------------\nWhen refined to +5 or higher, increases Explosion Blaster damage by 10%.\n------------------------\nWhen refined to +7 or higher, increases long-range physical damage by 5%.\n------------------------\nWhen refined to +9 or higher, increases Explosion Blaster damage by 10%.\n------------------------\nWhen refined to +10 or higher, CRI + 10.\n------------------------\nWhen refined to +11 or higher, increases Explosion Blaster damage by 5%, and Oleum Sanctum damage by 15%.\n------------------------\n[Grade Bonus]\n[Grade D] Increases long-range physical damage by 10%.\n[Grade C] Increases physical damage against all size enemies by 10%.\n[Grade B] Increases physical damage against all race enemies by 10%.\n[Grade A] Increases physical damage against all property enemies by 10%.\n------------------------\nType : Knuckle\nAttack : 210\nWeight : 150\nWeapon Level : 5\nRequired Level : 215\nClass : Inquisitor",
+    "description": "",
     "slots": 2,
     "itemTypeId": 1,
     "itemSubTypeId": 268,
@@ -210678,12 +210692,11 @@
   },
   "560037": {
     "id": 560037,
-    "preRelease": true,
     "aegisName": "D_Glacier_Knuckle",
     "name": "Dim Glacier Knuckle [1]",
     "unidName": "Waghnak",
     "resName": "D_Glacier_Knuckle",
-    "description": "A dim glacier knuckle tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nMATK +220\n------------------------\nType : Knuckle\nAttack : 240\nWeight : 150\nWeapon Level : 5\nRequired Level : 230\nClass : Sura Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 268,
@@ -212004,12 +212017,11 @@
   },
   "570032": {
     "id": 570032,
-    "preRelease": true,
     "aegisName": "D_Glacier_Violin",
     "name": "Dim Glacier Violin [1]",
     "unidName": "Violin",
     "resName": "D_Glacier_Violin",
-    "description": "A dim glacier violin tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nMATK +210\n------------------------\nType : Instrument\nAttack : 210\nWeight : 150\nWeapon Level : 5\nRequired Level : 230\nClass : Minstrel Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 269,
@@ -213426,12 +213438,11 @@
   },
   "580033": {
     "id": 580033,
-    "preRelease": true,
     "aegisName": "D_Glacier_Whip",
     "name": "Dim Glacier Whip [1]",
     "unidName": "Rope",
     "resName": "D_Glacier_Whip",
-    "description": "A dim glacier whip tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nMATK +210\n------------------------\nType : Whip\nAttack : 210\nWeight : 150\nWeapon Level : 5\nRequired Level : 230\nClass : Wanderer Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 270,
@@ -215262,12 +215273,11 @@
   },
   "590047": {
     "id": 590047,
-    "preRelease": true,
     "aegisName": "D_Glacier_Mace",
     "name": "Dim Glacier Mace [1]",
     "unidName": "Mace",
     "resName": "D_Glacier_Mace",
-    "description": "A dim glacier mace tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nIndestructible in battle\n\nMATK +210\n------------------------\nType : Mace\nAttack : 210\nWeight : 180\nWeapon Level : 5\nRequired Level : 230\nClass : Swordman, Merchant, Acolyte Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 263,
@@ -215292,12 +215302,11 @@
   },
   "590048": {
     "id": 590048,
-    "preRelease": true,
     "aegisName": "D_Glacier_M_Mace",
     "name": "Dim Glacier Mechanic Mace [1]",
     "unidName": "Mace",
     "resName": "D_Glacier_M_Mace",
-    "description": "A dim glacier mechanic mace tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nIndestructible in battle\n\nMATK +160\n------------------------\nType : Mace\nAttack : 400\nWeight : 400\nWeapon Level : 5\nRequired Level : 230\nClass : Mechanic Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 263,
@@ -216450,12 +216459,11 @@
   },
   "600030": {
     "id": 600030,
-    "preRelease": true,
     "aegisName": "D_Glacier_T_Sword",
     "name": "Dim Glacier Two-handed Sword [1]",
     "unidName": "Bastard Sword",
     "resName": "D_Glacier_T_Sword",
-    "description": "A dim glacier two-handed sword tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nMATK +270\n------------------------\nType : Two-handed Sword\nAttack : 300\nWeight : 400\nWeapon Level : 5\nRequired Level : 230\nClass : Knight Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 258,
@@ -217738,12 +217746,11 @@
   },
   "610041": {
     "id": 610041,
-    "preRelease": true,
     "aegisName": "D_Glacier_Katar",
     "name": "Dim Glacier Katar [1]",
     "unidName": "Jur",
     "resName": "D_Glacier_Katar",
-    "description": "A dim glacier katar tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nMATK +220\n------------------------\nType : Katar\nAttack : 240\nWeight : 120\nWeapon Level : 5\nRequired Level : 230\nClass : Guillotine Cross Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 272,
@@ -217879,12 +217886,11 @@
   },
   "610045": {
     "id": 610045,
-    "preRelease": true,
     "aegisName": "Shining_Light_Katar",
     "name": "Shining Light Katar [2]",
     "unidName": "Jur",
     "resName": "Fate_Katar",
-    "description": "A shining Katar infused with the power of brilliant light to fight against demons.\n------------------------\nATK + 5%, POW + 2.\n------------------------\nIncrease Eternal Slash damage by 5%.\n------------------------\nWhen refined to +5 or higher, increase Eternal Slash damage by additional 10%.\n------------------------\nWhen refined to +7 or higher, increase melee physical damage by 5%.\n------------------------\nWhen refined to +9 or higher, increase Eternal Slash damage by additional 10%.\n------------------------\nWhen refined to +10 or higher, ASPD + 10%.\n------------------------\nWhen refined to +11 or higher, increase Eternal Slash damage by additional 5% and Savage Impact damage by 15%.\n------------------------\n[Grade Bonus]\n[Grade D] Increase melee physical damage by 10%.\n[Grade C] Increase physical damage against all sizes enemies by 10%.\n[Grade B] Increase physical damage against all races enemies by 10%.\n[Grade A] Increase physical damage against all property enemies by 10%.\n------------------------\nType : Katar\nAttack : 290\nWeight : 100\nWeapon Level : 5\nRequired Level : 215\nClass : Shadow Cross",
+    "description": "",
     "slots": 2,
     "itemTypeId": 1,
     "itemSubTypeId": 272,
@@ -218726,12 +218732,11 @@
   },
   "620019": {
     "id": 620019,
-    "preRelease": true,
     "aegisName": "D_Glacier_T_Axe",
     "name": "Dim Glacier Mechanic Axe [1]",
     "unidName": "Axe",
     "resName": "D_Glacier_T_Axe",
-    "description": "A dim glacier mechanic axe tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nIndestructible in battle\n\nMATK +180\n------------------------\nType : Two-handed Axe\nAttack : 350\nWeight : 700\nWeapon Level : 5\nRequired Level : 230\nClass : Mechanic Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 262,
@@ -219449,12 +219454,11 @@
   },
   "630019": {
     "id": 630019,
-    "preRelease": true,
     "aegisName": "D_Glacier_Lance",
     "name": "Dim Glacier Lance [1]",
     "unidName": "Lance",
     "resName": "D_Glacier_Lance",
-    "description": "A dim glacier lance tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nMATK +270\n------------------------\nType : Two-handed Spear\nAttack : 300\nWeight : 450\nWeapon Level : 5\nRequired Level : 230\nClass : Knight Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 260,
@@ -220967,12 +220971,11 @@
   },
   "640034": {
     "id": 640034,
-    "preRelease": true,
     "aegisName": "D_Glacier_Staff",
     "name": "Dim Glacier Staff [1]",
     "unidName": "Rod",
     "resName": "D_Glacier_Staff",
-    "description": "A dim glacier staff tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nIndestructible in battle\n\nMATK +290\n------------------------\nType : Two-handed Staff\nAttack : 150\nWeight : 240\nWeapon Level : 5\nRequired Level : 230\nClass : Mage, Acolyte, Soul Linker Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 266,
@@ -221071,12 +221074,11 @@
   },
   "640036": {
     "id": 640036,
-    "preRelease": true,
     "aegisName": "Devil_Wing_Staff",
     "name": "Devil Wing Staff [2]",
     "unidName": "Rod",
     "resName": "Sins_Staff",
-    "description": "A two-handed staff designed to harness chaos magic.\n------------------------\nCannot be destroyed.\n------------------------\nMATK + 290.\n------------------------\nMATK + 5%, SPL + 2.\n------------------------\nIncrease Soul Vulcan Strike damage by 5%.\n------------------------\nWhen refined to +5 or higher, increase Soul Vulcan Strike damage by additional 10%.\n------------------------\nWhen refined to +7 or higher, increase Ghost and Shadow property magic damage by 5%.\n------------------------\nWhen refined to +9 or higher, increase Soul Vulcan Strike damage by additional 10%.\n------------------------\nWhen refined to +10 or higher, reduce Variable Casting Time by 10%.\n------------------------\nWhen refined to +11 or higher, increase Soul Vulcan Strike damage by additional 5% and Mystery Illusion damage by 15%.\n------------------------\n[Grade Bonus]\n[Grade D] Increase Ghost and Shadow property magic damage by 10%.\n[Grade C] Increase magic damage against all sizes enemies by 10%.\n[Grade B] Increase magic damage against all races enemies by 10%.\n[Grade A] Increase magic damage against all property enemies by 10%.\n------------------------\nType : Two-handed Staff\nAttack : 95\nWeight : 140\nWeapon Level : 5\nRequired Level : 215\nClass : Arch Mage",
+    "description": "",
     "slots": 2,
     "itemTypeId": 1,
     "itemSubTypeId": 266,
@@ -222200,12 +222202,11 @@
   },
   "650028": {
     "id": 650028,
-    "preRelease": true,
     "aegisName": "D_Glacier_Humma",
     "name": "Dim Glacier Huuma Shuriken [1]",
     "unidName": "Huuma Shuriken",
     "resName": "D_Glacier_Humma",
-    "description": "A dim glacier huuma shuriken tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nIndestructible in battle\n\nMATK +370\n------------------------\nType : Huuma Shuriken\nAttack : 400\nWeight : 300\nWeapon Level : 5\nRequired Level : 230\nClass : Ninja Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 278,
@@ -222354,12 +222355,11 @@
   },
   "650034": {
     "id": 650034,
-    "preRelease": true,
     "aegisName": "Humma_Brilliance",
     "name": "Huuma Shuriken Brilliance [2]",
     "unidName": "Huuma Shuriken",
     "resName": "Fate_Huuma",
-    "description": "A Fuuma Shuriken imbued with sacred power, emitting a radiant light.\n          \nIndestructible in battle.\n          \nATK + 5%, POW + 2.\n          \nHuuma Shuriken - Construct damage +5%.\n------------------------\nWhen refine level 5 or more, Huuma Shuriken - Construct damage +10%.\n------------------------\nWhen refine level 7 or more, Ranged physical damage +5%.\n------------------------\nWhen refine level 9 or more, Huuma Shuriken - Construct damage +10% additional.\n------------------------\nWhen refine level 10 or more, Global Cooldown -10%.\n------------------------\nWhen refine level 11 or more, Huuma Shuriken - Construct damage +5% additional, Huuma Shuriken - Grasp damage +15%.\n------------------------\n[Bonus by Grade]\n[Grade D] Ranged physical damage +10%.\n[Grade C] Physical damage to all size enemies +10%.\n[Grade B] Physical damage to all race enemies +10%.\n[Grade A] Physical damage to all property enemies +10%.\n------------------------\nType : Fuuma Shuriken\nAttack : 330\nWeight : 260\nWeapon Level : 5\nRequired Level : 215\nClass : Kagerou, Shiranui",
+    "description": "",
     "slots": 2,
     "itemTypeId": 1,
     "itemSubTypeId": 278,
@@ -224195,12 +224195,11 @@
   },
   "700059": {
     "id": 700059,
-    "preRelease": true,
     "aegisName": "D_Glacier_Bow",
     "name": "Dim Glacier Bow [1]",
     "unidName": "Bow",
     "resName": "D_Glacier_Bow",
-    "description": "A dim glacier bow tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nMATK +220\n------------------------\nType : Bow\nRange : 5\nAttack : 240\nWeight : 150\nWeapon Level : 5\nRequired Level : 230\nClass : Archer, Rogue Classes",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 267,
@@ -225217,12 +225216,11 @@
   },
   "800015": {
     "id": 800015,
-    "preRelease": true,
     "aegisName": "D_Glacier_Revolver",
     "name": "Dim Glacier Revolver [1]",
     "unidName": "Six Shooter",
     "resName": "D_Glacier_Revolver",
-    "description": "A dim glacier revolver tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nMATK +230\n------------------------\nType : Pistol\nRange : 7\nAttack : 230\nWeight : 220\nWeapon Level : 5\nRequired Level : 230\nClass : Rebellion Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 273,
@@ -225957,12 +225955,11 @@
   },
   "810015": {
     "id": 810015,
-    "preRelease": true,
     "aegisName": "D_Glacier_Rifle",
     "name": "Dim Glacier Rifle [1]",
     "unidName": "Rifle",
     "resName": "D_Glacier_Rifle",
-    "description": "A dim glacier rifle tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nMATK +230\n------------------------\nType : Rifle\nRange : 9\nAttack : 280\nWeight : 260\nWeapon Level : 5\nRequired Level : 230\nClass : Rebellion Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 274,
@@ -226608,12 +226605,11 @@
   },
   "820011": {
     "id": 820011,
-    "preRelease": true,
     "aegisName": "D_Glacier_Shotgun",
     "name": "Dim Glacier Shotgun [1]",
     "unidName": "Single Shotgun",
     "resName": "D_Glacier_Shotgun",
-    "description": "A dim glacier shotgun tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nSplash Attack.\n\nMATK +200.\n------------------------\nType : Shotgun\nRange : 9\nAttack : 300\nWeight : 260\nWeapon Level : 5\nRequired Level : 230\nClass : Rebellion Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 276,
@@ -227317,12 +227313,11 @@
   },
   "830015": {
     "id": 830015,
-    "preRelease": true,
     "aegisName": "D_Glacier_Gatling",
     "name": "Dim Glacier Gatling Gun [1]",
     "unidName": "Drifter",
     "resName": "D_Glacier_Gatling",
-    "description": "A dim glacier gatling gun tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nMATK +200\n------------------------\nType : Gatling Gun\nRange : 9\nAttack : 350\nWeight : 350\nWeapon Level : 5\nRequired Level : 230\nClass : Rebellion Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 275,
@@ -227944,12 +227939,11 @@
   },
   "840010": {
     "id": 840010,
-    "preRelease": true,
     "aegisName": "D_Glacier_Launcher",
     "name": "Dim Glacier Grenade Launcher [1]",
     "unidName": "Destroyer",
     "resName": "D_Glacier_Launcher",
-    "description": "A dim glacier grenade launcher tainted by venomous magic, its gleam lost to corruption.\nIt no longer responds like other Glacier weapons, so you might need a different approach to wield it.\n------------------------\nMATK +200\n------------------------\nType : Grenade Launcher\nRange : 9\nAttack : 300\nWeight : 300\nWeapon Level : 5\nRequired Level : 230\nClass : Rebellion Series",
+    "description": "",
     "slots": 1,
     "itemTypeId": 1,
     "itemSubTypeId": 277,
@@ -372169,6 +372163,940 @@
     "script": {
       "def": [
         "20"
+      ]
+    }
+  },
+  "480087": {
+    "id": 480087,
+    "aegisName": "Ten_G_Shield_TW",
+    "name": "Escudo Formoso",
+    "unidName": "Escudo Formoso",
+    "resName": "",
+    "description": "",
+    "slots": 1,
+    "itemTypeId": 2,
+    "itemSubTypeId": 515,
+    "itemLevel": null,
+    "attack": null,
+    "defense": 20,
+    "weight": 20,
+    "requiredLevel": 1,
+    "location": "Garment",
+    "compositionPos": null,
+    "usableClass": [
+      "all"
+    ],
+    "script": {
+      "hp": [
+        "1010"
+      ],
+      "dmg_taken_range": [
+        "3---2"
+      ],
+      "subsize_all": [
+        "4---1"
+      ],
+      "hpPercent": [
+        "9===10"
+      ]
+    }
+  },
+  "410213": {
+    "id": 410213,
+    "aegisName": "Ear_OF_Bloody",
+    "name": "Orelhas Sanguinárias",
+    "unidName": "Orelhas Sanguinárias",
+    "resName": "",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 2,
+    "itemSubTypeId": 512,
+    "itemLevel": null,
+    "attack": null,
+    "defense": 0,
+    "weight": 10,
+    "requiredLevel": 1,
+    "location": "Middle",
+    "compositionPos": null,
+    "usableClass": [
+      "all"
+    ],
+    "script": {
+      "con": [
+        "SUM[dex,luk==15]---1"
+      ],
+      "range": [
+        "SUM[dex,luk==30]---1",
+        "SUM[dex,luk==250]===15"
+      ]
+    }
+  },
+  "410215": {
+    "id": 410215,
+    "aegisName": "Ear_OF_Spirit",
+    "name": "Orelhas Espirituais",
+    "unidName": "Orelhas Espirituais",
+    "resName": "",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 2,
+    "itemSubTypeId": 512,
+    "itemLevel": null,
+    "attack": null,
+    "defense": 0,
+    "weight": 10,
+    "requiredLevel": 1,
+    "location": "Middle",
+    "compositionPos": null,
+    "usableClass": [
+      "all"
+    ],
+    "script": {
+      "pow": [
+        "SUM[str,vit==15]---1"
+      ],
+      "melee": [
+        "SUM[str,vit==30]---1",
+        "SUM[str,vit==250]===15"
+      ]
+    }
+  },
+  "410216": {
+    "id": 410216,
+    "aegisName": "Ear_OF_Abyss",
+    "name": "Orelhas Abissais",
+    "unidName": "Orelhas Abissais",
+    "resName": "",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 2,
+    "itemSubTypeId": 512,
+    "itemLevel": null,
+    "attack": null,
+    "defense": 0,
+    "weight": 10,
+    "requiredLevel": 1,
+    "location": "Middle",
+    "compositionPos": null,
+    "usableClass": [
+      "all"
+    ],
+    "script": {
+      "spl": [
+        "SUM[int,agi==15]---1"
+      ],
+      "m_race_all": [
+        "SUM[int,agi==30]---1",
+        "SUM[int,agi==250]===15"
+      ]
+    }
+  },
+  "491111": {
+    "id": 491111,
+    "aegisName": "Consecrate_Sword_LT",
+    "name": "Colar Consagrado: Coragem",
+    "unidName": "Colar Consagrado: Coragem",
+    "resName": "",
+    "description": "",
+    "slots": 1,
+    "itemTypeId": 2,
+    "itemSubTypeId": 511,
+    "itemLevel": null,
+    "attack": null,
+    "defense": 0,
+    "weight": 20,
+    "requiredLevel": 210,
+    "location": null,
+    "compositionPos": null,
+    "usableClass": [
+      "all"
+    ],
+    "script": {
+      "5208": [
+        "EQUIP_ID[600018]REFINE[weapon==10]10",
+        "EQUIP_ID[600018]GRADE[weapon==C]10"
+      ],
+      "5211": [
+        "EQUIP_ID[630013]REFINE[weapon==10]10",
+        "EQUIP_ID[630013]GRADE[weapon==C]10"
+      ],
+      "5266": [
+        "EQUIP_ID[530014]REFINE[weapon==10]10",
+        "EQUIP_ID[530014]GRADE[weapon==C]10"
+      ],
+      "5267": [
+        "EQUIP_ID[500027]REFINE[weapon==10]10",
+        "EQUIP_ID[500027]GRADE[weapon==C]10"
+      ],
+      "vct": [
+        "10"
+      ],
+      "p_element_all": [
+        "10"
+      ],
+      "m_element_all": [
+        "10"
+      ],
+      "atkPercent": [
+        "EQUIP_ID[630013]10"
+      ],
+      "acd": [
+        "EQUIP_ID[630013]REFINE[weapon==10]15",
+        "EQUIP_ID[530014]REFINE[weapon==10]15"
+      ],
+      "pow": [
+        "EQUIP_ID[630013]GRADE[weapon==C]5",
+        "EQUIP_ID[600018]GRADE[weapon==C]5",
+        "EQUIP_ID[530014]GRADE[weapon==C]5"
+      ],
+      "pAtk": [
+        "EQUIP_ID[630013]GRADE[weapon==C]5",
+        "EQUIP_ID[600018]GRADE[weapon==C]5",
+        "EQUIP_ID[530014]GRADE[weapon==C]5"
+      ],
+      "hpDrain": [
+        "EQUIP_ID[600018]7",
+        "EQUIP_ID[530014]7"
+      ],
+      "cd__5208": [
+        "EQUIP_ID[600018]REFINE[weapon==10]0.15"
+      ],
+      "cd__2321": [
+        "EQUIP_ID[500027]1"
+      ],
+      "spl": [
+        "EQUIP_ID[500027]GRADE[weapon==C]5"
+      ],
+      "sMatk": [
+        "EQUIP_ID[500027]GRADE[weapon==C]5"
+      ]
+    }
+  },
+  "491112": {
+    "id": 491112,
+    "aegisName": "Consecrate_Archer_LT",
+    "name": "Colar Consagrado: Amizade",
+    "unidName": "Colar Consagrado: Amizade",
+    "resName": "",
+    "description": "",
+    "slots": 1,
+    "itemTypeId": 2,
+    "itemSubTypeId": 511,
+    "itemLevel": null,
+    "attack": null,
+    "defense": 0,
+    "weight": 20,
+    "requiredLevel": 210,
+    "location": null,
+    "compositionPos": null,
+    "usableClass": [
+      "all"
+    ],
+    "script": {
+      "5330": [
+        "EQUIP_ID[700034]REFINE[weapon==10]10",
+        "EQUIP_ID[700034]GRADE[weapon==C]10"
+      ],
+      "5334": [
+        "EQUIP_ID[700035]REFINE[weapon==10]10",
+        "EQUIP_ID[700035]GRADE[weapon==C]10"
+      ],
+      "5355": [
+        "EQUIP_ID[580019||570019]REFINE[weapon==10]10",
+        "EQUIP_ID[580019||570019]GRADE[weapon==C]10"
+      ],
+      "5356": [
+        "EQUIP_ID[570020||580020]REFINE[weapon==10]10",
+        "EQUIP_ID[570020||580020]GRADE[weapon==C]10"
+      ],
+      "vct": [
+        "10"
+      ],
+      "p_element_all": [
+        "10"
+      ],
+      "m_element_all": [
+        "10"
+      ],
+      "cd__2236": [
+        "EQUIP_ID[700035]1"
+      ],
+      "con": [
+        "EQUIP_ID[700035]GRADE[weapon==C]5",
+        "EQUIP_ID[700034]GRADE[weapon==C]5",
+        "EQUIP_ID[580019||570019]GRADE[weapon==C]5"
+      ],
+      "pAtk": [
+        "EQUIP_ID[700035]GRADE[weapon==C]5",
+        "EQUIP_ID[700034]GRADE[weapon==C]5",
+        "EQUIP_ID[580019||570019]GRADE[weapon==C]5"
+      ],
+      "hpDrain": [
+        "EQUIP_ID[700034]7",
+        "EQUIP_ID[580019||570019]7"
+      ],
+      "cd__5330": [
+        "EQUIP_ID[700034]REFINE[weapon==10]0.15"
+      ],
+      "spl": [
+        "EQUIP_ID[570020||580020]GRADE[weapon==C]5"
+      ],
+      "sMatk": [
+        "EQUIP_ID[570020||580020]GRADE[weapon==C]5"
+      ]
+    }
+  },
+  "491113": {
+    "id": 491113,
+    "aegisName": "Consecrate_Mage_LT",
+    "name": "Colar Consagrado: Pureza",
+    "unidName": "Colar Consagrado: Pureza",
+    "resName": "",
+    "description": "",
+    "slots": 1,
+    "itemTypeId": 2,
+    "itemSubTypeId": 511,
+    "itemLevel": null,
+    "attack": null,
+    "defense": 0,
+    "weight": 20,
+    "requiredLevel": 210,
+    "location": null,
+    "compositionPos": null,
+    "usableClass": [
+      "all"
+    ],
+    "script": {
+      "5217": [
+        "EQUIP_ID[640021]REFINE[weapon==10]10",
+        "EQUIP_ID[640021]GRADE[weapon==C]10"
+      ],
+      "5220": [
+        "EQUIP_ID[640022]REFINE[weapon==10]10",
+        "EQUIP_ID[640022]GRADE[weapon==C]10"
+      ],
+      "5371": [
+        "EQUIP_ID[540025]REFINE[weapon==10]10",
+        "EQUIP_ID[540025]GRADE[weapon==C]10"
+      ],
+      "5373": [
+        "EQUIP_ID[540024]REFINE[weapon==10]10",
+        "EQUIP_ID[540024]GRADE[weapon==C]10"
+      ],
+      "vct": [
+        "10"
+      ],
+      "p_element_all": [
+        "10"
+      ],
+      "m_element_all": [
+        "10"
+      ],
+      "cd__5012": [
+        "EQUIP_ID[640022]50"
+      ],
+      "cd__5220": [
+        "EQUIP_ID[640022]REFINE[weapon==10]0.2"
+      ],
+      "spl": [
+        "EQUIP_ID[640022]GRADE[weapon==C]5",
+        "EQUIP_ID[640021]GRADE[weapon==C]5",
+        "EQUIP_ID[540024]GRADE[weapon==C]5",
+        "EQUIP_ID[540025]GRADE[weapon==C]5"
+      ],
+      "sMatk": [
+        "EQUIP_ID[640022]GRADE[weapon==C]5",
+        "EQUIP_ID[640021]GRADE[weapon==C]5",
+        "EQUIP_ID[540024]GRADE[weapon==C]5",
+        "EQUIP_ID[540025]GRADE[weapon==C]5"
+      ],
+      "cd__2213": [
+        "EQUIP_ID[640021]10"
+      ],
+      "acd": [
+        "EQUIP_ID[640021]REFINE[weapon==10]15",
+        "EQUIP_ID[540025]REFINE[weapon==10]15"
+      ],
+      "autoCast": [
+        {
+          "skillId": 2449,
+          "skillLevel": [
+            "EQUIP_ID[540024]4"
+          ],
+          "chance": [
+            "EQUIP_ID[540024]10"
+          ],
+          "trigger": "physical-attack"
+        },
+        {
+          "skillId": 5373,
+          "skillLevel": [
+            "EQUIP_ID[540024]REFINE[weapon==10]2"
+          ],
+          "chance": [
+            "EQUIP_ID[540024]REFINE[weapon==10]7"
+          ],
+          "trigger": "physical-attack"
+        }
+      ],
+      "enable_skill__2021": [
+        "EQUIP_ID[540025]3"
+      ]
+    }
+  },
+  "491114": {
+    "id": 491114,
+    "aegisName": "Consecrate_Merch_LT",
+    "name": "Colar Consagrado: Conhecimento",
+    "unidName": "Colar Consagrado: Conhecimento",
+    "resName": "",
+    "description": "",
+    "slots": 1,
+    "itemTypeId": 2,
+    "itemSubTypeId": 511,
+    "itemLevel": null,
+    "attack": null,
+    "defense": 0,
+    "weight": 20,
+    "requiredLevel": 210,
+    "location": null,
+    "compositionPos": null,
+    "usableClass": [
+      "all"
+    ],
+    "script": {
+      "2490": [
+        "EQUIP_ID[590024]REFINE[weapon==10]10",
+        "EQUIP_ID[590024]GRADE[weapon==C]10"
+      ],
+      "5295": [
+        "EQUIP_ID[520009]REFINE[weapon==10]10",
+        "EQUIP_ID[520009]GRADE[weapon==C]10"
+      ],
+      "vct": [
+        "10"
+      ],
+      "p_element_all": [
+        "10"
+      ],
+      "m_element_all": [
+        "10"
+      ],
+      "vct__2261": [
+        "EQUIP_ID[590023]100"
+      ],
+      "vct__2259": [
+        "EQUIP_ID[590023]100"
+      ],
+      "vct__2260": [
+        "EQUIP_ID[590023]100"
+      ],
+      "acd": [
+        "EQUIP_ID[590023]REFINE[weapon==10]15",
+        "EQUIP_ID[520009]REFINE[weapon==10]15",
+        "EQUIP_ID[590024]REFINE[weapon==10]15",
+        "EQUIP_ID[500028]REFINE[weapon==10]15"
+      ],
+      "pow": [
+        "EQUIP_ID[590023]GRADE[weapon==C]5",
+        "EQUIP_ID[520009]GRADE[weapon==C]5",
+        "EQUIP_ID[590024]GRADE[weapon==C]5",
+        "EQUIP_ID[500028]GRADE[weapon==C]5"
+      ],
+      "pAtk": [
+        "EQUIP_ID[590023]GRADE[weapon==C]5",
+        "EQUIP_ID[520009]GRADE[weapon==C]5",
+        "EQUIP_ID[590024]GRADE[weapon==C]5",
+        "EQUIP_ID[500028]GRADE[weapon==C]5"
+      ],
+      "cd__2280": [
+        "EQUIP_ID[520009]1"
+      ],
+      "atkPercent": [
+        "EQUIP_ID[590024]10"
+      ],
+      "hpDrain": [
+        "EQUIP_ID[500028]7"
+      ]
+    }
+  },
+  "491115": {
+    "id": 491115,
+    "aegisName": "Consecrate_Thief_LT",
+    "name": "Colar Consagrado: Confiança",
+    "unidName": "Colar Consagrado: Confiança",
+    "resName": "",
+    "description": "",
+    "slots": 1,
+    "itemTypeId": 2,
+    "itemSubTypeId": 511,
+    "itemLevel": null,
+    "attack": null,
+    "defense": 0,
+    "weight": 20,
+    "requiredLevel": 210,
+    "location": null,
+    "compositionPos": null,
+    "usableClass": [
+      "all"
+    ],
+    "script": {
+      "5289": [
+        "EQUIP_ID[610023]REFINE[weapon==10]10",
+        "EQUIP_ID[610023]GRADE[weapon==C]10"
+      ],
+      "5292": [
+        "EQUIP_ID[610022]REFINE[weapon==10]10",
+        "EQUIP_ID[610022]GRADE[weapon==C]10"
+      ],
+      "5314": [
+        "EQUIP_ID[510033]REFINE[weapon==10]10",
+        "EQUIP_ID[510033]GRADE[weapon==C]10"
+      ],
+      "5322": [
+        "EQUIP_ID[700033]REFINE[weapon==10]10",
+        "EQUIP_ID[700033]GRADE[weapon==C]10"
+      ],
+      "vct": [
+        "10"
+      ],
+      "p_element_all": [
+        "10"
+      ],
+      "m_element_all": [
+        "10"
+      ],
+      "criDmg": [
+        "EQUIP_ID[610022]10"
+      ],
+      "cd__5287": [
+        "EQUIP_ID[610022]REFINE[weapon==10]0.15"
+      ],
+      "crt": [
+        "EQUIP_ID[610022]GRADE[weapon==C]5"
+      ],
+      "cRate": [
+        "EQUIP_ID[610022]GRADE[weapon==C]5"
+      ],
+      "hpDrain": [
+        "EQUIP_ID[610023]7",
+        "EQUIP_ID[510033]7"
+      ],
+      "cd__5289": [
+        "EQUIP_ID[610023]REFINE[weapon==10]0.15"
+      ],
+      "pow": [
+        "EQUIP_ID[610023]GRADE[weapon==C]5",
+        "EQUIP_ID[510033]GRADE[weapon==C]5"
+      ],
+      "pAtk": [
+        "EQUIP_ID[610023]GRADE[weapon==C]5",
+        "EQUIP_ID[510033]GRADE[weapon==C]5",
+        "EQUIP_ID[700033]GRADE[weapon==C]5"
+      ],
+      "cd__5320": [
+        "EQUIP_ID[510033]REFINE[weapon==10]0.15"
+      ],
+      "enable_skill__45": [
+        "EQUIP_ID[700033]5"
+      ],
+      "con": [
+        "EQUIP_ID[700033]GRADE[weapon==C]5"
+      ]
+    }
+  },
+  "491116": {
+    "id": 491116,
+    "aegisName": "Consecrate_Aco_LT",
+    "name": "Colar Consagrado: Luz",
+    "unidName": "Colar Consagrado: Luz",
+    "resName": "",
+    "description": "",
+    "slots": 1,
+    "itemTypeId": 2,
+    "itemSubTypeId": 511,
+    "itemLevel": null,
+    "attack": null,
+    "defense": 0,
+    "weight": 20,
+    "requiredLevel": 210,
+    "location": null,
+    "compositionPos": null,
+    "usableClass": [
+      "all"
+    ],
+    "script": {
+      "5244": [
+        "EQUIP_ID[560021]REFINE[weapon==10]10",
+        "EQUIP_ID[560021]GRADE[weapon==C]10"
+      ],
+      "5252": [
+        "EQUIP_ID[560020]REFINE[weapon==10]10",
+        "EQUIP_ID[560020]GRADE[weapon==C]10"
+      ],
+      "5273": [
+        "EQUIP_ID[550029]REFINE[weapon==10]10",
+        "EQUIP_ID[550029]GRADE[weapon==C]10"
+      ],
+      "5283": [
+        "EQUIP_ID[540026]REFINE[weapon==10]10",
+        "EQUIP_ID[540026]GRADE[weapon==C]10"
+      ],
+      "vct": [
+        "10"
+      ],
+      "p_element_all": [
+        "10"
+      ],
+      "m_element_all": [
+        "10"
+      ],
+      "enable_skill__5315": [
+        "EQUIP_ID[540026]2"
+      ],
+      "cd__5283": [
+        "EQUIP_ID[540026]REFINE[weapon==10]0.15"
+      ],
+      "pow": [
+        "EQUIP_ID[540026]GRADE[weapon==C]5",
+        "EQUIP_ID[560021]GRADE[weapon==C]5",
+        "EQUIP_ID[560020]GRADE[weapon==C]5"
+      ],
+      "pAtk": [
+        "EQUIP_ID[540026]GRADE[weapon==C]5",
+        "EQUIP_ID[560021]GRADE[weapon==C]5",
+        "EQUIP_ID[560020]GRADE[weapon==C]5"
+      ],
+      "vct__5284": [
+        "EQUIP_ID[550029]100"
+      ],
+      "acd": [
+        "EQUIP_ID[550029]REFINE[weapon==10]15"
+      ],
+      "spl": [
+        "EQUIP_ID[550029]GRADE[weapon==C]5"
+      ],
+      "sMatk": [
+        "EQUIP_ID[550029]GRADE[weapon==C]5"
+      ],
+      "hpDrain": [
+        "EQUIP_ID[560021]7"
+      ],
+      "cd__5244": [
+        "EQUIP_ID[560021]REFINE[weapon==10]0.15"
+      ],
+      "atkPercent": [
+        "EQUIP_ID[560020]10"
+      ]
+    }
+  },
+  "491117": {
+    "id": 491117,
+    "aegisName": "Consecrate_Niram_LT",
+    "name": "Colar Consagrado: Amor",
+    "unidName": "Colar Consagrado: Amor",
+    "resName": "",
+    "description": "",
+    "slots": 1,
+    "itemTypeId": 2,
+    "itemSubTypeId": 511,
+    "itemLevel": null,
+    "attack": null,
+    "defense": 0,
+    "weight": 20,
+    "requiredLevel": 210,
+    "location": null,
+    "compositionPos": null,
+    "usableClass": [
+      "all"
+    ],
+    "script": {
+      "5435": [
+        "EQUIP_ID[550066]REFINE[weapon==10]10",
+        "EQUIP_ID[550066]GRADE[weapon==C]10"
+      ],
+      "5445": [
+        "EQUIP_ID[550065]REFINE[weapon==10]10",
+        "EQUIP_ID[550065]GRADE[weapon==C]10"
+      ],
+      "5483": [
+        "EQUIP_ID[650021]REFINE[weapon==10]10",
+        "EQUIP_ID[650021]GRADE[weapon==C]10"
+      ],
+      "5485": [
+        "EQUIP_ID[650022]REFINE[weapon==10]10",
+        "EQUIP_ID[650022]GRADE[weapon==C]10"
+      ],
+      "vct": [
+        "10"
+      ],
+      "p_element_all": [
+        "10"
+      ],
+      "m_element_all": [
+        "10"
+      ],
+      "hpDrain": [
+        "EQUIP_ID[550066]7",
+        "EQUIP_ID[650021]7"
+      ],
+      "cd__5436": [
+        "EQUIP_ID[550066]REFINE[weapon==10]0.2"
+      ],
+      "pow": [
+        "EQUIP_ID[550066]GRADE[weapon==C]5",
+        "EQUIP_ID[650021]GRADE[weapon==C]5",
+        "EQUIP_ID[650022]GRADE[weapon==C]5"
+      ],
+      "pAtk": [
+        "EQUIP_ID[550066]GRADE[weapon==C]5",
+        "EQUIP_ID[650021]GRADE[weapon==C]5",
+        "EQUIP_ID[650022]GRADE[weapon==C]5"
+      ],
+      "matkPercent": [
+        "EQUIP_ID[550065]10"
+      ],
+      "cd__5445": [
+        "EQUIP_ID[550065]REFINE[weapon==10]1.5"
+      ],
+      "spl": [
+        "EQUIP_ID[550065]GRADE[weapon==C]5"
+      ],
+      "sMatk": [
+        "EQUIP_ID[550065]GRADE[weapon==C]5"
+      ],
+      "atkPercent": [
+        "EQUIP_ID[650022]10"
+      ]
+    }
+  },
+  "491118": {
+    "id": 491118,
+    "aegisName": "Consecrate_Guns_LT",
+    "name": "Colar Consagrado: Esperança",
+    "unidName": "Colar Consagrado: Esperança",
+    "resName": "",
+    "description": "",
+    "slots": 1,
+    "itemTypeId": 2,
+    "itemSubTypeId": 511,
+    "itemLevel": null,
+    "attack": null,
+    "defense": 0,
+    "weight": 20,
+    "requiredLevel": 210,
+    "location": null,
+    "compositionPos": null,
+    "usableClass": [
+      "all"
+    ],
+    "script": {
+      "5405": [
+        "EQUIP_ID[830011]REFINE[weapon==10]10",
+        "EQUIP_ID[830011]GRADE[weapon==C]10"
+      ],
+      "5406": [
+        "EQUIP_ID[810008]REFINE[weapon==10]10",
+        "EQUIP_ID[810008]GRADE[weapon==C]10"
+      ],
+      "5407": [
+        "EQUIP_ID[840007]REFINE[weapon==10]10",
+        "EQUIP_ID[840007]GRADE[weapon==C]10"
+      ],
+      "5408": [
+        "EQUIP_ID[800012]REFINE[weapon==10]10",
+        "EQUIP_ID[800012]GRADE[weapon==C]10"
+      ],
+      "5409": [
+        "EQUIP_ID[820006]REFINE[weapon==10]10",
+        "EQUIP_ID[820006]GRADE[weapon==C]10"
+      ],
+      "vct": [
+        "10"
+      ],
+      "p_element_all": [
+        "10"
+      ],
+      "m_element_all": [
+        "10"
+      ],
+      "hpDrain": [
+        "EQUIP_ID[820006]7",
+        "EQUIP_ID[840007]7",
+        "EQUIP_ID[830011]7",
+        "EQUIP_ID[800012]7",
+        "EQUIP_ID[810008]7"
+      ],
+      "acd": [
+        "EQUIP_ID[820006]REFINE[weapon==10]15",
+        "EQUIP_ID[840007]REFINE[weapon==10]15",
+        "EQUIP_ID[830011]REFINE[weapon==10]15",
+        "EQUIP_ID[800012]REFINE[weapon==10]15",
+        "EQUIP_ID[810008]REFINE[weapon==10]15"
+      ],
+      "con": [
+        "EQUIP_ID[820006]GRADE[weapon==C]5",
+        "EQUIP_ID[840007]GRADE[weapon==C]5",
+        "EQUIP_ID[830011]GRADE[weapon==C]5",
+        "EQUIP_ID[800012]GRADE[weapon==C]5",
+        "EQUIP_ID[810008]GRADE[weapon==C]5"
+      ],
+      "pAtk": [
+        "EQUIP_ID[820006]GRADE[weapon==C]5",
+        "EQUIP_ID[840007]GRADE[weapon==C]5",
+        "EQUIP_ID[830011]GRADE[weapon==C]5",
+        "EQUIP_ID[800012]GRADE[weapon==C]5",
+        "EQUIP_ID[810008]GRADE[weapon==C]5"
+      ]
+    }
+  },
+  "491119": {
+    "id": 491119,
+    "aegisName": "Consecrate_Taek_LT",
+    "name": "Colar Consagrado: Destino",
+    "unidName": "Colar Consagrado: Destino",
+    "resName": "",
+    "description": "",
+    "slots": 1,
+    "itemTypeId": 2,
+    "itemSubTypeId": 511,
+    "itemLevel": null,
+    "attack": null,
+    "defense": 0,
+    "weight": 20,
+    "requiredLevel": 210,
+    "location": null,
+    "compositionPos": null,
+    "usableClass": [
+      "all"
+    ],
+    "script": {
+      "5425": [
+        "EQUIP_ID[550063]REFINE[weapon==10]10",
+        "EQUIP_ID[550063]GRADE[weapon==C]10"
+      ],
+      "5428": [
+        "EQUIP_ID[550064]REFINE[weapon==10]10",
+        "EQUIP_ID[550064]GRADE[weapon==C]10"
+      ],
+      "5429": [
+        "EQUIP_ID[550064]REFINE[weapon==10]10",
+        "EQUIP_ID[550064]GRADE[weapon==C]10"
+      ],
+      "5469": [
+        "EQUIP_ID[540046]REFINE[weapon==10]10",
+        "EQUIP_ID[540046]GRADE[weapon==C]10"
+      ],
+      "5473": [
+        "EQUIP_ID[540045]REFINE[weapon==10]10",
+        "EQUIP_ID[540045]GRADE[weapon==C]10"
+      ],
+      "vct": [
+        "10"
+      ],
+      "p_element_all": [
+        "10"
+      ],
+      "m_element_all": [
+        "10"
+      ],
+      "hpDrain": [
+        "EQUIP_ID[540046]7",
+        "EQUIP_ID[540045]7"
+      ],
+      "spCostPercent": [
+        "EQUIP_ID[540046]REFINE[weapon==10]===-10"
+      ],
+      "pow": [
+        "EQUIP_ID[540046]GRADE[weapon==C]5",
+        "EQUIP_ID[540045]GRADE[weapon==C]5"
+      ],
+      "pAtk": [
+        "EQUIP_ID[540046]GRADE[weapon==C]5",
+        "EQUIP_ID[540045]GRADE[weapon==C]5"
+      ],
+      "acd": [
+        "EQUIP_ID[540045]REFINE[weapon==10]15"
+      ],
+      "matkPercent": [
+        "EQUIP_ID[550064]10"
+      ],
+      "spl": [
+        "EQUIP_ID[550064]GRADE[weapon==C]5",
+        "EQUIP_ID[550063]GRADE[weapon==C]5"
+      ],
+      "sMatk": [
+        "EQUIP_ID[550064]GRADE[weapon==C]5",
+        "EQUIP_ID[550063]GRADE[weapon==C]5"
+      ],
+      "cd__2601": [
+        "EQUIP_ID[550063]2"
+      ],
+      "cd__5425": [
+        "EQUIP_ID[550063]REFINE[weapon==10]0.2"
+      ]
+    }
+  },
+  "300379": {
+    "id": 300379,
+    "aegisName": "이름없는카드",
+    "name": "Carta Rgan de Alto Nível Modificado",
+    "unidName": "Carta Rgan de Alto Nível Modificado",
+    "resName": "",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 6,
+    "itemSubTypeId": 0,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 1,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": 32,
+    "usableClass": [
+      "all"
+    ],
+    "script": {
+      "subsize_all": [
+        "-25",
+        "12===50"
+      ],
+      "res": [
+        "ITEM_LV[me==2]===50"
+      ],
+      "mres": [
+        "ITEM_LV[me==2]===50"
+      ],
+      "subrace_formless": [
+        "15"
+      ],
+      "subrace_undead": [
+        "15"
+      ],
+      "subrace_brute": [
+        "15"
+      ],
+      "subrace_plant": [
+        "15"
+      ],
+      "subrace_insect": [
+        "15"
+      ],
+      "subrace_fish": [
+        "15"
+      ],
+      "subrace_demon": [
+        "15"
+      ],
+      "subrace_demihuman": [
+        "15"
+      ],
+      "subrace_angel": [
+        "15"
+      ],
+      "subrace_dragon": [
+        "15"
       ]
     }
   }

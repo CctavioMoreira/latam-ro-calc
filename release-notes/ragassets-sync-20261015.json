@@ -1,0 +1,11 @@
+{
+  "type": "patch",
+  "logs": [
+    "Dados do cliente LATAM sincronizados com o ragassets: novos itens reconhecidos no servidor, sprites atualizados e correções de nomes e descrições.",
+    "Adicionados Escudo Formoso, Orelhas Sanguinárias, Orelhas Espirituais, Orelhas Abissais, os nove Colares Consagrados e a Carta Rgan de Alto Nível Modificado aos seletores de equipamentos.",
+    "Colar Consagrado: Pureza agora inclui as autoconjurações de Onda Psíquica nv.4 com Grimório Vivatus Fides e Tremor de Terra nv.2 com a arma no refino +10 ou mais.",
+    "Trinta armas já presentes no cliente LATAM deixaram de ser tratadas como pré-lançamento e agora usam os nomes e descrições em português.",
+    "Adicionado o HP máximo por refino de oito equipamentos sombrios POD, CRV, CON e STA, conforme suas descrições.",
+    "Conjunto da Greva Sombria POD com Escudo Sombrio POD vinculado pelo ID do escudo, preservando o bônus de P.ATQ +3 quando a soma dos refinos é 18 ou mais."
+  ]
+}

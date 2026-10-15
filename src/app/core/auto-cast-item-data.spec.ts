@@ -285,7 +285,7 @@ describe('Armadura Desconhecida VIT set autocast', () => {
   it('matches the LATAM description and requires the VIT boots', () => {
     expect(LATAM_ITEMS[450597].description).toContain('Bota Desconhecida VIT');
     expect(LATAM_ITEMS[450597].description).toContain(
-      'Ao realizar ataques físicos, 10% de chance de autoconjurar [Espíritos Ancestrais] nv.1.',
+      'Ao realizar ataques físicos:\n^0000FF10% de chance de autoconjurar [Espíritos Ancestrais] nv.1.',
     );
     expect(rules(450597)).toEqual([{
       skillId: 5220,
