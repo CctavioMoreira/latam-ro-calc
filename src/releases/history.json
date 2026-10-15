@@ -1,5 +1,12 @@
 [
   {
+    "v": "0.1.176-beta",
+    "date": "15-10-2026",
+    "logs": [
+      "Corrigido o bônus de Velocidade de Ataque +2 do conjunto da Manopla Sombria de Apoio Sinistro, aplicado ao equipar as seis peças. Reportado por usuário anônimo."
+    ]
+  },
+  {
     "v": "0.1.175-beta",
     "date": "13-10-2026",
     "logs": [
