@@ -100721,7 +100721,7 @@
     "compositionPos": 65535,
     "script": {
       "vct": [
-        "LEARN_SKILL[Diamond Dust==1]---2"
+        "LEARN_SKILL[Diamond Dust==1]---1"
       ],
       "2449": [
         "EQUIP_ID[25420||29435]===15"
