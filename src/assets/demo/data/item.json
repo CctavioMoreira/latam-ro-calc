@@ -373475,5 +373475,34 @@
         "15"
       ]
     }
+  },
+  "102985": {
+    "id": 102985,
+    "aegisName": "Speed_Booster",
+    "name": "Elixir Celestial",
+    "unidName": "Elixir Celestial",
+    "resName": "",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 3,
+    "itemSubTypeId": 768,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 1,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": null,
+    "usableClass": [
+      "all"
+    ],
+    "script": {
+      "flee": [
+        "50"
+      ],
+      "aspd": [
+        "1"
+      ]
+    }
   }
 }
