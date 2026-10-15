@@ -2711,23 +2711,18 @@ export class DamageCalculator {
     // A part2 whose ratio comes out at zero is not there at all (Tufão Destrutivo's extra hit
     // off Potencializar Magia Nv1): run through the chain it would still print the 1 damage
     // the soft-MDEF floor leaves, as a second line the skill does not have.
-    const hasPart2 = typeof part2?.formula === 'function' && part2.formula({ ...this.infoForClass, skillLevel, maxHp, maxSp }) + this.getFlatDmg(skillName) > 0;
+    const hasPart2 = typeof part2?.formula === 'function' && part2.formula(formulaParams) + this.getFlatDmg(skillName) > 0;
     if (hasPart2) {
       const { formula: formula2, isMatk: isPart2Matk, isIncludeMain, label } = part2;
       const _baseSkillDamage2 =
-        formula2({
-          ...this.infoForClass,
-          skillLevel,
-          maxHp,
-          maxSp,
-        }) + this.getFlatDmg(skillName);
+        formula2(formulaParams) + this.getFlatDmg(skillName);
       const baseSkillDamage2 = floor(_baseSkillDamage2);
       baseSkillDamage += baseSkillDamage2;
 
       const params2 = {
         baseSkillDamage: baseSkillDamage2,
         skillData: { ...skillData, ...part2 },
-        weaponPropertyAtk: propertyAtk,
+        weaponPropertyAtk: params.weaponPropertyAtk,
         sizePenalty,
         skillLevel,
         formulaParams,

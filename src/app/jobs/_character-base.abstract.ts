@@ -74,7 +74,8 @@ export interface AtkSkillModel {
   part2?: {
     damageRepeat?: number | ((input: AtkSkillFormulaInput) => number);
     label: string;
-    element: ElementType;
+    /** Omitted when the additional packet inherits the main attack's element. */
+    element?: ElementType;
     isIncludeMain: boolean;
     hit: number;
     isMatk: boolean;

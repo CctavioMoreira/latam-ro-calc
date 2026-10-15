@@ -186,7 +186,7 @@ describe('275/60 previews, including buffs and recovery', () => {
     const charms = previewBuffsForClass(ClassName.Shinkiro).filter(s => s.name.startsWith('_Preview_Four Colors'));
     expect(charms).toHaveLength(4);
     expect(charms.every(s => s.label.includes('Prévia') && !s.exclusiveGroup)).toBe(true);
-    for(const version of ['current','rebalance-2026-02'] as const) {
+    for(const version of ['current','rebalance-2022-06','rebalance-2026-02'] as const) {
       const cannon = cls.getAtkSkills(version).find(s => s.name === 'Red Flame Cannon');
       const off = input(cls,10);
       const on = input(cls,10,{'_Preview_Four Colors Fire':1,'_Preview_Four Colors Water':1});
@@ -198,7 +198,7 @@ describe('275/60 previews, including buffs and recovery', () => {
 
   it('applies Chasing to existing attacks and to the preview hit counts', () => {
     const cls = job(ClassName.AbyssChaser);
-    for(const version of ['current','rebalance-2026-02'] as const) {
+    for(const version of ['current','rebalance-2022-06','rebalance-2026-02'] as const) {
       const skill = cls.getAtkSkills(version).find(s => s.name === 'Unlucky Rush');
       expect(skill.formula(input(cls,5,{'_Preview_Chasing':1})) - skill.formula(input(cls,5))).toBe(12500);
     }

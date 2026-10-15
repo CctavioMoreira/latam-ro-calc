@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-test('formula selectors stay synchronized in battle, PVP and autocast and survive reload', async ({ page }) => {
+for (const version of ['rebalance-2022-06', 'rebalance-2026-02'] as const) test('formula selectors synchronize and persist: ' + version, async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.addInitScript(() => {
@@ -13,11 +13,42 @@ test('formula selectors stay synchronized in battle, PVP and autocast and surviv
   const battle = page.getByRole('region',{name:'Batalha',exact:true});
   const selector = battle.getByRole('combobox',{name:'Versão das fórmulas de habilidades'});
   await expect(selector).toHaveValue('current');
-  await selector.selectOption('rebalance-2026-02');
-  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('ro-set')!).skillFormulaVersion)).toBe('rebalance-2026-02');
+  await expect(selector.locator('option')).toHaveText(['Atual (LATAM)', 'Rebalance - 02/06/2022 - (kRO)', 'Rebalance - 21/12/2022 - (kRO)']);
+  const referencesButton = battle.getByRole('button', { name: 'Referências dos rebalanceamentos', exact: true });
+  await referencesButton.click();
+  const references = page.getByRole('region', { name: 'Referências dos rebalanceamentos', exact: true });
+  await expect(references).toContainText('As datas indicam quando cada rebalanceamento chegou ao kRO (servidor coreano).');
+  await expect(references.getByRole('heading')).toHaveText(['Rebalance - 02/06/2022 - (kRO)', 'Rebalance - 21/12/2022 - (kRO)']);
+  const sourceUrls = [
+    'https://ro.gnjoy.com/news/notice/View.asp?BBSMode=10001&seq=7600&curpage=1',
+    'https://www.divine-pride.net/forum/index.php?/topic/3723-kro-jobs-improvement-project/page/13/#comment-11126',
+    'https://sigmathefallen.blogspot.com/2025/02/',
+    'https://ro.gnjoy.com/news/notice/View.asp?BBSMode=10001&seq=7670&curpage=1',
+    'https://www.divine-pride.net/forum/index.php?/topic/3723-kro-jobs-improvement-project/page/14/#comment-12421',
+    'https://sigmathefallen.blogspot.com/2026/02/',
+  ];
+  await expect(references.getByRole('link')).toHaveCount(sourceUrls.length);
+  for (const [index, url] of sourceUrls.entries()) {
+    await expect(references.getByRole('link').nth(index)).toHaveAttribute('href', url);
+    await expect(references.getByRole('link').nth(index)).toHaveAttribute('rel', 'noopener noreferrer');
+  }
+  await page.screenshot({ path: `.tmp/rebalance-references-${version}-desktop.png` });
+  await page.keyboard.press('Escape');
+  await expect(references).toHaveCount(0);
+  await expect(referencesButton).toBeFocused();
+  await selector.selectOption(version);
+  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('ro-set')!).skillFormulaVersion)).toBe(version);
   await page.getByRole('button',{name:'Auto-conjuração',exact:true}).click();
   const auto = page.getByRole('region',{name:'Auto-conjuração',exact:true});
-  await expect(auto.getByRole('combobox',{name:'Versão das fórmulas de habilidades'})).toHaveValue('rebalance-2026-02');
+  const autoReferencesButton = auto.getByRole('button', { name: 'Referências dos rebalanceamentos', exact: true });
+  await autoReferencesButton.scrollIntoViewIfNeeded();
+  // Popovers dismiss on outside scrolling; let the browser finish revealing the button first.
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  await autoReferencesButton.click();
+  await expect(references).toBeVisible();
+  await autoReferencesButton.click();
+  await expect(references).toHaveCount(0);
+  await expect(auto.getByRole('combobox',{name:'Versão das fórmulas de habilidades'})).toHaveValue(version);
   await auto.getByRole('combobox',{name:'Versão das fórmulas de habilidades'}).selectOption('current');
   await expect(selector).toHaveValue('current');
   // Saving a target makes the PVP battle panel available.
@@ -30,10 +61,16 @@ test('formula selectors stay synchronized in battle, PVP and autocast and surviv
   await pvp.getByRole('combobox',{name:'Selecione um alvo salvo'}).click();
   await page.getByRole('option',{name:'Alvo de prévia',exact:true}).click();
   const pvpSelector = pvp.getByRole('combobox',{name:'Versão das fórmulas de habilidades'});
+  const pvpReferencesButton = pvp.getByRole('button', { name: 'Referências dos rebalanceamentos', exact: true });
+  await pvpReferencesButton.scrollIntoViewIfNeeded();
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  await pvpReferencesButton.click();
+  await expect(references).toBeVisible();
+  await page.keyboard.press('Escape');
   await expect(pvpSelector).toHaveValue('current');
-  await pvpSelector.selectOption('rebalance-2026-02');
-  await expect(selector).toHaveValue('rebalance-2026-02');
-  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('ro-set')!).skillFormulaVersion)).toBe('rebalance-2026-02');
+  await pvpSelector.selectOption(version);
+  await expect(selector).toHaveValue(version);
+  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('ro-set')!).skillFormulaVersion)).toBe(version);
   const previews = page.getByRole('group', { name: 'Mostrar prévias' });
   const previewsYes = previews.getByRole('button', { name: 'Sim', exact: true });
   const previewsNo = previews.getByRole('button', { name: 'Não', exact: true });
@@ -72,6 +109,7 @@ test('formula selectors stay synchronized in battle, PVP and autocast and surviv
   await previewsNo.click();
   await expect(previewsNo).toHaveAttribute('aria-pressed', 'true');
   await expect(page.getByRole('combobox', { name: 'Versão das fórmulas de habilidades' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Referências dos rebalanceamentos', exact: true })).toHaveCount(0);
   await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('ro-set')!).skillFormulaVersion)).toBe('current');
   await settings.getByRole('button', { name: 'Fechar', exact: true }).click();
   await expect(settings).toHaveCount(0);
@@ -89,12 +127,12 @@ test('formula selectors stay synchronized in battle, PVP and autocast and surviv
   await expect(settingsButton).toBeFocused();
   await page.getByRole('button', { name: 'Batalha', exact: true }).click();
   await expect(selector).toHaveValue('current');
-  await selector.selectOption('rebalance-2026-02');
-  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('ro-set')!).skillFormulaVersion)).toBe('rebalance-2026-02');
+  await selector.selectOption(version);
+  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('ro-set')!).skillFormulaVersion)).toBe(version);
   await page.reload();
   await expect(page.locator('#ro-splash')).toHaveCount(0,{timeout:40000});
   await page.getByRole('button',{name:'Batalha',exact:true}).click();
-  await expect(page.getByRole('region',{name:'Batalha',exact:true}).getByRole('combobox',{name:'Versão das fórmulas de habilidades'})).toHaveValue('rebalance-2026-02');
+  await expect(page.getByRole('region',{name:'Batalha',exact:true}).getByRole('combobox',{name:'Versão das fórmulas de habilidades'})).toHaveValue(version);
   await page.screenshot({path:'.tmp/skill-versions-desktop.png',fullPage:true});
   await settingsButton.click();
   await page.screenshot({ path: '.tmp/settings-sidebar-desktop.png' });
@@ -108,6 +146,16 @@ test('formula selectors stay synchronized in battle, PVP and autocast and surviv
   await page.screenshot({ path: '.tmp/settings-sidebar-mobile.png' });
   await settings.getByRole('button', { name: 'Fechar', exact: true }).click();
   const mobileSelector = page.getByRole('region',{name:'Batalha',exact:true}).getByRole('combobox',{name:'Versão das fórmulas de habilidades'});
+  await referencesButton.scrollIntoViewIfNeeded();
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  await referencesButton.click();
+  await expect(references).toBeVisible();
+  const referenceBounds = await references.boundingBox();
+  expect(referenceBounds!.x).toBeGreaterThanOrEqual(0);
+  expect(referenceBounds!.x + referenceBounds!.width).toBeLessThanOrEqual(await page.evaluate(() => document.documentElement.clientWidth));
+  await page.screenshot({ path: `.tmp/rebalance-references-${version}-mobile.png` });
+  await battle.locator('.rot-head .cap2').click();
+  await expect(references).toHaveCount(0);
   await expect(mobileSelector).toBeVisible();
   // The existing calculator keeps a wide, horizontally scrollable workspace.
   await mobileSelector.scrollIntoViewIfNeeded();
