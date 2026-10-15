@@ -1,6 +1,7 @@
 {
   "type": "patch",
   "logs": [
-    "Adicionado o Elixir Celestial aos consumíveis, com Esquiva +50 e Velocidade de Ataque +1. Sugerido por Ynk."
+    "Adicionado o Elixir Celestial aos consumíveis, com Esquiva +50 e Velocidade de Ataque +1. Sugerido por Ynk.",
+    "Adicionada a Sobremesa de Noel aos consumíveis, com Crítico +7, Precisão +3 e regeneração natural de HP e SP +3%. Sugerido por Ynk."
   ]
 }
