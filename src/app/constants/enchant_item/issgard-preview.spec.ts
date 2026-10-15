@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import items from '../../../assets/demo/data/item.json';
+import latam from '../../../assets/demo/data/latam-items.json';
 import { ItemModel } from '../../models/item.model';
 import { getEnchants } from './_enchant_table';
 import { dimWeapon2, dimWeapon3, dimWeapon4 } from './dim_glacier';
@@ -21,7 +22,7 @@ const weaponPairs = [
   [590038, 590047], [590039, 590048],
 ];
 
-describe('Issgard equipment preview', () => {
+describe('Issgard equipment and remaining previews', () => {
   it('publishes all three Issgard crowns with a card slot and their crystal pools', () => {
     for (const id of crowns) {
       const item = db[id];
@@ -39,8 +40,9 @@ describe('Issgard equipment preview', () => {
     expect(weaponPairs).toHaveLength(26);
     for (const id of [...snowFlower, ...weaponPairs.flat()]) {
       const item = db[id];
-      expect(item?.preRelease, String(id)).toBe(true);
-      expect(item?.description?.trim(), String(id)).toBeTruthy();
+      const client = (latam as Record<string, { description?: string }>)[id];
+      expect(item?.preRelease, String(id)).toBe(client ? undefined : true);
+      expect((client?.description ?? item?.description)?.trim(), String(id)).toBeTruthy();
       const slots = getEnchants(item.aegisName);
       expect(slots, String(id)).toHaveLength(4);
       for (const slot of slots?.filter((pool): pool is string[] => !!pool) ?? []) {
