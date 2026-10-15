@@ -1,5 +1,14 @@
 [
   {
+    "v": "0.1.180-beta",
+    "date": "15-10-2026",
+    "logs": [
+      "Adicionado o Elixir Celestial aos consumíveis, com Esquiva +50 e Velocidade de Ataque +1. Sugerido por Ynk.",
+      "Adicionada a Sobremesa de Noel aos consumíveis, com Crítico +7, Precisão +3 e regeneração natural de HP e SP +3%. Sugerido por Ynk.",
+      "Corrigido o dano de Fogueira Espiritual no modo Atual (LATAM), que sempre considerava 3 golpes. Agora, a quantidade de golpes respeita as Esferas Espirituais: 1 golpe com 0 a 5 esferas, 2 com 6 a 10 e 3 com 11 a 15, permitindo comparar corretamente os rebalanceamentos. Reportado por Adson."
+    ]
+  },
+  {
     "v": "0.1.179-beta",
     "date": "15-10-2026",
     "logs": [

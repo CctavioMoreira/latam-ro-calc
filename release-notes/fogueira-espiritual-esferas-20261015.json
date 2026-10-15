@@ -1,6 +1,0 @@
-{
-  "type": "patch",
-  "logs": [
-    "Corrigido o dano de Fogueira Espiritual no modo Atual (LATAM), que sempre considerava 3 golpes. Agora, a quantidade de golpes respeita as Esferas Espirituais: 1 golpe com 0 a 5 esferas, 2 com 6 a 10 e 3 com 11 a 15, permitindo comparar corretamente os rebalanceamentos. Reportado por Adson."
-  ]
-}
