@@ -1,0 +1,6 @@
+{
+  "type": "patch",
+  "logs": [
+    "Corrigida a redução de conjuração variável de Feiticeiro (Meio) para 1% por nível de Pó de Diamante. Reportado por gabriel."
+  ]
+}
