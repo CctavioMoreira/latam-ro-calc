@@ -2,6 +2,7 @@ import type { AtkSkillModel, CharacterBase } from '../jobs/_character-base.abstr
 import { ArchBishop } from '../jobs/ArchBishop';
 import { AssassinCross } from '../jobs/AssassinCross';
 import { Cardinal } from '../jobs/Cardinal';
+import { ElementalMaster } from '../jobs/ElementalMaster';
 import { Genetic } from '../jobs/Genetic';
 import { GuillotineCross } from '../jobs/GuillotineCross';
 import { Mechanic } from '../jobs/Mechanic';
@@ -25,6 +26,7 @@ function native(character: CharacterBase, name: AtkSkillModel['name']): AtkSkill
 const bishop = new ArchBishop();
 const assassin = new AssassinCross();
 const cardinal = new Cardinal();
+const elementalMaster = new ElementalMaster();
 const genetic = new Genetic();
 const guillotine = new GuillotineCross();
 const mechanic = new Mechanic();
@@ -45,6 +47,13 @@ export const ITEM_CLASS_AUTO_CAST_SKILLS: AtkSkillModel[] = [
   // The copied skill's native class controls elemental endows. Item autocasts on other
   // classes use the neutral variant and still read the wearer's stats and weapon.
   native(chaser, 'Psychic Wave'),
+  {
+    ...native(elementalMaster, 'Terra Drive'),
+    // Other wearer classes cannot summon Terramotus; the owner's native formula
+    // still wins in auto-cast.ts and keeps its elemental-spirit bonus.
+    formula: ({ model, skillLevel, status }) =>
+      (skillLevel * 1250 + status.totalSpl * 5) * (model.level / 100),
+  },
   LORD_OF_VERMILION,
   native(oboro, 'Snow Flake Draft'),
   native(guillotine, 'Soul Destroyer'),

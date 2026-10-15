@@ -72,7 +72,7 @@ describe('spCostPercent is wired as a display-only stat', () => {
 
 describe('the sweep', () => {
   it('finds the records the client says carry the line', () => {
-    expect(carriers.length).toBe(100); // +3: 490820 Chapa de Identificação, 490900 Pandeiro, 490901 Repinique
+    expect(carriers.length).toBe(101); // Includes Colar Consagrado: Destino (491119).
   });
 
   it('declares the key on every carrier except the listed exceptions', () => {
