@@ -242,9 +242,10 @@ export function validateScript(script: unknown, path = 'script'): ItemValidation
         errors.push({ path: field, message: 'Colchetes da condição não estão fechados.' });
         continue;
       }
-      for (const [, token, body] of entry.matchAll(/(EQUIP_ID|SKILL_ID|SKILL_ID2|ACTIVE_SKILL_ID|AMMO_SUBTYPE|LOYALTY|UNTIL|GRADE|REFINE|LEVEL)\[([^\]]*)\]/g)) {
+      for (const [, token, body] of entry.matchAll(/(EQUIP_ID|MONSTER_ID|SKILL_ID|SKILL_ID2|ACTIVE_SKILL_ID|AMMO_SUBTYPE|LOYALTY|UNTIL|GRADE|REFINE|LEVEL)\[([^\]]*)\]/g)) {
         const pattern = ({
           EQUIP_ID: /^\d+(?:(?:\|\||&&)\d+)*$/,
+          MONSTER_ID: /^\d+(?:\|\|\d+)*$/,
           SKILL_ID: /^\d+==[1-9]\d*$/,
           SKILL_ID2: /^\d+==[1-9]\d*$/,
           ACTIVE_SKILL_ID: /^\d+$/,
@@ -267,7 +268,7 @@ export function validateScript(script: unknown, path = 'script'): ItemValidation
       }
       // A full grammar check also catches typos in condition names. The numeric tail is
       // intentionally permissive about the legacy `---` / `===` forms in item.json.
-      const remainder = entry.replace(/(?:EQUIP_ID|EQUIP|GRADE|GRADES|REFINE|XREFINEX|ITEM_LV|POS|POS_SPECIFIC|SPAWN|USED|UNTIL|WEAPON_LEVEL|WEAPON_TYPE|AMMO_SUBTYPE|SKILL_ID|SKILL_ID2|ACTIVE_SKILL_ID|LEARN_SKILL|LEARN_SKILL2|ACTIVE_SKILL|LEVEL|LOYALTY|SUM|REFINE_FROM|GVALUE|REFINE_NAME)\[[^\]]+\]/g, '')
+      const remainder = entry.replace(/(?:EQUIP_ID|MONSTER_ID|EQUIP|GRADE|GRADES|REFINE|XREFINEX|ITEM_LV|POS|POS_SPECIFIC|SPAWN|USED|UNTIL|WEAPON_LEVEL|WEAPON_TYPE|AMMO_SUBTYPE|SKILL_ID|SKILL_ID2|ACTIVE_SKILL_ID|LEARN_SKILL|LEARN_SKILL2|ACTIVE_SKILL|LEVEL|LOYALTY|SUM|REFINE_FROM|GVALUE|REFINE_NAME)\[[^\]]+\]/g, '')
         .replace(/^\[weaponType=[^\]]+\]/, '');
       if (/\[[^\]]*\]|[A-Za-z_]+\[/.test(remainder) || !/^-?(?:\d+(?:\.\d+)?|(?:level|jobLevel|str|agi|vit|int|dex|luk):[^=]+)(?:(?:---|===).+)?(?:\([^)]*\))?$/.test(remainder.replace(/^===/, '').replace(/^---/, '1---'))) {
         errors.push({ path: field, message: 'Condição ou valor não reconhecido; confira a expressão do simulador.' });
@@ -450,6 +451,7 @@ export function customItemDescription(item: Pick<CustomItemDefinition, 'script'>
       [/^LEVEL\[([^\]]+)]/, (range) => `nível ${range}`],
       [/^LOYALTY\[([1-4])]/, (tier) => `lealdade ${['', 'baixa', 'nenhuma', 'normal', 'alta'][Number(tier)]}`],
       [/^EQUIP_ID\[([^\]]+)]/, (ids) => `equipado com ID ${list(ids)}`],
+      [/^MONSTER_ID\[([^\]]+)]/, () => 'contra os monstros listados na descrição'],
       [/^EQUIP\[([^\]]+)]/, (names) => `equipado com ${list(names)}`],
       [/^SKILL_ID2?\[([^\]]+)]/, (value) => { const [id, level] = value.split('=='); return `${skill(id)} aprendida no nível ${level} ou superior`; }],
       [/^LEARN_SKILL2?\[([^\]]+)]/, (value) => { const [name, level] = value.split('=='); return `${name} aprendida no nível ${level} ou superior`; }],

@@ -138,6 +138,10 @@ export function buildReductionCategories(
     percent: v(`subclass_${c.key}`),
   })));
 
+  if (isSelf) push('Monstro selecionado', [
+    { label: 'Monstros específicos', keys: ['submonster'], percent: v('submonster') },
+  ]);
+
   // Distance — only against ranged physical attacks (the Carta Gazeti family).
   push('Distância', [
     { label: 'Físico à distância', keys: ['dmg_taken_range'], percent: v('dmg_taken_range') },

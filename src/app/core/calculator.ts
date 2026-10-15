@@ -1141,6 +1141,15 @@ export class Calculator {
       if (restCondition.startsWith('===')) return { isValid: true, restCondition };
     }
 
+    // MONSTER_ID[20801||20802] — bonuses against explicitly listed targets.
+    const monsterIds = restCondition.match(/^MONSTER_ID\[([\d|]+)]/);
+    if (monsterIds) {
+      if (!monsterIds[1].split('||').some((id) => Number(id) === this.monster.id)) {
+        return { isValid: false, restCondition };
+      }
+      return this.validateCondition({ itemType, itemRefine, script: restCondition.slice(monsterIds[0].length) });
+    }
+
     // SPAWN[tur_d03_i||tur_d04_i]
     const [unusedSp, rawSpawn] = restCondition.match(/SPAWN\[(.+?)]/) ?? [];
     if (rawSpawn) {

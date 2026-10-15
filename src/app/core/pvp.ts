@@ -62,7 +62,7 @@ export interface PvpContext {
 export const DEFAULT_PVP_CONTEXT: PvpContext = { mode: 'none', attackerRace: 'player_human', defenderBonus: {} };
 
 /** Key prefixes that make up the defender-reduction namespace (docs/pvp.md §4). */
-export const DEFENDER_KEY_PREFIXES = ['subrace_', 'subele_', 'subsize_', 'subclass_', 'dmg_taken_'];
+export const DEFENDER_KEY_PREFIXES = ['subrace_', 'subele_', 'subsize_', 'subclass_', 'submonster', 'dmg_taken_'];
 
 /**
  * The two races a player attacker can have. `subrace_all` does NOT cover them: the
@@ -149,6 +149,8 @@ export interface DefenderReductionInput {
   /** True when the incoming attack is long-ranged (basic bow or a ranged skill).
    *  Gates the physical-ranged reduction (Gazeti-card family). */
   isRanged?: boolean;
+  /** Present only for incoming PvE. MONSTER_ID scripts already select the matching bonus. */
+  attackerMonsterId?: number;
 }
 
 /**
@@ -223,6 +225,7 @@ export function defenderReductionSteps(input: DefenderReductionInput): DefenderR
     { pct: elementKeys.reduce((total, key) => total + v(key), 0), label: `Redução ${ELE_PT[input.attackerElement] ?? input.attackerElement}`, keys: elementKeys },
     { pct: sizeKeys.reduce((total, key) => total + v(key), 0), label: `Redução ${SIZE_PT[input.attackerSize] ?? input.attackerSize}`, keys: sizeKeys },
     { pct: v('subclass_all') + v(`subclass_${input.attackerType}`), label: `Redução ${CLASS_PT[input.attackerType] ?? input.attackerType}`, keys: ['subclass_all', `subclass_${input.attackerType}`] },
+    { pct: input.attackerMonsterId > 0 ? v('submonster') : 0, label: 'Redução contra monstro específico', keys: ['submonster'] },
     // Long-ranged physical reduction (Gazeti-card family) — only vs a ranged physical hit.
     { pct: input.dmgType === 'physical' && input.isRanged ? v('dmg_taken_range') : 0, label: 'Redução à distância', keys: ['dmg_taken_range'] },
     { pct: v('dmg_taken_all') + v(flatKey), label: 'Redução plana', keys: ['dmg_taken_all', flatKey] },

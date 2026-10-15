@@ -75,6 +75,11 @@ export interface EquipmentSummaryModel {
   /** Party-song utility values shown in Buffs; movement and recovery are outside damage simulation. */
   movementSpeed?: number;
   hpRegenPerSecond?: number;
+  /** Display only: periodic SP recovery has no resource tick in damage simulation. */
+  spRegenPerSecond?: number;
+  /** Display only: the simulator does not apply Petrification or Freeze to the player. */
+  petrificationResist?: number;
+  freezeResist?: number;
   statusResist?: number;
   /** Dance with Wug adds this many points to a Worg skill's ATK ratio. */
   wugSkillRatio?: number;
@@ -186,6 +191,12 @@ export interface EquipmentSummaryModel {
   p_race_player_doram: number;
 
   p_class_all: number;
+  /** Damage against explicitly listed monsters, gated by MONSTER_ID in item scripts.
+   * Separate from the ordinary race/size/element/class multipliers. */
+  p_monster: number;
+  m_monster: number;
+  /** Incoming PvE reduction against the selected monster; never applies in PvP. */
+  submonster: number;
   p_class_normal: number;
   p_class_boss: number;
 

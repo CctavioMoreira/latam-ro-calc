@@ -876,6 +876,7 @@ export class DamageCalculator {
     const size = this.toPercent(this.getSizeMultiplier('p'));
     const element = this.toPercent(this.getElementMultiplier('p'));
     const monsterType = this.toPercent(this.getMonsterTypeMultiplier('p'));
+    const monster = 1 + (this.totalBonus.p_monster || 0) / 100;
     const comet = this.getCometMultiplier();
     // console.log({ race, size, element, monsterType, comet, monster: this.monster.name });
 
@@ -904,6 +905,10 @@ export class DamageCalculator {
     push('element', 'ATQ x Elemento', total, ['p_element_all'], element);
     total = floor(total * monsterType); // tested
     push('monsterType', 'ATQ x Classe do monstro', total, ['p_class_all'], monsterType);
+    if (monster !== 1) {
+      total = floor(total * monster);
+      push('monster', 'ATQ x Monstro específico', total, ['p_monster'], monster);
+    }
     total = floor(total * comet);
     if (comet !== 1) push('comet', 'Cometa', total, ['comet'], comet);
     const beforeFinalMultiplier = total;
@@ -2005,6 +2010,7 @@ export class DamageCalculator {
     const sizeMultiplier = this.toPercent(this.getSizeMultiplier('m'));
     const elementMultiplier = this.toPercent(this.getElementMultiplier('m'));
     const monsterTypeMultiplier = this.toPercent(this.getMonsterTypeMultiplier('m'));
+    const monsterMultiplier = 1 + (this.totalBonus.m_monster || 0) / 100;
     const debuffMultiplier = this.getDebuffMultiplier(SkillType.MAGICAL);
 
     const skillBonusKey = String(SKILL_ID_BY_NAME[skillName] ?? skillName);
@@ -2069,6 +2075,11 @@ export class DamageCalculator {
       total = floor(total * monsterTypeMultiplier);
       push('Classe do monstro', total, ['m_class_all']);
       emit('monsterType', 'Classe do monstro', total, ['m_class_all'], { multiplier: monsterTypeMultiplier });
+      if (monsterMultiplier !== 1) {
+        total = floor(total * monsterMultiplier);
+        push('Monstro específico', total, ['m_monster']);
+        emit('monster', 'Monstro específico', total, ['m_monster'], { multiplier: monsterMultiplier });
+      }
       total = floor(total * matkPercentMultiplier); //tested
       push(`ATQM ${this.fmtCalc(this.totalBonus.matkPercent || 0)}%`, total, ['matkPercent']);
       emit('matkPercent', `ATQM ${this.fmtCalc(this.totalBonus.matkPercent || 0)}%`, total, ['matkPercent'], { multiplier: matkPercentMultiplier });

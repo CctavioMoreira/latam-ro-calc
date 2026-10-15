@@ -167,6 +167,10 @@ export class Monster {
     return this._monster.spawn || '';
   }
 
+  get id() {
+    return this._monster.id;
+  }
+
   /** Published attack ranges for incoming PvE damage, independent of target HP scaling. */
   get attackProfile() {
     if (!this._monster?.stats || this.isPlayerTarget) return null;

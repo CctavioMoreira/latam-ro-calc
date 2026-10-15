@@ -81,7 +81,7 @@ export function calculateMonsterDamageTaken(profile: IncomingDamageProfile, skil
       : defender.bonus;
     for (const step of defenderReductionSteps({ bonus, dmgType: skill.damageType,
       attackerRace: attacker.race, attackerElement: skill.element.toLowerCase(), attackerSize: attacker.size,
-      attackerType: attacker.type, isRanged })) {
+      attackerType: attacker.type, attackerMonsterId: attacker.id, isRanged })) {
       multiply(step.label, step.factor, step.keys);
     }
   };

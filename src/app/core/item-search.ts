@@ -18,6 +18,8 @@ const statKeys = [
   'hp', 'hpPercent', 'sp', 'spPercent', 'expGainPercent', 'healReceived', 'healPower',
   'hpRecovRate', 'spRecovRate', 'hpDrain', 'spDrain', 'reduceDamageReturn',
   'magicHealHp', 'magicHealSp', 'hpRestoreOnKill', 'spRestoreOnKill', 'spCostPercent',
+  'hpRegenPerSecond', 'spRegenPerSecond', 'petrificationResist', 'freezeResist',
+  'p_monster', 'm_monster', 'submonster',
   'def', 'defPercent', 'softDef', 'softDefPercent', 'mdef', 'mdefPercent', 'softMdef', 'softMdefPercent',
   'aspd', 'aspdPercent', 'skillAspd', 'skillAspdPercent', 'decreaseSkillAspdPercent',
   'atk', 'x_atk', 'cannonballAtk', 'atkPercent', 'matk', 'matkPercent', 'allStatus',

@@ -15,6 +15,10 @@ export const createRawTotalBonus = (): EquipmentSummaryModel => {
     healPower: 0,
     hpRecovRate: 0,
     spRecovRate: 0,
+    hpRegenPerSecond: 0,
+    spRegenPerSecond: 0,
+    petrificationResist: 0,
+    freezeResist: 0,
     hpDrain: 0,
     spDrain: 0,
     reduceDamageReturn: 0,
@@ -128,6 +132,9 @@ export const createRawTotalBonus = (): EquipmentSummaryModel => {
     p_race_player_doram: 0,
 
     p_class_all: 0,
+    p_monster: 0,
+    m_monster: 0,
+    submonster: 0,
     p_class_normal: 0,
     p_class_boss: 0,
 
