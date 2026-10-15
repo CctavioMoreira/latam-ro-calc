@@ -1,5 +1,6 @@
 import { ViewState } from '../state/view-state';
 import { Events } from '../services/events';
+import type { SkillFormulaVersion } from '../../app/skills/skill-formula-version';
 import { AutoCastActivationBreakdown, AutoCastResult, AutoCastSimulation, autoCastActivationBreakdown, basicAttackDamageRanges, basicDpsBreakdown, BasicDpsBreakdown, ConfigurableAutoCastSlot, extraHitOutcomeRate } from '../../app/core/auto-cast';
 import { MainModel } from '../../app/models/main.model';
 import { BASIC_ATTACK_ICON } from './rotation-list';
@@ -15,7 +16,7 @@ import { SelectHandle as UiSelectComponent } from '../ui/select';
 
 
 export class AutoCastHudComponent extends ViewState {
-   skillFormulaVersionChange = new Events<'current' | 'rebalance-2026-02'>();
+   skillFormulaVersionChange = new Events<SkillFormulaVersion>();
   constructor(
 public readonly itemDescriptions: ItemDescriptionStore,
   ) { super();}

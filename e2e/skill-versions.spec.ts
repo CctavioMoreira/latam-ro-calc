@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-test('formula selectors stay synchronized in battle, PVP and autocast and survive reload', async ({ page }) => {
+for (const version of ['rebalance-2022-06', 'rebalance-2026-02'] as const) test('formula selectors synchronize and persist: ' + version, async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.addInitScript(() => {
@@ -13,11 +13,11 @@ test('formula selectors stay synchronized in battle, PVP and autocast and surviv
   const battle = page.getByRole('region',{name:'Batalha',exact:true});
   const selector = battle.getByRole('combobox',{name:'Versão das fórmulas de habilidades'});
   await expect(selector).toHaveValue('current');
-  await selector.selectOption('rebalance-2026-02');
-  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('ro-set')!).skillFormulaVersion)).toBe('rebalance-2026-02');
+  await selector.selectOption(version);
+  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('ro-set')!).skillFormulaVersion)).toBe(version);
   await page.getByRole('button',{name:'Auto-conjuração',exact:true}).click();
   const auto = page.getByRole('region',{name:'Auto-conjuração',exact:true});
-  await expect(auto.getByRole('combobox',{name:'Versão das fórmulas de habilidades'})).toHaveValue('rebalance-2026-02');
+  await expect(auto.getByRole('combobox',{name:'Versão das fórmulas de habilidades'})).toHaveValue(version);
   await auto.getByRole('combobox',{name:'Versão das fórmulas de habilidades'}).selectOption('current');
   await expect(selector).toHaveValue('current');
   // Saving a target makes the PVP battle panel available.
@@ -31,9 +31,9 @@ test('formula selectors stay synchronized in battle, PVP and autocast and surviv
   await page.getByRole('option',{name:'Alvo de prévia',exact:true}).click();
   const pvpSelector = pvp.getByRole('combobox',{name:'Versão das fórmulas de habilidades'});
   await expect(pvpSelector).toHaveValue('current');
-  await pvpSelector.selectOption('rebalance-2026-02');
-  await expect(selector).toHaveValue('rebalance-2026-02');
-  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('ro-set')!).skillFormulaVersion)).toBe('rebalance-2026-02');
+  await pvpSelector.selectOption(version);
+  await expect(selector).toHaveValue(version);
+  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('ro-set')!).skillFormulaVersion)).toBe(version);
   const previews = page.getByRole('group', { name: 'Mostrar prévias' });
   const previewsYes = previews.getByRole('button', { name: 'Sim', exact: true });
   const previewsNo = previews.getByRole('button', { name: 'Não', exact: true });
@@ -89,12 +89,12 @@ test('formula selectors stay synchronized in battle, PVP and autocast and surviv
   await expect(settingsButton).toBeFocused();
   await page.getByRole('button', { name: 'Batalha', exact: true }).click();
   await expect(selector).toHaveValue('current');
-  await selector.selectOption('rebalance-2026-02');
-  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('ro-set')!).skillFormulaVersion)).toBe('rebalance-2026-02');
+  await selector.selectOption(version);
+  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('ro-set')!).skillFormulaVersion)).toBe(version);
   await page.reload();
   await expect(page.locator('#ro-splash')).toHaveCount(0,{timeout:40000});
   await page.getByRole('button',{name:'Batalha',exact:true}).click();
-  await expect(page.getByRole('region',{name:'Batalha',exact:true}).getByRole('combobox',{name:'Versão das fórmulas de habilidades'})).toHaveValue('rebalance-2026-02');
+  await expect(page.getByRole('region',{name:'Batalha',exact:true}).getByRole('combobox',{name:'Versão das fórmulas de habilidades'})).toHaveValue(version);
   await page.screenshot({path:'.tmp/skill-versions-desktop.png',fullPage:true});
   await settingsButton.click();
   await page.screenshot({ path: '.tmp/settings-sidebar-desktop.png' });

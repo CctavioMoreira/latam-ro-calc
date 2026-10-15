@@ -57,10 +57,10 @@ describe('plain calculator session', () => {
     expect(session.totalSummary).toBeUndefined();
   });
 
-  it('hides preview catalogs, disables hidden buffs and resets rebalance without shifting skill indices', async () => {
+  it.each(['rebalance-2022-06', 'rebalance-2026-02'] as const)('hides preview catalogs and resets %s without shifting skill indices', async version => {
     const { session, storage, layout } = makeSession();
     storage.setItem('ro-set', JSON.stringify({ class: 4304, level: 250, jobLevel: 1,
-      selectedAtkSkill: 'Shadow Torrent==10', rotation: ['Shadow Torrent==10'], activeSkillMap: { Surge: 5 }, skillFormulaVersion: 'rebalance-2026-02' }));
+      selectedAtkSkill: 'Shadow Torrent==10', rotation: ['Shadow Torrent==10'], activeSkillMap: { Surge: 5 }, skillFormulaVersion: version }));
     session.start();
     await vi.advanceTimersByTimeAsync(1500);
     const surge = session.activeSkills.findIndex(skill => skill.name === 'Surge');
@@ -87,11 +87,11 @@ describe('plain calculator session', () => {
     session.dispose();
   });
 
-  it('keeps LATAM when importing a preview build with previews already off', async () => {
+  it.each(['rebalance-2022-06', 'rebalance-2026-02'] as const)('keeps LATAM when importing %s with previews already off', async version => {
     const { session, storage, layout } = makeSession();
     layout.previews.set(false);
     storage.setItem('ro-set', JSON.stringify({ class: 4304, level: 250, jobLevel: 1,
-      selectedAtkSkill: 'Shadow Torrent==10', rotation: ['Shadow Torrent==10'], activeSkillMap: { Surge: 5 }, skillFormulaVersion: 'rebalance-2026-02' }));
+      selectedAtkSkill: 'Shadow Torrent==10', rotation: ['Shadow Torrent==10'], activeSkillMap: { Surge: 5 }, skillFormulaVersion: version }));
     session.start();
     await vi.advanceTimersByTimeAsync(1500);
     expect(session.model.skillFormulaVersion).toBe('current');
@@ -99,7 +99,7 @@ describe('plain calculator session', () => {
     const surge = session.activeSkills.findIndex(skill => skill.name === 'Surge');
     expect(session.model.activeSkills[surge]).toBe(0);
     expect(session.atkSkills.every(skill => !skill.preview)).toBe(true);
-    session.onSkillFormulaVersionChange('rebalance-2026-02');
+    session.onSkillFormulaVersionChange(version);
     expect(session.model.skillFormulaVersion).toBe('current');
     session.dispose();
   });

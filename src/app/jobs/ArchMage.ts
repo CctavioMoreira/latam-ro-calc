@@ -661,6 +661,10 @@ export class ArchMage extends Warlock {
       1: [['Violent Quake', -50]],
       3: [['All Bloom', 300], ['Violent Quake', 200], ['Destructive Hurricane', 150]],
       5: [['Destructive Hurricane', -20]],
+    } : params.model.skillFormulaVersion === 'rebalance-2022-06' ? {
+      1: [['Violent Quake', -50]],
+      3: [['All Bloom', 300], ['Violent Quake', 200], ['Destructive Hurricane', 200]],
+      5: [['Destructive Hurricane', 50]],
     } : {
       1: [['Violent Quake', -50]],
       2: [['All Bloom', -50]],

@@ -369,7 +369,7 @@ export class Windhawk extends Ranger {
         }
       }
 
-      if (params.model.skillFormulaVersion !== 'rebalance-2026-02' && (skillName === 'Crescive Bolt' || skillName === 'Gale Storm')) {
+      if ((!params.model.skillFormulaVersion || params.model.skillFormulaVersion === 'current') && (skillName === 'Crescive Bolt' || skillName === 'Gale Storm')) {
         totalBonus.p_race_fish = (totalBonus.p_race_fish || 0) + 50;
         totalBonus.p_element_water = (totalBonus.p_element_water || 0) + 50;
       }

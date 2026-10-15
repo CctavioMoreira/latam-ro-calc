@@ -1,6 +1,10 @@
 export interface EquipmentSummaryModel {
   /** Preview buffs: applies to physical outcomes that do not critically hit. */
   nonCriticalDamage?: number;
+  /** Flat basic-attack bonus from Giant Growth and Vigor. */
+  flatBasicDmg?: number;
+  /** Vigor's additional basic-attack bonus against demihumans and angels. */
+  vigorBasicRaceDmg?: number;
   weight: number;
   refine: number;
   baseDef?: number;
