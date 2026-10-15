@@ -1,8 +1,0 @@
-{
-  "type": "patch",
-  "logs": [
-    "Adicionada a prévia do terceiro rebalanceamento das classes 4 e do segundo das classes expandidas, de junho de 2022. O seletor Fórmulas permite comparar essa versão com o LATAM e com o rebalanceamento posterior, com 148 ataques de 20 classes, seus tempos e efeitos condicionais. Informação compartilhada por Shummuy.",
-    "As referências foram conferidas com os anúncios originais em coreano, o comunicado oficial em inglês e as tabelas completas de fórmulas. Divergências de tradução foram corrigidas para Arremessar Escudo, Julgamento Final, Segunda Chama, Ataque Astral e Canhão de Hyeonrok. Coeficientes ainda divergentes entre as fontes estão documentados; a prévia não foi validada com gravações do jogo.",
-    "Os rebalanceamentos passaram a mostrar as datas de implementação no servidor coreano: Rebalance - 02/06/2022 - (kRO) e Rebalance - 21/12/2022 - (kRO). O botão de informações ao lado do seletor Fórmulas abre as referências das duas versões e explica o significado das datas."
-  ]
-}
