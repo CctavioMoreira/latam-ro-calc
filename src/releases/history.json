@@ -1,5 +1,14 @@
 [
   {
+    "v": "0.1.181-beta",
+    "date": "16-10-2026",
+    "logs": [
+      "Adicionados os nove IDs de pedras visuais de Músicos, Bioquímico e Feiticeiro que faltavam nas listas de Topo, Meio e Baixo, com seus bônus e conjuntos. Solicitação de Samuel Costa.",
+      "Adicionados os encantamentos EXP +2% de Topo e Baixo que faltavam e corrigidos os bônus de EXP das pedras correspondentes, incluindo o conjunto de três peças.",
+      "Adicionados às listas visuais os efeitos Espírito de Liderança, Espírito de Influência, Pegadas do Banguela e Pulinhos do Banguela, sem bônus de atributos."
+    ]
+  },
+  {
     "v": "0.1.180-beta",
     "date": "15-10-2026",
     "logs": [
