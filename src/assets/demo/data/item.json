@@ -100541,11 +100541,14 @@
     "location": null,
     "compositionPos": 65535,
     "script": {
+      "2413": [
+        "EQUIP_ID[310265||1000304]===15"
+      ],
       "vct": [
         "LEARN_SKILL[Lesson==1]---1"
       ],
-      "2413": [
-        "EQUIP_ID[310265||1000304]===15"
+      "spDrain": [
+        "EQUIP_ID[25501||29488]1"
       ]
     }
   },
@@ -234301,7 +234304,11 @@
     "usableClass": [
       "all"
     ],
-    "script": {}
+    "script": {
+      "expGainPercent": [
+        "2"
+      ]
+    }
   },
   "4044": {
     "id": 4044,
@@ -325573,7 +325580,11 @@
     "requiredLevel": null,
     "location": null,
     "compositionPos": 65535,
-    "script": {}
+    "script": {
+      "expGainPercent": [
+        "2"
+      ]
+    }
   },
   "25016": {
     "id": 25016,
@@ -326042,7 +326053,11 @@
     "requiredLevel": null,
     "location": null,
     "compositionPos": 65535,
-    "script": {}
+    "script": {
+      "expGainPercent": [
+        "2"
+      ]
+    }
   },
   "25170": {
     "id": 25170,
@@ -326084,7 +326099,12 @@
     "requiredLevel": null,
     "location": null,
     "compositionPos": 65535,
-    "script": {}
+    "script": {
+      "expGainPercent": [
+        "2",
+        "EQUIP_ID[25141||29145&&25015||29027]3"
+      ]
+    }
   },
   "25172": {
     "id": 25172,
@@ -373539,5 +373559,392 @@
         "3"
       ]
     }
+  },
+  "1000666": {
+    "id": 1000666,
+    "aegisName": "WanderMinsStone_Top3",
+    "name": "Pedra de Músicos (Topo)",
+    "unidName": "Pedra de Músicos (Topo)",
+    "resName": "ClownGypsy_Figure",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 6,
+    "itemSubTypeId": 71,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 10,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": 65535,
+    "script": {
+      "2413": [
+        "EQUIP_ID[310265||1000304]===15"
+      ],
+      "vct": [
+        "SKILL_ID[2412==1]---1"
+      ],
+      "spDrain": [
+        "EQUIP_ID[25501||29488]1"
+      ]
+    }
+  },
+  "1000667": {
+    "id": 1000667,
+    "aegisName": "WanderMinsStone_Middle3",
+    "name": "Pedra de Músicos (Meio)",
+    "unidName": "Pedra de Músicos (Meio)",
+    "resName": "ClownGypsy_Figure",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 6,
+    "itemSubTypeId": 72,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 10,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": 65535,
+    "script": {
+      "cd__2418": [
+        "SKILL_ID[2423==1]---0.1"
+      ],
+      "cd__2413": [
+        "SKILL_ID[2423==1]---0.1"
+      ],
+      "p_size_all": [
+        "EQUIP_ID[25501||29488]===15"
+      ],
+      "m_my_element_all": [
+        "EQUIP_ID[310265||1000304]===15"
+      ]
+    }
+  },
+  "1000668": {
+    "id": 1000668,
+    "aegisName": "WanderMinsStone_Bottom3",
+    "name": "Pedra de Músicos (Baixo)",
+    "unidName": "Pedra de Músicos (Baixo)",
+    "resName": "ClownGypsy_Figure",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 6,
+    "itemSubTypeId": 73,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 10,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": 65535,
+    "script": {
+      "2414": [
+        "EQUIP_ID[310265||1000304]===15"
+      ],
+      "2418": [
+        "EQUIP_ID[25501||29488]===15"
+      ],
+      "fct": [
+        "SKILL_ID[5007==1]---0.1"
+      ]
+    }
+  },
+  "1000669": {
+    "id": 1000669,
+    "aegisName": "GeneticStone_Top3",
+    "name": "Pedra de Bioquímico (Topo)",
+    "unidName": "Pedra de Bioquímico (Topo)",
+    "resName": "Creator_Figure",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 6,
+    "itemSubTypeId": 71,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 10,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": 65535,
+    "script": {
+      "490": [
+        "EQUIP_ID[25449||29467]===15"
+      ],
+      "2481": [
+        "EQUIP_ID[310261||1000300]===15"
+      ],
+      "range": [
+        "SKILL_ID[2477==1]---2"
+      ]
+    }
+  },
+  "1000670": {
+    "id": 1000670,
+    "aegisName": "GeneticStone_Middle3",
+    "name": "Pedra de Bioquímico (Meio)",
+    "unidName": "Pedra de Bioquímico (Meio)",
+    "resName": "Creator_Figure",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 6,
+    "itemSubTypeId": 72,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 10,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": 65535,
+    "script": {
+      "2476": [
+        "EQUIP_ID[310261||1000300]===15"
+      ],
+      "2477": [
+        "EQUIP_ID[25449||29467]===15"
+      ],
+      "vct": [
+        "SKILL_ID[2475==1]---2"
+      ]
+    }
+  },
+  "1000671": {
+    "id": 1000671,
+    "aegisName": "GeneticStone_Bottom3",
+    "name": "Pedra de Bioquímico (Baixo)",
+    "unidName": "Pedra de Bioquímico (Baixo)",
+    "resName": "Creator_Figure",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 6,
+    "itemSubTypeId": 73,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 10,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": 65535,
+    "script": {
+      "490": [
+        "EQUIP_ID[25449||29467]===15"
+      ],
+      "2476": [
+        "EQUIP_ID[310261||1000300]===15"
+      ],
+      "fct": [
+        "SKILL_ID[2==1]---0.1"
+      ]
+    }
+  },
+  "1000672": {
+    "id": 1000672,
+    "aegisName": "SorcererStone_Top3",
+    "name": "Pedra de Feiticeiro (Topo)",
+    "unidName": "Pedra de Feiticeiro (Topo)",
+    "resName": "Professor_Figure",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 6,
+    "itemSubTypeId": 71,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 10,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": 65535,
+    "script": {
+      "2446": [
+        "EQUIP_ID[25801||29614]===15"
+      ],
+      "fct": [
+        "SKILL_ID[2451==1]---0.1"
+      ],
+      "cd__2450": [
+        "EQUIP_ID[25420||29435]===2"
+      ]
+    }
+  },
+  "1000673": {
+    "id": 1000673,
+    "aegisName": "SorcererStone_Middle3",
+    "name": "Pedra de Feiticeiro (Meio)",
+    "unidName": "Pedra de Feiticeiro (Meio)",
+    "resName": "Professor_Figure",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 6,
+    "itemSubTypeId": 72,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 10,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": 65535,
+    "script": {
+      "2449": [
+        "EQUIP_ID[25420||29435]===15"
+      ],
+      "2454": [
+        "EQUIP_ID[25801||29614]===15"
+      ],
+      "vct": [
+        "SKILL_ID[2447==1]---1"
+      ]
+    }
+  },
+  "1000674": {
+    "id": 1000674,
+    "aegisName": "SorcererStone_Bottom3",
+    "name": "Pedra de Feiticeiro (Baixo)",
+    "unidName": "Pedra de Feiticeiro (Baixo)",
+    "resName": "Professor_Figure",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 6,
+    "itemSubTypeId": 73,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 10,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": 65535,
+    "script": {
+      "2447": [
+        "EQUIP_ID[25801||29614]===15"
+      ],
+      "2448": [
+        "EQUIP_ID[25420||29435]===15"
+      ],
+      "m_my_element_all": [
+        "SKILL_ID[2446==1]---2"
+      ]
+    }
+  },
+  "29027": {
+    "id": 29027,
+    "aegisName": "블루젬스톤",
+    "name": "EXP +2% (Baixo)",
+    "unidName": "EXP +2% (Baixo)",
+    "resName": "",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 6,
+    "itemSubTypeId": 73,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 0,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": 65535,
+    "script": {
+      "expGainPercent": [
+        "2"
+      ]
+    }
+  },
+  "29159": {
+    "id": 29159,
+    "aegisName": "블루젬스톤",
+    "name": "EXP +2% (Topo)",
+    "unidName": "EXP +2% (Topo)",
+    "resName": "",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 6,
+    "itemSubTypeId": 71,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 0,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": 65535,
+    "script": {
+      "expGainPercent": [
+        "2",
+        "EQUIP_ID[25141||29145&&25015||29027]3"
+      ]
+    }
+  },
+  "1002193": {
+    "id": 1002193,
+    "aegisName": "블루크리스탈조각",
+    "name": "Pedra Gráfica: Espírito de Liderança (Meio)",
+    "unidName": "Pedra Gráfica: Espírito de Liderança (Meio)",
+    "resName": "",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 6,
+    "itemSubTypeId": 72,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 10,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": 65535,
+    "script": {}
+  },
+  "1002194": {
+    "id": 1002194,
+    "aegisName": "블루크리스탈조각",
+    "name": "Gráfico: Espírito de Influência (Meio)",
+    "unidName": "Gráfico: Espírito de Influência (Meio)",
+    "resName": "",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 6,
+    "itemSubTypeId": 72,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 10,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": 65535,
+    "script": {}
+  },
+  "1002239": {
+    "id": 1002239,
+    "aegisName": "발자국이펙트",
+    "name": "Pedra de Pegada: Pegadas do Banguela (Capa",
+    "unidName": "Pedra de Pegada: Pegadas do Banguela (Capa",
+    "resName": "",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 6,
+    "itemSubTypeId": 75,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 10,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": 65535,
+    "script": {}
+  },
+  "1002240": {
+    "id": 1002240,
+    "aegisName": "발자국이펙트",
+    "name": "Pedra de Pegada: Pulinhos do Banguela (Capa)",
+    "unidName": "Pedra de Pegada: Pulinhos do Banguela (Capa)",
+    "resName": "",
+    "description": "",
+    "slots": 0,
+    "itemTypeId": 6,
+    "itemSubTypeId": 75,
+    "itemLevel": null,
+    "attack": null,
+    "defense": null,
+    "weight": 10,
+    "requiredLevel": null,
+    "location": null,
+    "compositionPos": 65535,
+    "script": {}
   }
 }
