@@ -1,5 +1,14 @@
 [
   {
+    "v": "0.1.185-beta",
+    "date": "17-10-2026",
+    "logs": [
+      "Adicionado o dano dos orbes de Invocação do Abismo à aba de autoconjuração do Mandraque, considerando o nível da habilidade e a reposição dos orbes. Reportado por Kato.",
+      "Adicionado filtro em Buscar itens para mostrar apenas itens com nível necessário igual ou inferior ao nível atual do personagem. Reportado por usuário anônimo.",
+      "Adicionadas Apunhalar e Ataque Surpresa às habilidades de simulação do Superaprendiz e do Hiperaprendiz, com os bônus dos equipamentos do Éden. Reportado por usuário anônimo."
+    ]
+  },
+  {
     "v": "0.1.184-beta",
     "date": "17-10-2026",
     "logs": [

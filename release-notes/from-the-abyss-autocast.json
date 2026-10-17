@@ -1,6 +1,0 @@
-{
-  "type": "patch",
-  "logs": [
-    "Adicionado o dano dos orbes de Invocação do Abismo à aba de autoconjuração do Mandraque, considerando o nível da habilidade e a reposição dos orbes. Reportado por Kato."
-  ]
-}
