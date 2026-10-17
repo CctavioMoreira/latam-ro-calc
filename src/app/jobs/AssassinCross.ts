@@ -1,10 +1,13 @@
 import { ClassName } from './_class-name';
 import { ActiveSkillModel, AtkSkillFormulaInput, AtkSkillModel, PassiveSkillModel } from './_character-base.abstract';
 import { Thief } from './Thief';
+import { SONIC_ACCELERATION, SONIC_BLOW, SONIC_BLOW_BUFFS } from '../skills/sonic-blow';
+import type { InfoForClass } from '../models/info-for-class.model';
 
 const jobBonusTable: Record<number, [number, number, number, number, number, number]> = {
-  1: [0, 1, 0, 0, 0, 0],
-  2: [1, 1, 0, 0, 0, 0],
+  // https://irowiki.org/wiki/Assassin_Cross#Job_Bonuses: first AGI is job 3.
+  1: [0, 0, 0, 0, 0, 0],
+  2: [1, 0, 0, 0, 0, 0],
   3: [1, 1, 0, 0, 0, 1],
   4: [1, 2, 0, 0, 0, 1],
   5: [1, 3, 0, 0, 0, 1],
@@ -201,5 +204,35 @@ export class AssassinCross extends Thief {
       passiveSkillList: this.passiveSkillListHi,
       classNames: this.classNamesHi,
     });
+  }
+
+  override get minMaxLevelCap() {
+    return this.className === ClassName.AssassinCross
+      ? { minMaxLevel: [1, 99] as [number, number], maxJob: 70 }
+      : super.minMaxLevelCap;
+  }
+
+  override get maxBaseStat() { return this.className === ClassName.AssassinCross ? 99 : super.maxBaseStat; }
+  override get maxAspd() { return this.className === ClassName.AssassinCross ? 190 : super.maxAspd; }
+  override get excludedJobLevels() { return this.className === ClassName.AssassinCross ? [] : super.excludedJobLevels; }
+
+  // Append controls after the final job's existing catalog, keeping every legacy
+  // Sicário/Executor positional index intact. Algoz has no pre-existing saves.
+  override get activeSkills() {
+    const skills = super.activeSkills;
+    return [...(this.className === ClassName.AssassinCross
+      ? skills.filter(skill => skill.name !== 'Venom Impression') : skills), ...SONIC_BLOW_BUFFS];
+  }
+
+  override get passiveSkills() { return [...super.passiveSkills, SONIC_ACCELERATION]; }
+  override get atkSkills() { return [...super.atkSkills, SONIC_BLOW]; }
+
+  override matchesSavedSkillCount(kind: 'active' | 'passive', count: number | undefined): boolean {
+    const current = (kind === 'active' ? this.activeSkills : this.passiveSkills).length;
+    return count === current || (this.className !== ClassName.AssassinCross && count === current - (kind === 'active' ? 2 : 1));
+  }
+
+  override getMasteryAtk(info: InfoForClass): number {
+    return info.weapon?.data ? this.calcHiddenMasteryAtk(info, { prefix: `x_${info.weapon.data.typeName}` }).totalAtk : 0;
   }
 }

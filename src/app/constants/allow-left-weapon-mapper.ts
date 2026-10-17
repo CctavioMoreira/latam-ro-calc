@@ -9,8 +9,7 @@ import { ClassName } from '../jobs/_class-name';
  * each line are NOT included: Gatuno and Ninja have no off hand, only their promotions
  * do. Katars are two-handed and never count as dual wielding.
  *
- * Assassin and AssassinCross are here for completeness — the calculator only offers 3rd
- * and 4th jobs today (see _class-list.ts), so nothing reads them yet.
+ * AssassinCross is selectable as Algoz; Assassin remains here for completeness.
  */
 export const AllowLeftWeaponMapper = {
   [ClassName.Assassin]: true,

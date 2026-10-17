@@ -39,6 +39,7 @@ const LINEAGE: Record<number, ClassName[]> = {
   4261: [ClassName.Mage, ClassName.Sage, ClassName.Scholar, ClassName.Sorcerer, ClassName.ElementalMaster], // Elementalista
 
   // Gatuno (JT_THIEF). Mercenário is JT_ASSASSIN, not the NPC mercenary.
+  4013: [ClassName.Thief, ClassName.Assassin, ClassName.AssassinCross], // Algoz
   5: [ClassName.Thief, ClassName.Assassin, ClassName.AssassinCross, ClassName.GuillotineCross], // Sicário
   4254: [ClassName.Thief, ClassName.Assassin, ClassName.AssassinCross, ClassName.GuillotineCross, ClassName.ShadowCross], // Executor
   4: [ClassName.Thief, ClassName.Rogue, ClassName.Stalker, ClassName.ShadowChaser], // Renegado
@@ -120,8 +121,8 @@ describe('class lineage', () => {
     // What "Mercenários e evoluções" -> ["Assassin"] relies on.
     const reaches = (token: ClassName) => Object.keys(LINEAGE).filter((id) => lineageOf(id).includes(token)).length;
 
-    expect(reaches(ClassName.Assassin)).toBe(2); // Sicário + Executor
-    expect(reaches(ClassName.Thief)).toBe(4); // …plus Renegado + Mandraque
+    expect(reaches(ClassName.Assassin)).toBe(3); // Algoz + Sicário + Executor
+    expect(reaches(ClassName.Thief)).toBe(5); // …plus Renegado + Mandraque
     expect(reaches(ClassName.Acolyte)).toBe(4); // Arcebispo, Cardeal, Shura, Inquisidor
     expect(reaches(ClassName.Priest)).toBe(2); // Arcebispo, Cardeal — never the Monk side
   });

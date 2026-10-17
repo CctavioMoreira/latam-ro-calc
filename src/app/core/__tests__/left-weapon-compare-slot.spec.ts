@@ -128,13 +128,13 @@ describe('which classes put a weapon in the off hand', () => {
     expect(AllowLeftWeaponMapper['Ninja']).toBeUndefined();
   });
 
-  it('reaches exactly six of the classes the picker can actually be opened on', () => {
+  it('reaches exactly seven of the classes the picker can actually be opened on', () => {
     const playable = getClassDropdownList()
       .filter((c) => AllowLeftWeaponMapper[c.instant.className])
       .map((c) => c.instant.className)
       .sort();
 
-    expect(playable).toEqual(['GuillotineCross', 'Kagerou', 'Oboro', 'ShadowCross', 'Shinkiro', 'Shiranui']);
+    expect(playable).toEqual(['AssassinCross', 'GuillotineCross', 'Kagerou', 'Oboro', 'ShadowCross', 'Shinkiro', 'Shiranui']);
   });
 });
 

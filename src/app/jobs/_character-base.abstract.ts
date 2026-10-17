@@ -56,6 +56,8 @@ export interface AtkSkillModel {
   cd: number | ((skillLevel: number) => number);
   levelList?: { label: string; value: any; }[];
   formula: (input: AtkSkillFormulaInput) => number;
+  /** Adjust this skill's final hit chance, without changing basic attacks. */
+  accuracy?: (input: AtkSkillFormulaInput & { accuracy: number }) => number;
   /** Flat skill damage added after the ATK ratio, before defenses and skill bonuses. */
   flatDamage?: (input: AtkSkillFormulaInput) => number;
   /** "How the ratio was produced", for a skill whose ratio is reshaped by class state
@@ -337,6 +339,17 @@ export abstract class CharacterBase {
     };
   }
 
+  get maxBaseStat() { return 130; }
+
+  get maxAspd() { return ASPD_CAP; }
+
+  get excludedJobLevels(): number[] { return [66, 67, 68, 69]; }
+
+  /** Older positional saves may precede newly appended class controls. */
+  matchesSavedSkillCount(kind: 'active' | 'passive', count: number | undefined): boolean {
+    return count === (kind === 'active' ? this.activeSkills : this.passiveSkills).length;
+  }
+
   protected learnLv(skillName: SKILL_NAME) {
     return this.bonuses.learnedSkillMap.get(skillName) || 0;
   }
@@ -383,7 +396,7 @@ export abstract class CharacterBase {
     this.activeBonus.clear();
     this.passiveBonus.clear();
 
-    this._activeSkillList.forEach((skill, index) => {
+    this.activeSkills.forEach((skill, index) => {
       const { bonus, isUse, skillLv, value } = skill.dropdown.find((x) => x.value === this.activeSkillIds[index]) ?? {};
       if (!isUse) return;
 
@@ -400,7 +413,7 @@ export abstract class CharacterBase {
       }
     });
 
-    this._passiveSkillList.forEach((skill, index) => {
+    this.passiveSkills.forEach((skill, index) => {
       const { bonus, isUse, value, skillLv } = (skill.dropdown as any[]).find((x) => x.value === this.passiveSkillIds[index]) ?? {};
       if (!isUse) return;
 
@@ -531,7 +544,7 @@ export abstract class CharacterBase {
     // card at all (tracker n6vaoExfL7IRa7yRsDWb). Above the ceiling the bonus is simply
     // worth nothing, which is what the clamp says.
     const equip = Math.floor(Math.max(0, 195 - baseAspd2) * (aspdPercent * 0.01));
-    const final = Math.min(baseAspd2 + equip + aspd, ASPD_CAP);
+    const final = Math.min(baseAspd2 + equip + aspd, this.maxAspd);
 
     // console.log({
     //   weapon,

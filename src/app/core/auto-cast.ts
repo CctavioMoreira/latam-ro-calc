@@ -335,7 +335,10 @@ export function buildAutoCastSimulation(input: {
       });
       continue;
     }
-    const solved = calc.solveAutoCast(`${skill.name}==${source.skillLevel}`, skill);
+    // Item-granted Sonic Blow works with any weapon; only its learned version
+    // requires a katar (https://browiki.org/wiki/Lâminas_Destruidoras).
+    const autoCastSkill = source.skillId === 136 ? { ...skill, verifyItemFn: undefined } : skill;
+    const solved = calc.solveAutoCast(`${skill.name}==${source.skillLevel}`, autoCastSkill);
     if (!solved.skillTotalHit || solved.requireTxt) continue;
     const perHit = calcDmgDpsDetailed({
       min: solved.skillDpsInputMin,

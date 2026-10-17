@@ -104,6 +104,7 @@ export enum ClassName {
 }
 
 export enum ClassIDEnum {
+  AssassinCross = 4013,
   RoyalGuard = 11,
   RuneKnight = 12,
   ArchBishop = 7,
@@ -150,6 +151,7 @@ export enum ClassIDEnum {
  * Display only
  */
 export const ClassID = {
+  [ClassIDEnum.AssassinCross]: 'Assassin Cross',
   [ClassIDEnum.RoyalGuard]: 'Royal Guard',
   [ClassIDEnum.RuneKnight]: 'Rune Knight',
   [ClassIDEnum.ArchBishop]: 'Arch Bishop',
@@ -198,6 +200,7 @@ export const ClassID = {
  * not listed here fall back to the English ClassID name.
  */
 export const ClassNamePtBr: Partial<Record<ClassIDEnum, string>> = {
+  [ClassIDEnum.AssassinCross]: 'Algoz',
   [ClassIDEnum.RoyalGuard]: 'Guardião Real',
   [ClassIDEnum.ImperialGuard]: 'Guardião Imperial',
   [ClassIDEnum.RuneKnight]: 'Cavaleiro Rúnico',
@@ -262,6 +265,7 @@ export const ClassNamePtBr: Partial<Record<ClassIDEnum, string>> = {
   4306 Night Watch     4307 Hyper Novice        4308 Spirit Handler
  */
 export const ClassIcon: Record<ClassIDEnum, number> = {
+  4013: 4013,
   11: 4073,
   12: 4060,
   7: 4063,
