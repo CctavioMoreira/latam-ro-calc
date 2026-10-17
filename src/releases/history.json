@@ -1,5 +1,12 @@
 [
   {
+    "v": "0.1.183-beta",
+    "date": "16-10-2026",
+    "logs": [
+      "Adicionada a classe Algoz, com nível de base máximo 99, e a simulação de Lâminas Destruidoras com Espírito do Mercenário e Lâminas Aceleradas. Reportado por leziszi."
+    ]
+  },
+  {
     "v": "0.1.182-beta",
     "date": "16-10-2026",
     "logs": [
