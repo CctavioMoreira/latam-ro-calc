@@ -7,6 +7,33 @@ import { addBonus, floor } from '../utils';
 import { ArchBishop } from './ArchBishop';
 import { ActiveSkillModel, AtkSkillFormulaInput, AtkSkillModel, PassiveSkillModel } from './_character-base.abstract';
 import { ClassName } from './_class-name';
+import { ClassAutoCastDefinition } from '../models/auto-cast.model';
+import { genSkillList } from '../utils/gen-skill-list';
+
+// Client: learned Petitio is autocast while Gemini Lumen is active.
+// Chance = 1% per learned level; the autocast also starts its cooldown:
+// https://browiki.org/wiki/Petitio
+const PETITIO_AUTO_CASTS: ClassAutoCastDefinition[] = [{
+  key: 'petitio',
+  resolve: ({ skillState, skillById }) => {
+    const gemini = skillState.activeLevel('Duple Light');
+    const level = skillState.learnedLevel('Petitio');
+    const skill = skillById(5283);
+    if (!gemini || !level || !skill) return { blocked: [{
+      key: 'petitio', name: 'Petitio', icon: 5283,
+      reason: [!level && 'Aprenda Petitio em Habilidades', !gemini && 'Ative Gemini Lumen em Habilidades',
+        !skill && 'Fórmula indisponível'].filter(Boolean).join(' · '),
+    }] };
+    const cooldown = typeof skill.cd === 'function' ? skill.cd(level) : skill.cd;
+    return { sources: [{
+      key: 'petitio', kind: 'passive', skillId: 5283, skillLevel: level,
+      chance: level, trigger: 'physical-attack', sourceName: 'Gemini Lumen',
+      enablingSkillId: 2054, skillData: skill,
+      maxActivationsPerSecond: cooldown > 0 ? 1 / cooldown : undefined,
+      chanceBreakdown: [{ label: 'Petitio aprendido', value: `Nv. ${level}: ${level}% por ataque básico` }],
+    }] };
+  },
+}];
 
 const jobBonusTable: Record<number, [number, number, number, number, number, number]> = {
   1: [1, 0, 0, 1, 0, 0],
@@ -276,6 +303,7 @@ export class Cardinal extends ArchBishop {
         { label: 'Nv 10', value: 10, isUse: true },
       ],
     },
+    { name: 'Petitio', label: 'Petitio', inputType: 'dropdown', dropdown: genSkillList(10) },
   ];
 
   constructor() {
@@ -287,6 +315,7 @@ export class Cardinal extends ArchBishop {
       passiveSkillList: this.passiveSkillList4th,
       classNames: this.classNames4th,
     });
+    this.inheritAutoCasts(PETITIO_AUTO_CASTS);
   }
 
   override setAdditionalBonus(params: AdditionalBonusInput): EquipmentSummaryModel {

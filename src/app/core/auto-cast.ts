@@ -363,7 +363,7 @@ export function buildAutoCastSimulation(input: {
     const dps = activationsPerSecond * expectedDamagePerActivation;
     sources.push({
       source,
-      name: resolveSkillById(source.skillId)?.name ?? skill.label,
+      name: source.skillId === 2054 ? skill.label : (resolveSkillById(source.skillId)?.name ?? skill.label),
       icon: source.skillId,
       activationsPerSecond,
       triggerAttacksPerSecond: triggerRate,
