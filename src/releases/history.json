@@ -1,5 +1,12 @@
 [
   {
+    "v": "0.1.182-beta",
+    "date": "16-10-2026",
+    "logs": [
+      "Adicionados os encantamentos Anti-Horário 1, 2 e 3 à Máscara de Pesar, no quarto slot de encantamento. Reportado por shummuy."
+    ]
+  },
+  {
     "v": "0.1.181-beta",
     "date": "16-10-2026",
     "logs": [
