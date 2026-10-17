@@ -327,6 +327,7 @@ export class DamageCalculator {
 
   get infoForClass(): InfoForClass {
     return {
+      pvpMode: this.pvp.mode,
       model: this.model,
       monster: this.monster,
       totalBonus: this.totalBonus,
@@ -2769,7 +2770,8 @@ export class DamageCalculator {
     });
     const actualCri = skillCriRateBreakdown.total;
 
-    const skillAccRate = isHit100 || isMatk ? 100 : misc.accuracy;
+    const skillAccRate = isHit100 || isMatk ? 100 : Math.max(0, Math.min(100,
+      skillData.accuracy?.({ ...formulaParams, accuracy: misc.accuracy }) ?? misc.accuracy));
     const { avgCriDamage, avgNoCriDamage } = calculated;
 
     const totalHit = typeof _totalHit === 'function' ? _totalHit(formulaParams) : _totalHit;

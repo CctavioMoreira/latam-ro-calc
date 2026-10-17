@@ -1,4 +1,5 @@
 import { Store } from '../state/store';
+import { normalizeClassLimits } from '../../app/core/class-limits';
 import { normalizeSkillFormulaVersion, SkillFormulaVersion } from '../../app/skills/skill-formula-version';
 import { Lifetime } from '../state/lifetime';
 import { Events, Disposable, listenDebounced } from '../services/events';
@@ -2444,6 +2445,7 @@ await ((_event?: unknown) => {
     this.loadedClassId = this.model.class;
     this.calculator.setClass(this.selectedCharacter);
     this.isAllowTraitStat = this.selectedCharacter.isAllowTraitStat();
+    this.mainStatusList = createNumberDropdownList({ from: 1, to: this.selectedCharacter.maxBaseStat });
     this.isAllowLeftWeaponByClass = AllowLeftWeaponMapper[this.selectedCharacter.className] || false;
   }
 
@@ -2562,28 +2564,19 @@ await ((_event?: unknown) => {
     } = this.selectedCharacter.minMaxLevelCap;
 
     this.levelList = createNumberDropdownList({ from: min, to: max });
-    this.jobList = createNumberDropdownList({ from: 1, to: maxJob, excludingNumbers: [66, 67, 68, 69] });
+    this.jobList = createNumberDropdownList({ from: 1, to: maxJob, excludingNumbers: this.selectedCharacter.excludedJobLevels });
   }
 
   private setClassLvl(params: { currentLvl: number; currentJob: number; isSetMinLevel?: boolean; }) {
     const { currentJob, currentLvl, isSetMinLevel = false } = params;
     const {
-      minMaxLevel: [min, max],
-      maxJob,
+      minMaxLevel: [min],
     } = this.selectedCharacter.minMaxLevelCap;
 
     this.model.level = isSetMinLevel ? min : currentLvl;
     this.model.jobLevel = isSetMinLevel ? 1 : currentJob;
 
-    const { level, jobLevel } = this.model;
-
-    if (level < min || level > max) {
-      this.model.level = 200;
-    }
-
-    if (!jobLevel || jobLevel > maxJob) {
-      this.model.jobLevel = 1;
-    }
+    normalizeClassLimits(this.model, this.selectedCharacter);
   }
 
   private setDefaultSkill(selectedSkill?: string) {
@@ -2682,7 +2675,7 @@ await ((_event?: unknown) => {
     if (!activeSkillMap || typeof activeSkillMap !== 'object') activeSkillMap = {};
     if (!passiveSkillMap || typeof passiveSkillMap !== 'object') passiveSkillMap = {};
 
-    const isEqualBuffLenght = passiveSkills?.length === this.model.passiveSkills?.length;
+    const isEqualBuffLenght = this.selectedCharacter.matchesSavedSkillCount('passive', this.model.passiveSkills?.length);
     const legacyInsignia = Number(skillBuffMap['_Sorcerer_Insignia_Target']);
     this.model.skillBuffs = this.skillBuffs.map((skill, i) => {
       const legacyIndex = /^_Sorcerer_Insignia_Target_(\d)$/.exec(skill.name)?.[1];
@@ -2693,7 +2686,7 @@ await ((_event?: unknown) => {
       return found ? savedVal : 0;
     });
 
-    const isEqualActiveLenght = activeSkills?.length === this.model.activeSkills?.length;
+    const isEqualActiveLenght = this.selectedCharacter.matchesSavedSkillCount('active', this.model.activeSkills?.length);
     this.model.activeSkills = activeSkills.map((skill, i) => {
       const savedVal = activeSkillMap[skill.name] ?? (isEqualActiveLenght ? this.model.activeSkills[i] : 0);
       const found = skill.dropdown.find((a) => a.value === savedVal);
@@ -2701,7 +2694,7 @@ await ((_event?: unknown) => {
       return found ? savedVal : 0;
     });
 
-    const isEqualPassiveLenght = passiveSkills?.length === this.model.passiveSkills?.length;
+    const isEqualPassiveLenght = this.selectedCharacter.matchesSavedSkillCount('passive', this.model.passiveSkills?.length);
     this.model.passiveSkills = passiveSkills.map((skill, i) => {
       const savedVal = passiveSkillMap[skill.name] ?? (isEqualPassiveLenght ? this.model.passiveSkills[i] : 0);
       const found = skill.dropdown.find((a) => a.value === savedVal);

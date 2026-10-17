@@ -3,7 +3,7 @@ import { ClassName } from './_class-name';
 
 type MainAspdEffect = 'base' | 'shield';
 type X = {
-  [key in WeaponSubTypeName | 'left-Dagger' | 'left-Sword']?: number;
+  [key in WeaponSubTypeName | 'left-Dagger' | 'left-Sword' | 'left-Axe']?: number;
 };
 type Y = {
   [key in MainAspdEffect]: number;
@@ -34,6 +34,8 @@ export const AspdTable: Partial<Record<ClassName, XX>> = {
   // bROWiki's Inquisidor table is identical to Shura's.
   [ClassName.Inquisitor]: { base: 158, shield: -5, Mace: -5, 'Two-Handed Mace': -7, Rod: -10, 'Two-Handed Rod': -12, Fistweapon: -1 },
 
+  // https://browiki.org/wiki/Algozes#Velocidade_de_ataque
+  [ClassName.AssassinCross]: { base: 156, shield: -6, Dagger: -2, Sword: -10, Axe: -11, Katar: -2, 'left-Dagger': -10, 'left-Sword': -12, 'left-Axe': -12 },
   [ClassName.GuillotineCross]: { base: 156, shield: -9, Dagger: -2, Sword: -25, Axe: -40, Katar: -2, 'left-Dagger': -10, 'left-Sword': -16 },
   [ClassName.ShadowCross]: { base: 156, shield: -9, Dagger: -2, Sword: -25, Axe: -40, Katar: -2, 'left-Dagger': -10, 'left-Sword': -16 },
   [ClassName.ShadowChaser]: { base: 156, shield: -4, Dagger: -3, Sword: -7, Bow: -7 },

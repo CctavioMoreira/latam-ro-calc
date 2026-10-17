@@ -35,6 +35,39 @@ function makeSession(overrides: Partial<Record<DataKey, Promise<unknown>>> = {})
 describe('plain calculator session', () => {
   beforeEach(() => vi.useFakeTimers());
   afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); });
+  it('restores Algoz with base 99, every job through 70 and named Sonic Blow controls', async () => {
+    const { session, storage } = makeSession();
+    storage.setItem('ro-set', JSON.stringify({ class: 4013, level: 200, jobLevel: 68, str: 130, pow: 50, weapon: 1250,
+      selectedAtkSkill: 'Sonic Blow==10', activeSkillMap: { 'Assassin Spirit': 1 }, passiveSkillMap: { 'Sonic Acceleration': 1 } }));
+    session.start();
+    await vi.advanceTimersByTimeAsync(1500);
+    expect(session.selectedCharacter.className).toBe(ClassName.AssassinCross);
+    expect(session.model).toMatchObject({ class: 4013, level: 99, jobLevel: 68, str: 99, pow: 0, selectedAtkSkill: 'Sonic Blow==10' });
+    expect(session.levelList.at(-1).value).toBe(99);
+    expect(session.mainStatusList.at(-1).value).toBe(99);
+    expect(session.jobList.map(row => row.value)).toEqual(Array.from({ length: 70 }, (_, i) => i + 1));
+    expect(session.isAllowLeftWeaponByClass).toBe(true);
+    expect(session.isAllowTraitStat).toBe(false);
+    expect(session.activeSkills.some(s => s.name === 'Venom Impression')).toBe(false);
+    expect(session.model.activeSkills[session.activeSkills.findIndex(s => s.name === 'Assassin Spirit')]).toBe(1);
+    expect(session.model.passiveSkills[session.passiveSkills.findIndex(s => s.name === 'Sonic Acceleration')]).toBe(1);
+
+    session.model.class = 5;
+    session.onClassChange();
+    session.confirmClassSwitch(true);
+    await vi.advanceTimersByTimeAsync(1500);
+    expect(session.mainStatusList.at(-1).value).toBe(130);
+    expect(session.levelList.at(-1).value).toBe(200);
+    expect(session.model.activeSkills[session.activeSkills.findIndex(s => s.name === 'Assassin Spirit')]).toBe(1);
+    session.model.level = 200;
+    session.model.class = 4013;
+    session.onClassChange();
+    session.confirmClassSwitch(true);
+    await vi.advanceTimersByTimeAsync(1500);
+    expect(session.model.level).toBe(99);
+    expect(session.mainStatusList.at(-1).value).toBe(99);
+    session.dispose();
+  });
   it.each([
     [315757, 20773], [315758, 21386], [315759, 20801], [315760, 20612],
   ])('keeps %i target bonuses visible and marks them inactive outside their target list', async (enchant, target) => {

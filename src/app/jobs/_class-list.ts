@@ -11,6 +11,7 @@ import { DragonKnight } from './DragonKnight';
 import { ElementalMaster } from './ElementalMaster';
 import { Genetic } from './Genetic';
 import { GuillotineCross } from './GuillotineCross';
+import { AssassinCross } from './AssassinCross';
 import { HyperNovice } from './HyperNovice';
 import { ImperialGuard } from './ImperialGuard';
 import { Inquisitor } from './Inquisitor';
@@ -47,7 +48,7 @@ const toClassItem = (id: number) => ({ label: ClassNamePtBr[id] ?? ClassID[id], 
 export type CharacterCtor = new () => CharacterBase;
 
 /**
- * Every playable class, in dropdown order: each 3rd job followed by its 4th-job
+ * Every playable class, in dropdown order: each job followed by its
  * promotion, grouped by archetype. The single source of truth for both the picker
  * and `CLASS_CTOR_BY_ID` — adding a class here is enough.
  */
@@ -69,6 +70,7 @@ const CLASS_ORDER: ReadonlyArray<readonly [id: number, ctor: CharacterCtor]> = [
   [22, Wanderer],
   [4264, Trouvere],
 
+  [4013, AssassinCross],
   [5, GuillotineCross],
   [4254, ShadowCross],
   [4, ShadowChaser],

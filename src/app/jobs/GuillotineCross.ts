@@ -1,7 +1,6 @@
 import { ClassName } from './_class-name';
 import { AssassinCross } from './AssassinCross';
 import { ActiveSkillModel, AtkSkillFormulaInput, AtkSkillModel, PassiveSkillModel } from './_character-base.abstract';
-import { InfoForClass } from '../models/info-for-class.model';
 import { DarkClawFn } from '../constants/share-active-skills';
 
 const jobBonusTable: Record<number, [number, number, number, number, number, number]> = {
@@ -315,13 +314,5 @@ export class GuillotineCross extends AssassinCross {
       passiveSkillList: this.passiveSkillList3rd,
       classNames: this.classNames3rd,
     });
-  }
-
-  override getMasteryAtk(info: InfoForClass): number {
-    if (!info.weapon?.data) return 0;
-
-    const { typeName } = info.weapon.data;
-
-    return this.calcHiddenMasteryAtk(info, { prefix: `x_${typeName}` }).totalAtk;
   }
 }

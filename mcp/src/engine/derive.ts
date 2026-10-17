@@ -9,16 +9,11 @@
 import { JobBuffs } from 'src/app/constants/job-buffs';
 import { CharacterBase } from 'src/app/jobs/_character-base.abstract';
 import { MainModel } from 'src/app/models/main.model';
+import { normalizeClassLimits } from 'src/app/core/class-limits';
 
 /** Pull level/jobLevel into the class's legal range, with the app's fallbacks. */
 export function clampLevels(model: MainModel, char: CharacterBase): void {
-  const {
-    minMaxLevel: [min, max],
-    maxJob,
-  } = char.minMaxLevelCap;
-
-  if (!model.level || model.level < min || model.level > max) model.level = 200;
-  if (!model.jobLevel || model.jobLevel > maxJob) model.jobLevel = 1;
+  normalizeClassLimits(model, char);
 }
 
 /**
@@ -63,12 +58,12 @@ export function applySkillMaps(model: MainModel, char: CharacterBase): void {
     });
 
   const { activeSkills, passiveSkills } = char;
-  const passiveSameLength = passiveSkills?.length === m.passiveSkills?.length;
+  const passiveSameLength = char.matchesSavedSkillCount('passive', m.passiveSkills?.length);
 
   // Mirrors the component: the buff array's positional fallback is gated on the
   // *passive* list length, not the buff list's own.
   m.skillBuffs = resolve(JobBuffs, buffMap, m.skillBuffs, passiveSameLength);
-  m.activeSkills = resolve(activeSkills, activeMap, m.activeSkills, activeSkills?.length === m.activeSkills?.length);
+  m.activeSkills = resolve(activeSkills, activeMap, m.activeSkills, char.matchesSavedSkillCount('active', m.activeSkills?.length));
   m.passiveSkills = resolve(passiveSkills, passiveMap, m.passiveSkills, passiveSameLength);
 }
 

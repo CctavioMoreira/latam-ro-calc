@@ -898,6 +898,11 @@ export const SKILL_META = {
   "Bionics Mastery": { id: 5337 },
   "_Preview_ABR Infinity": { id: 5305 },
   "_Preview_Creeper": { id: 5346 },
+  // Additional controls for the Algoz simulation; labels/ids from the bROWiki
+  // pages linked in sonic-blow.ts. The condition reuses the attack's icon.
+  "Sonic Acceleration": { id: 1003, label: "Lâminas Aceleradas" },
+  "Assassin Spirit": { id: 457, label: "Espírito do Mercenário" },
+  "Sonic Blow Target Below Half HP": { id: 136, label: "Alvo abaixo de 50% de HP (Lâminas Destruidoras)" },
 } satisfies Record<string, SkillMetaEntry>;
 
 export type SkillName = keyof typeof SKILL_META;

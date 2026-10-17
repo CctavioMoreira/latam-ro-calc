@@ -5,6 +5,7 @@ import { ItemTypeEnum } from '../constants/item-type.enum';
 import { ElementType } from '../constants/element-type.const';
 import { Monster, Weapon } from '../domain';
 import { SKILL_NAME } from '../constants/skill-name';
+import type { PvpMode } from '../core/pvp';
 
 /** A skill referenced from a formula: either its name, or a skill definition/const
  *  that carries a `name` (lets formulas read other skills' state without `this`). */
@@ -20,6 +21,7 @@ export interface SkillStateCtx {
 }
 
 export interface InfoForClass {
+  pvpMode?: PvpMode;
   weapon: Weapon;
   ammoElement: ElementType;
   monster: Monster;
