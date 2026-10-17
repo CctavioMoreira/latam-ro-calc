@@ -57,6 +57,18 @@ describe('item search catalogue coverage', () => {
 });
 
 describe('item search matching', () => {
+  // https://issues.latam-tools.com.br/t/nYekDmxodzefe4XMjBZQ
+  it('includes lower/equal required levels and items without a requirement, with an optional cap', () => {
+    const items = [99, 100, 101, 0, null, undefined].map((requiredLevel, index) => ({ ...makeItem(index + 1), requiredLevel }));
+    expect(search(items, { maxRequiredLevel: 100 })).toEqual([1, 2, 4, 5, 6]);
+    expect(search(items, { maxRequiredLevel: 1 })).toEqual([4, 5, 6]);
+    expect(search(items)).toEqual([1, 2, 3, 4, 5, 6]);
+  });
+  it('keeps the level cap restrictive when bonuses use OR', () => {
+    const items = [{ ...makeItem(1, { atk: ['10'] }), requiredLevel: 100 },
+      { ...makeItem(2, { matk: ['10'] }), requiredLevel: 101 }, makeItem(3)];
+    expect(search(items, { maxRequiredLevel: 100, bonuses: ['atk', 'matk'], matchAllBonuses: false })).toEqual([1]);
+  });
   it('uses the same fuzzy matching as item selectors', () => {
     expect(search([makeItem(1), makeItem(2, {}, 'Botas')], { name: 'TSTE CHP' })).toEqual([1]);
     expect(search([makeItem(1)], { name: 'TSTE BOTAS' })).toEqual([]);

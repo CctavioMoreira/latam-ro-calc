@@ -18,6 +18,7 @@ const target = context["target"]; return <><Render tag="div" props={{"className"
 <Render tag="app-item-search" props={{"items": vm.items,
 "selectedCharacter": vm.selectedCharacter,
 "className": vm.selectedClassLabel,
+"currentLevel": vm.model.level,
 "equipableItems": vm.equipableItems,
 "offensiveSkills": vm.offensiveSkills,
 "onClassChanged": vm.onClassChanged$}}></Render>

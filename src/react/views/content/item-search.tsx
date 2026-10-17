@@ -4,7 +4,7 @@ import type { ApplicationServices } from '../../services/application';
 import type { ItemSearchComponent } from '../../controllers/item-search';
 import { iconUrl, missingIcon } from '../../services/assets';
 import { Dialog } from '../../ui/dialog';
-import { Button, Icon, Input } from '../../ui/primitives';
+import { Button, Checkbox, Icon, Input } from '../../ui/primitives';
 import { Select } from '../../ui/select';
 import { SelectButton } from '../../ui/select-button';
 import { Table } from '../../ui/table';
@@ -56,6 +56,10 @@ export function Content({ vm, services }: { vm: ItemSearchComponent; services: A
               <Select inputId="item-search-server" ariaLabel="Servidor" options={vm.shopServerOptions} optionLabel="label" optionValue="value"
                 value={vm.selectedShopServer} onChange={value => action(() => { vm.selectedShopServer = value; })} />
             </div>
+          </div>
+          <div className="item-search-level">
+            <Checkbox label={'Apenas itens para o nível atual (' + vm.currentLevel + ') ou inferior'}
+              value={vm.onlyCurrentLevel} onChange={value => action(() => { vm.onlyCurrentLevel = value; })} />
           </div>
           <div className="calc-section-heading item-search-bonus-heading">
             <span>Bônus</span>

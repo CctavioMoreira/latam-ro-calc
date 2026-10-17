@@ -12,6 +12,37 @@ test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('ro-right-accordion-active', '[]'));
 });
 
+test('current level filter restricts results and preserves its selection when reopened', async ({ page }) => {
+  await page.route('**/items-core*.json', async route => {
+    const response = await route.fetch();
+    const items = await response.json();
+    for (const [id, requiredLevel] of [[2201, 1], [2203, 999]]) {
+      items[id] = { ...items[2201], id, name: 'Filtro por nível ' + id, requiredLevel };
+    }
+    await route.fulfill({ json: items });
+  });
+  const dialog = await openSearch(page);
+  const levelFilter = dialog.getByRole('checkbox', { name: /Apenas itens para o nível atual \(\d+\) ou inferior/ });
+  await expect(levelFilter).not.toBeChecked();
+  await dialog.getByRole('searchbox', { name: 'Nome', exact: true }).fill('Filtro por nível');
+  await dialog.getByRole('button', { name: 'Buscar', exact: true }).click();
+  await expect(dialog.locator('tbody tr')).toHaveCount(2);
+  await levelFilter.check();
+  await dialog.getByRole('button', { name: 'Buscar', exact: true }).click();
+  await expect(dialog.locator('tbody tr')).toHaveCount(1);
+  await expect(dialog.locator('tbody tr')).toContainText('Filtro por nível 2201');
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: 'Buscar itens', exact: true }).click();
+  await expect(levelFilter).toBeChecked();
+  await expect(dialog.locator('tbody tr')).toHaveCount(1);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(levelFilter).toBeVisible();
+  expect(await dialog.evaluate(element => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1);
+  await levelFilter.uncheck();
+  await dialog.getByRole('button', { name: 'Buscar', exact: true }).click();
+  await expect(dialog.locator('tbody tr')).toHaveCount(2);
+});
+
 test('search dropdowns expose all bonus and type options, and bonus rows have no four-picker cap', async ({ page }) => {
   const dialog = await openSearch(page);
   const [nameBox, typeBox, skillBox, serverBox] = await Promise.all(

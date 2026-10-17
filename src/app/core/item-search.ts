@@ -10,6 +10,7 @@ export interface ItemSearchFilters {
   skillIds: readonly number[];
   bonuses: readonly (string | null)[];
   matchAllBonuses: boolean;
+  maxRequiredLevel?: number;
 }
 
 // Reviewed separately from createRawTotalBonus: the coverage spec fails when the
@@ -104,6 +105,7 @@ export function filterSearchItems(items: Readonly<Record<number, ItemModel>>, ro
   return rows.filter(row => {
     const item = items[row.id];
     if (!item || listed.has(row.id) || positions.size && !positions.has(row.position)) return false;
+    if (filters.maxRequiredLevel != null && (item.requiredLevel ?? 0) > filters.maxRequiredLevel) return false;
     const rank = rankName(item.name);
     if (!Number.isFinite(rank)) return false;
     ranks.set(row.id, rank);

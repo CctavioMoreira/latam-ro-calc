@@ -50,6 +50,7 @@ export class ItemSearchComponent extends ViewState {
   items: Record<number, ItemModel> = {};
   selectedCharacter?: { className: string };
   className = '';
+  currentLevel = 1;
   equipableItems: ItemSearchRow[] = [];
   offensiveSkills: (DropdownModel & { icon?: number })[] = [];
   onClassChanged!: Events<boolean>;
@@ -77,6 +78,7 @@ export class ItemSearchComponent extends ViewState {
   selectedOffensiveSkills: string[] = [];
   bonusPickers: { id: number; value: string | null }[] = [{ id: 0, value: null }];
   matchAllBonuses = true;
+  onlyCurrentLevel = false;
   itemSearchFirst = 0;
   filteredItems: ItemSearchRow[] = [];
   activeFilteredItem: ItemSearchRow | null = null;
@@ -108,8 +110,8 @@ export class ItemSearchComponent extends ViewState {
       this.selectedEquipTarget = null;
       if (request) {
         this.selectedItemPositions = [request.position];
-        this.onItemSearchFilterChange();
       }
+      if (request || this.onlyCurrentLevel) this.onItemSearchFilterChange();
       this.isShowSearchDialog = true;
     }));
   }
@@ -152,6 +154,7 @@ export class ItemSearchComponent extends ViewState {
       skillIds: this.selectedOffensiveSkills.map(name => SKILL_ID_BY_NAME[name]).filter(id => id != null),
       bonuses: this.bonusPickers.map(picker => picker.value),
       matchAllBonuses: this.matchAllBonuses,
+      maxRequiredLevel: this.onlyCurrentLevel ? this.currentLevel : undefined,
     });
     this.activeFilteredItem = null;
     this.selectedEquipTarget = null;
