@@ -8,7 +8,32 @@ import { ActiveSkillModel, AtkSkillFormulaInput, AtkSkillModel, PassiveSkillMode
 import { ClassName } from './_class-name';
 import { ClassAutoCastDefinition } from '../models/auto-cast.model';
 
-const ABYSS_SQUARE_AUTO_CAST: ClassAutoCastDefinition[] = [{
+const ABYSS_AUTO_CASTS: ClassAutoCastDefinition[] = [{
+  key: 'from-the-abyss',
+  resolve: ({ skillState, skillById }) => {
+    const level = skillState.activeLevel('From the Abyss');
+    const skill = skillById(5317);
+    if (!level || !skill) {
+      return { blocked: [{
+        key: 'from-the-abyss', name: 'Invocação do Abismo', icon: 5317,
+        reason: !level ? 'Ative Invocação do Abismo' : 'Fórmula indisponível',
+      }] };
+    }
+    // https://browiki.org/wiki/Invocação_do_Abismo: 3% per level; one orb
+    // regenerates every 3/2.5/2/1.5/1s. Estimate sustained DPS after the initial five orbs.
+    const interval = 3.5 - level * 0.5;
+    return { sources: [{
+      key: 'from-the-abyss', kind: 'passive', skillId: 5317, skillLevel: level,
+      chance: level * 3, trigger: 'physical-attack', sourceName: 'Invocação do Abismo', skillData: skill,
+      enablingSkillId: 5317,
+      maxActivationsPerSecond: 1 / interval,
+      chanceBreakdown: [
+        { label: 'Invocação do Abismo', value: `${level * 3}% por ataque básico` },
+        { label: 'Reposição dos orbes', value: `1 orbe a cada ${String(interval).replace('.', ',')} s; limite de DPS sustentado` },
+      ],
+    }] };
+  },
+}, {
   key: 'abyss-square',
   resolve: ({ skillState, skillById }) => {
     const fromAbyss = skillState.activeLevel('From the Abyss');
@@ -416,7 +441,7 @@ export class AbyssChaser extends ShadowChaser {
       passiveSkillList: this.passiveSkillList4th,
       classNames: this.classNames4th,
     });
-    this.inheritAutoCasts(ABYSS_SQUARE_AUTO_CAST);
+    this.inheritAutoCasts(ABYSS_AUTO_CASTS);
   }
 
   override setAdditionalBonus(params: AdditionalBonusInput): EquipmentSummaryModel {
