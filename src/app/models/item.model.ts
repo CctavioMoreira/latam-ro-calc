@@ -59,6 +59,8 @@ export interface ItemModel {
   itemTypeId: number;
   itemSubTypeId: number;
   itemLevel: any;
+  /** Minimum base level to equip; absent or null means no level requirement. */
+  requiredLevel?: number | null;
   attack: any;
   propertyAtk?: any;
   /** Always-on armor property from the LATAM description; an armor card overrides it. */

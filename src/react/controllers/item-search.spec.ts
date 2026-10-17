@@ -18,6 +18,29 @@ function setup() {
 }
 
 describe('item search state', () => {
+  it('uses the selected base level and refreshes the enabled filter when reopened after a level change', () => {
+    const { vm, layout } = setup();
+    vm.currentLevel = 100;
+    vm.items = { 1: { ...vm.items[1], requiredLevel: 100 }, 2: { ...vm.items[1], id: 2, requiredLevel: 101 } };
+    vm.equipableItems = [1, 2].map(id => ({ id, value: id, label: 'Chapéu', position: 'headUpperList' }));
+    vm.onItemSearchFilterChange();
+    expect(vm.filteredItems.map(item => item.id)).toEqual([1, 2]);
+    vm.onlyCurrentLevel = true;
+    vm.onItemSearchFilterChange();
+    expect(vm.filteredItems.map(item => item.id)).toEqual([1]);
+    vm.isShowSearchDialog = false;
+    vm.currentLevel = 101;
+    layout.openItemSearch();
+    expect(vm.onlyCurrentLevel).toBe(true);
+    expect(vm.filteredItems.map(item => item.id)).toEqual([1, 2]);
+    vm.currentLevel = 99;
+    layout.openItemSearch();
+    expect(vm.filteredItems).toEqual([]);
+    vm.onlyCurrentLevel = false;
+    vm.onItemSearchFilterChange();
+    expect(vm.filteredItems.map(item => item.id)).toEqual([1, 2]);
+    vm.ngOnDestroy();
+  });
   it('starts with one picker and keeps a minimum of one without a maximum', () => {
     const { vm } = setup();
     expect(vm.bonusPickers).toEqual([{ id: 0, value: null }]);

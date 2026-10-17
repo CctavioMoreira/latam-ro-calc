@@ -79,6 +79,7 @@
 :is(app-item-search, .ui-scope-app-item-search) .ui-multiselect { height: 34px; }
 :is(app-item-search, .ui-scope-app-item-search) .ui-select-trigger { font-size: 12px; }
 :is(app-item-search, .ui-scope-app-item-search) .item-search-bonus-heading { margin-top: 0.875rem; }
+:is(app-item-search, .ui-scope-app-item-search) .item-search-level { margin-top: 0.875rem; font-size: 11px; }
 :is(app-item-search, .ui-scope-app-item-search) .item-search-bonus-pickers {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
