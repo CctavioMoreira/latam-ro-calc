@@ -5,6 +5,8 @@ import { InfoForClass } from '../models/info-for-class.model';
 import { HighPriest } from './HighPriest';
 import { ActiveSkillModel, AtkSkillFormulaInput, AtkSkillModel, PassiveSkillModel } from './_character-base.abstract';
 import { ClassName } from './_class-name';
+import { learnedSkill } from '../constants/share-passive-skills/learned-skill';
+import { geminiSources } from '../skills/gemini-lumen';
 
 const jobBonusTable: Record<number, [number, number, number, number, number, number]> = {
   1: [0, 0, 0, 1, 0, 0],
@@ -217,6 +219,7 @@ export class ArchBishop extends HighPriest {
     },
     LaudaAgnusBuff,
     LaudaRamusBuff,
+    learnedSkill('Duple Light', 10),
   ];
   protected readonly passiveSkillList3rd: PassiveSkillModel[] = [
     {
@@ -336,10 +339,21 @@ export class ArchBishop extends HighPriest {
         { label: 'Nv 5', value: 5, isUse: true },
       ],
     },
+    learnedSkill('Adoramus', 10),
   ];
 
   constructor() {
     super();
+
+    this.inheritAutoCasts([{
+      key: 'gemini-lumen',
+      resolve: ({ skillState }) => {
+        const level = skillState.activeLevel('Duple Light');
+        return level > 0 ? { sources: geminiSources(level, {
+          key: 'gemini-lumen', kind: 'passive', sourceName: 'Gemini Lumen', enablingSkillId: 2054,
+        }) } : {};
+      },
+    }]);
 
     this.inheritSkills({
       activeSkillList: this.activeSkillList3rd,

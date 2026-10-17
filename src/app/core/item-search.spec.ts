@@ -57,6 +57,13 @@ describe('item search catalogue coverage', () => {
 });
 
 describe('item search matching', () => {
+  it('finds damage skills granted by a temporary state, including Eswhoo on the Xamânico cap', () => {
+    const db = JSON.parse(readFileSync('src/assets/demo/data/item.json', 'utf8'));
+    expect(search([db[19397]], { skillIds: [2604], bonuses: ['skillDamage'] })).toEqual([19397]);
+    expect(search([db[19397]], { skillIds: [2604], bonuses: ['autoCast'] })).toEqual([]);
+    expect(search([db[19396]], { skillIds: [2592], bonuses: ['skillDamage'] })).toEqual([19396]);
+    expect(search([db[19195]], { bonuses: ['unbreakableWeapon'] })).toEqual([19195]);
+  });
   it('uses the same fuzzy matching as item selectors', () => {
     expect(search([makeItem(1), makeItem(2, {}, 'Botas')], { name: 'TSTE CHP' })).toEqual([1]);
     expect(search([makeItem(1)], { name: 'TSTE BOTAS' })).toEqual([]);
