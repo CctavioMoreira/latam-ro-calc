@@ -1,6 +1,0 @@
-{
-  "type": "patch",
-  "logs": [
-    "Adicionados os autocasts de Gemini Lumen para Arcebispos e Cardeais e de Petitio para Cardeais, com indicação das habilidades necessárias quando bloqueados. Reportado por usuário anônimo."
-  ]
-}
