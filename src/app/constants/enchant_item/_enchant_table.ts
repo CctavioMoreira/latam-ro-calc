@@ -26,6 +26,7 @@ import {
   RuneStr,
   RuneVit,
   Sharp,
+  SkillDelay,
   Spell,
   Str,
   Tenacity,
@@ -1128,6 +1129,9 @@ export const EnchantTable: EntTable[] = [
   { name: 'Ice_Flame_Dress', enchants: [null, bp5Armor, bp5Armor, bp5Armor] },
   { name: 'Red_Serpent_Dress', enchants: [null, bp5Armor, bp5Armor, bp5Armor] },
   { name: 'Mask_of_Sin_Fate', enchants: [null, null, null, bp5Mask] },
+
+  // Máscara de Pesar (436031): one Anti-Horário enchant in slot 4.
+  { name: 'THA_DOLOR_MASK', enchants: [null, null, null, [SkillDelay._1, SkillDelay._2, SkillDelay._3]] },
 
   // Capacete Decadente / Fortificado / Descartado (401433-401435).
   { name: 'RTC3등투구', enchants: [null, capaceteBP, capaceteBP, capaceteBP] },
