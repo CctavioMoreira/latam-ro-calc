@@ -4,6 +4,7 @@ import { BeastBaneFn, DemonBane, DoubleAttackFn, FaithFn, HiltBindingFn, Improve
 import { InfoForClass } from '../models/info-for-class.model';
 import { floor, genSkillList } from '../utils';
 import {
+  BACK_STAB,
   EARTH_SPIKE,
   FIRE_PILLAR,
   FROST_NOVA,
@@ -12,6 +13,7 @@ import {
   LORD_OF_VERMILION,
   METEOR_STORM,
   SIGHTRASHER,
+  SIGHTLESS_MIND,
   STORM_GUST,
   WATER_BALL,
 } from '../skills/shared-skills';
@@ -98,6 +100,9 @@ export class SuperNovice extends CharacterBase {
 
   protected readonly classNames = [ClassName.Novice, ClassName.SuperNovice];
   protected readonly _atkSkillList: AtkSkillModel[] = [
+    // Learned in the expanded tree: https://browiki.org/wiki/Superaprendizes#Expansão
+    BACK_STAB,
+    SIGHTLESS_MIND,
     {
       name: 'Fire Bolt',
       label: 'Fire Bolt Lv10',

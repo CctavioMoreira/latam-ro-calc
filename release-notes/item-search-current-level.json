@@ -1,0 +1,4 @@
+{
+  "type": "patch",
+  "logs": ["Adicionado filtro em Buscar itens para mostrar apenas itens com nível necessário igual ou inferior ao nível atual do personagem. Reportado por usuário anônimo."]
+}

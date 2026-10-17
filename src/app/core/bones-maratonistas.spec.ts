@@ -153,7 +153,7 @@ describe('Sagrado: Gemini Lumen and Adoramus damage integration', () => {
     expect(lights.map((s) => s.source.chance)).toEqual([30, 30]);
     expect(lights.every((s) => s.expectedDamagePerActivation > 0)).toBe(true);
     expect(result.sources).toContainEqual(expect.objectContaining({ source: expect.objectContaining({ skillId: 2040, skillLevel: 8, chance: 5 }) }));
-    expect(result.blockedSources).toEqual([]);
+    expect(result.blockedSources.map((source) => source.key)).toEqual(Job === Cardinal ? ['petitio'] : []);
   });
 
   it('applies the +100% Sagrado skill bonus to both physical and magical light damage', () => {
