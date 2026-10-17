@@ -23,7 +23,7 @@ describe('class-owned auto-cast definitions', () => {
 
   it('inherits Shadow Chaser definitions through Abyss Chaser', () => {
     expect(keysOf(new ShadowChaser())).toEqual(['shadow-spell']);
-    expect(keysOf(new AbyssChaser())).toEqual(['shadow-spell', 'abyss-square']);
+    expect(keysOf(new AbyssChaser())).toEqual(['shadow-spell', 'from-the-abyss', 'abyss-square']);
   });
 
   it('offers Gemini Lumen through Mimetismo as separate physical and magic melee procs', () => {

@@ -212,7 +212,7 @@ public readonly itemDescriptions: ItemDescriptionStore,
     const limit = source.source.maxActivationsPerSecond;
     return `${source.source.sourceName}: chance independente por ataque elegível.`
       + (limit == null ? '' : ` DPS sustentado estimado, limitado a ${limit.toFixed(2).replace('.', ',')} ativações/s `
-        + (source.source.skillId === 5283 ? 'pela recarga de Petitio.' : 'pela regeneração de espadas; reserva inicial não incluída.'));
+        + (source.source.skillId === 5283 ? 'pela recarga de Petitio.' : 'pela reposição do recurso; reserva inicial não incluída.'));
   }
   originTooltip(source: any, descriptionVersion?: number): string {
     void descriptionVersion;
