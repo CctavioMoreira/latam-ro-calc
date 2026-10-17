@@ -2,6 +2,26 @@ import { ElementType } from '../constants/element-type.const';
 import type { WeaponTypeName } from '../constants/weapon-type-mapper';
 import type { ActiveSkillModel, AtkSkillModel } from '../jobs/_character-base.abstract';
 
+/** Apunhalar: client table (212); dagger packets: https://browiki.org/wiki/Apunhalar. */
+export const BACK_STAB: AtkSkillModel = {
+  name: 'Back Stab', label: 'Back Stab Lv10', value: 'Back Stab==10',
+  levelList: Array.from({ length: 10 }, (_, i) => ({ label: `Back Stab Nv${i + 1}`, value: `Back Stab==${i + 1}` })),
+  acd: 0.5, fct: 0, vct: 0, cd: 0.5,
+  isMelee: true,
+  totalHit: ({ weapon }) => weapon.data?.typeName === 'dagger' ? 2 : 1,
+  formula: ({ skillLevel, weapon }) => (300 + skillLevel * 40) * (weapon.data?.typeName === 'bow' ? 0.5 : 1),
+};
+
+/** Ataque Surpresa: client table (214), also validated by the Shadow Chaser replay. */
+export const SIGHTLESS_MIND: AtkSkillModel = {
+  name: 'Sightless Mind', label: 'Sightless Mind Lv5', value: 'Sightless Mind==5',
+  levelList: Array.from({ length: 5 }, (_, i) => ({ label: `Sightless Mind Nv${i + 1}`, value: `Sightless Mind==${i + 1}` })),
+  // No client delay row; see skill-delay.spec.ts's NO_CLIENT_ROW.
+  acd: 0, fct: 0, vct: 0, cd: 0,
+  isMelee: true,
+  formula: ({ skillLevel }) => 50 + skillLevel * 150,
+};
+
 /** Item-granted Espíritos Anciões, including Rifle Primordial-LT. */
 export const SOUL_STRIKE: AtkSkillModel = {
   name: 'Soul Strike', label: 'Soul Strike Lv10', value: 'Soul Strike==10',
