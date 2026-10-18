@@ -180,7 +180,7 @@ Give `review-rrf-class` the path, the class, the level, and **the traits with th
 source** — that is the input its §0 asks for, and the card is where it comes from. When a
 recording earns a fixture, move it into
 `src/app/replay/__tests__/fixtures/<class>-<scenario>.rrf` and name the spec after the
-**behaviour** it pins, never after the card or the month it arrived (AGENTS.md, and
+**behaviour** it pins, never after the card or the month it arrived (CLAUDE.md, and
 [[spec-names-describe-subject]]).
 
 Once a card is actually done:

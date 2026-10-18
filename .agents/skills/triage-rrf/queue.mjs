@@ -15,7 +15,7 @@
 // the card. A class with no spec at all is where a recording buys the most.
 //
 // Printed text is pt-BR where it quotes the tracker's own schema (the card fields the
-// operator reads on the site) and English elsewhere, per AGENTS.md.
+// operator reads on the site) and English elsewhere, per CLAUDE.md.
 
 import { execFileSync } from 'node:child_process';
 import { readdirSync, readFileSync } from 'node:fs';
@@ -59,7 +59,7 @@ function classFilesById() {
  *
  * Replay-backed is decided by content first — the spec loads a fixture through
  * `loadReplayFixture(` or decodes a recording — and by name only as a fallback. Specs are named after the behaviour they pin
- * (AGENTS.md), so `Cardinal.gemini-lumen-autoattack.spec.ts` and
+ * (CLAUDE.md), so `Cardinal.gemini-lumen-autoattack.spec.ts` and
  * `SkyEmperor.basic-crit-kihop.spec.ts` are as replay-backed as anything called
  * `*-replay.spec.ts`; the old name test reported both classes as uncovered.
  */

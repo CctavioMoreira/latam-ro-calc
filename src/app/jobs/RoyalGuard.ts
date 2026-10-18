@@ -2,8 +2,13 @@ import { ClassName } from './_class-name';
 import { ActiveSkillModel, AtkSkillFormulaInput, AtkSkillModel, PassiveSkillModel } from './_character-base.abstract';
 import { Paladin } from './Paladin';
 import { ElementType } from '../constants/element-type.const';
+import { WeaponTypeName } from '../constants';
 import { AdditionalBonusInput, InfoForClass } from '../models/info-for-class.model';
 import { ShieldSpellFn } from '../constants/share-active-skills';
+
+/** Every level of a skill, for the level picker in the UI. */
+const levelList = (name: string, maxLv = 10) =>
+  Array.from({ length: maxLv }, (_, i) => ({ label: `${name} Nv${i + 1}`, value: `${name}==${i + 1}` }));
 
 const jobBonusTable: Record<number, [number, number, number, number, number, number]> = {
   1: [0, 0, 0, 0, 0, 0],
@@ -263,6 +268,39 @@ export class RoyalGuard extends Paladin {
         const overbrandLv = this.learnLv('Over Brand');
 
         return (120 * skillLevel + overbrandLv * 80) * (baseLevel / 100);
+      },
+    },
+    {
+      // Trindade. Spear-only melee hit whose ratio comes from the client's own two-column
+      // table (300%/level, 450%/level with Consagração up — Lv5: 1.500% / 2.250%). VIT is
+      // added to that ratio once, or twice while Consagração is up, per bROWiki's formula:
+      // Dano = [(Dano base + VIT) x (Nv. de base / 100)]%.
+      // 'Inspiration' is this engine's internal name for Consagração (skill id 2325).
+      name: 'Hesperus Lit',
+      label: 'Hesperus Lit Lv5',
+      value: 'Hesperus Lit==5',
+      levelList: levelList('Hesperus Lit', 5),
+      acd: 0.5,
+      fct: 0,
+      vct: 0,
+      cd: 0.2,
+      isMelee: true,
+      verifyItemFn: ({ weapon }) => {
+        const requires: WeaponTypeName[] = ['spear', 'twohandSpear'];
+        if (requires.some((wType) => weapon.isType(wType))) return '';
+
+        return requires.join(', ');
+      },
+      formula: (input: AtkSkillFormulaInput): number => {
+        const { model, skillLevel, status } = input;
+        const baseLevel = model.level;
+        const { totalVit } = status;
+
+        if (this.isSkillActive('Inspiration')) {
+          return (skillLevel * 450 + totalVit * 2) * (baseLevel / 100);
+        }
+
+        return (skillLevel * 300 + totalVit) * (baseLevel / 100);
       },
     },
   ];

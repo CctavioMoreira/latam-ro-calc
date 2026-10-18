@@ -236,7 +236,7 @@ Per card, following the plan:
   `size-resistance.spec.ts` — never after the backlog or the month. `backlog-<yyyy-mm>.spec.ts`
   was the old shape here and it is now banned: four such grab-bags were split by subject on
   17/08/2026. Put the card id in a comment instead; that is what comments are for. See
-  AGENTS.md and [[spec-names-describe-subject]]. Drive the real `Calculator` through
+  CLAUDE.md and [[spec-names-describe-subject]]. Drive the real `Calculator` through
   `loadItemFromModel().prepareAllItemBonus()` and assert on `totalEquipStatus`; a class fix
   goes next to its class. Assert the negative case too — below the level gate, without the
   combo partner.

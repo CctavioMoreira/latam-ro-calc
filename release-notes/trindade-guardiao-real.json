@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "logs": [
+    "Adicionada Trindade às habilidades de simulação do Guardião Real, com todos os cinco níveis, exigência de lança e o bônus de dano com Consagração ativa. Reportado por romeurbr.",
+    "Traduzido o aviso \"Requer\" das habilidades, que mostrava os nomes internos das armas em inglês. Reportado por romeurbr."
+  ]
+}

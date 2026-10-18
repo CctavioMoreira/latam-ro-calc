@@ -1,4 +1,4 @@
-import { ElementMapper, ElementType, ItemTypeEnum, SizePenaltyMapper } from 'src/app/constants';
+import { ElementMapper, ElementType, ItemTypeEnum, SizePenaltyMapper, localizeRequirement } from 'src/app/constants';
 import { SKILL_NAME } from 'src/app/constants/skill-name';
 import { elementPtBr, racePtBr } from 'src/app/constants/monster-i18n';
 import { Monster, Weapon } from 'src/app/domain';
@@ -2631,7 +2631,9 @@ export class DamageCalculator {
 
     const invalidMsg = verifyItemFn && typeof verifyItemFn === 'function' ? verifyItemFn(formulaParams) : '';
     if (invalidMsg) {
-      basicDmg.requireTxt = invalidMsg;
+      // Classes state the requirement with their own identifiers ("spear, twohandSpear");
+      // the warning is read by players, so translate it here rather than in each class.
+      basicDmg.requireTxt = localizeRequirement(invalidMsg);
       return { basicDmg, misc, basicAspd, skillDmg: { ...this.zeroSkillDmg } };
     }
 
