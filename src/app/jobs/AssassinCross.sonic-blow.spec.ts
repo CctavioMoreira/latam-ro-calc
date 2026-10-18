@@ -195,7 +195,9 @@ describe('Lâminas Destruidoras', () => {
   });
 
   it('requires katar when learned but allows item autocasts with a dagger', () => {
-    expect(calculate({ gear: { weapon: 1201 } }).calc.getTotalSummary().dmg.requireTxt).toBe('katar');
+    // The warning is localized at the calculator boundary, so this reads as the player
+    // sees it; see constants/require-text-i18n.spec.ts.
+    expect(calculate({ gear: { weapon: 1201 } }).calc.getTotalSummary().dmg.requireTxt).toBe('Katar');
     const { calc, rb, summary } = calculate({ gear: { weapon: 1201, weaponCard1: 4268 } });
     const simulation = buildAutoCastSimulation({ calc, model: rb.model, summary, hasSelectedEffects: false });
     expect(simulation.sources).toContainEqual(expect.objectContaining({ source: expect.objectContaining({ skillId: 136 }), expectedDamagePerActivation: expect.any(Number) }));

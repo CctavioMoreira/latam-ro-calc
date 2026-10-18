@@ -22,7 +22,7 @@ import {
 import { CustomItems as CustomItemLibraryService } from '../services/custom-items';
 import { encodeCustomBundle } from 'src/app/core/custom-item-library';
 import { createExtraOptionList, ExtraOptionMap } from 'src/app/utils/create-extra-option-list';
-import { WeaponSubTypeNameMapById, WeaponTypeNameMapBySubTypeId } from 'src/app/constants/weapon-type-mapper';
+import { WEAPON_SUBTYPE_LABEL_PT_BR, WeaponSubTypeNameMapById, WeaponTypeNameMapBySubTypeId } from 'src/app/constants/weapon-type-mapper';
 import { ItemSlotLabelPtBr } from 'src/app/constants/item-slot-i18n';
 import { VALID_SKILL_IDS, resolveSkillById } from 'src/app/skills';
 import { compileVisualItemRule, readVisualItemRule, VisualCondition, VisualConditionKind, VisualItemRule as Rule } from 'src/app/core/custom-item-visual-script';
@@ -128,15 +128,7 @@ export class CustomItemStudioComponent extends ViewState {
   readonly previewShadowRefines = createNumberDropdownList({ from: 0, to: 10, prefixLabel: '+ ' });
   readonly loyaltyOptions = [{ value: 1, label: 'Baixa' }, { value: 2, label: 'Nenhuma' }, { value: 3, label: 'Normal' }, { value: 4, label: 'Alta' }];
   readonly weaponSubtypes = Object.entries(WeaponSubTypeNameMapById).map(([id, label]) => ({
-    id: Number(id), label: ({
-      Dagger: 'Adaga', Sword: 'Espada', 'Two-Handed Sword': 'Espada de duas mãos',
-      Spear: 'Lança', 'Two-Handed Spear': 'Lança de duas mãos', Axe: 'Machado',
-      'Two-Handed Axe': 'Machado de duas mãos', Mace: 'Maça', 'Two-Handed Mace': 'Maça de duas mãos',
-      Rod: 'Cajado', 'Two-Handed Rod': 'Cajado de duas mãos', Bow: 'Arco', Fistweapon: 'Soqueira',
-      Instrument: 'Instrumento', Whip: 'Chicote', Book: 'Livro', Katar: 'Katar',
-      Revolver: 'Revólver', Rifle: 'Rifle', 'Gatling Gun': 'Metralhadora', Shotgun: 'Espingarda',
-      'Grenade Launcher': 'Lança-granadas', Shuriken: 'Shuriken',
-    } as Record<string, string>)[label] ?? label,
+    id: Number(id), label: (WEAPON_SUBTYPE_LABEL_PT_BR as Record<string, string>)[label] ?? label,
   }));
   readonly ammoSubtypes = [ItemSubTypeId.Arrow, ItemSubTypeId.Cannonball, ItemSubTypeId.Kunai,
     ItemSubTypeId.Bullet, ItemSubTypeId.ThrowingDagger].map((id) => ({ id, label: ({

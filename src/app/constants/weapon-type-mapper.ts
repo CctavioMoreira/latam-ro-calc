@@ -53,3 +53,58 @@ export const WeaponTypeNameMapBySubTypeId = {
 type Keys = keyof typeof WeaponTypeNameMapBySubTypeId;
 export type WeaponTypeName = (typeof WeaponTypeNameMapBySubTypeId)[Keys];
 export type WeaponSubTypeName = (typeof WeaponSubTypeNameMapById)[Keys];
+
+/**
+ * pt-BR names for every weapon subtype, as the Custom Item Studio's weapon dropdown
+ * already showed them. Shared from here so the "Requer ..." warning and the dropdown
+ * cannot drift apart.
+ */
+export const WEAPON_SUBTYPE_LABEL_PT_BR: Record<WeaponSubTypeName, string> = {
+  Dagger: 'Adaga', Sword: 'Espada', 'Two-Handed Sword': 'Espada de duas mãos',
+  Spear: 'Lança', 'Two-Handed Spear': 'Lança de duas mãos', Axe: 'Machado',
+  'Two-Handed Axe': 'Machado de duas mãos', Mace: 'Maça', 'Two-Handed Mace': 'Maça de duas mãos',
+  Rod: 'Cajado', 'Two-Handed Rod': 'Cajado de duas mãos', Bow: 'Arco', Fistweapon: 'Soqueira',
+  Instrument: 'Instrumento', Whip: 'Chicote', Book: 'Livro', Katar: 'Katar',
+  Revolver: 'Revólver', Rifle: 'Rifle', 'Gatling Gun': 'Metralhadora', Shotgun: 'Espingarda',
+  'Grenade Launcher': 'Lança-granadas', Shuriken: 'Shuriken',
+};
+
+/**
+ * The same names keyed by the engine's weapon *type*. `gun` covers five subtypes at once
+ * (revolver through grenade launcher), so it gets the umbrella term the client uses.
+ */
+export const WEAPON_TYPE_LABEL_PT_BR: Record<WeaponTypeName, string> = {
+  dagger: 'Adaga', sword: 'Espada', twohandSword: 'Espada de duas mãos',
+  spear: 'Lança', twohandSpear: 'Lança de duas mãos', axe: 'Machado',
+  twohandAxe: 'Machado de duas mãos', mace: 'Maça', twohandMace: 'Maça de duas mãos',
+  rod: 'Cajado', twohandRod: 'Cajado de duas mãos', bow: 'Arco', fist: 'Soqueira',
+  instrument: 'Instrumento', whip: 'Chicote', book: 'Livro', katar: 'Katar',
+  gun: 'Arma de fogo', shuriken: 'Shuriken',
+};
+
+/** Equipment slots a skill can demand, beyond the weapon itself. */
+const GEAR_LABEL_PT_BR: Record<string, string> = { Shield: 'Escudo', Arrow: 'Flecha', Ammo: 'Munição' };
+
+/**
+ * Turn a skill's `verifyItemFn` requirement into the pt-BR text the warning shows.
+ *
+ * A class may return either a comma-separated list of the engine's own identifiers
+ * ("spear, twohandSpear") or ready-made prose ("Auréola do Juiz ou das Chamas"). Only
+ * the first kind is translated: a string with no recognisable identifier in it comes
+ * back untouched, so prose written in the class survives verbatim. The list reads as
+ * alternatives, because `verifyItemFn` accepts any one of them.
+ */
+export const localizeRequirement = (requirement: string): string => {
+  const parts = requirement.split(',').map((part) => part.trim()).filter(Boolean);
+  const labelOf = (part: string) =>
+    WEAPON_TYPE_LABEL_PT_BR[part as WeaponTypeName]
+    ?? WEAPON_SUBTYPE_LABEL_PT_BR[part as WeaponSubTypeName]
+    ?? GEAR_LABEL_PT_BR[part];
+
+  if (!parts.some(labelOf)) return requirement;
+
+  const labels = parts.map((part) => labelOf(part) ?? part);
+  if (labels.length === 1) return labels[0];
+
+  return `${labels.slice(0, -1).join(', ')} ou ${labels[labels.length - 1]}`;
+};
