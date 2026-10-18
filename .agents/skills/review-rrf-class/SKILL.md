@@ -255,7 +255,7 @@ const par = equipStatusOf(makeCalculator(db, new Biolo()),
 
 When a combo *is* on the legacy `EQUIP[<nome>]` form, migrate it to `EQUIP_ID[]` even if it
 currently works — that is the whole point of the form, and the fragility is real. Follow
-AGENTS.md: record a behavioural baseline first, splice `item.json` by byte span (never a JSON
+CLAUDE.md: record a behavioural baseline first, splice `item.json` by byte span (never a JSON
 round-trip — the keys are not numerically ordered), assert the baseline unchanged, pin that
 each `EQUIP_ID[...]` names **every** generation sharing the English name, and lower the
 ratchet in `item-script-keys.spec.ts`. `cordao-lt-combo-migration.spec.ts` is the worked
