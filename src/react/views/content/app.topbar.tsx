@@ -34,7 +34,7 @@ return <><Render tag="div" props={{"className": ["layout-topbar"].filter(Boolean
 <Render tag="a" props={{"target": "_blank",
 "rel": "noreferrer noopener",
 "href": vm.issuesBoardUrl}}><Render tag="button" props={{"aria-label": "Acompanhar",
-"className": ["ui-button-help ui-button-raised px-2 topbar-desktop-only"].filter(Boolean).join(' '),
+"className": ["ui-button-help ui-button-raised px-2"].filter(Boolean).join(' '),
 "button": true}}><Render tag="app-icon" props={{"name": "list"}}></Render>
 <Render tag="span" props={{"className": ["pl-1"].filter(Boolean).join(' ')}}>{"Acompanhar"}</Render></Render></Render>
 <Render tag="a" props={{"target": "_blank",
@@ -59,8 +59,8 @@ return <><Render tag="div" props={{"className": ["layout-topbar"].filter(Boolean
 "className": ["ui-button-info ui-button-raised px-2 topbar-primary-btn"].filter(Boolean).join(' '),
 "button": true}}><Render tag="app-icon" props={{"name": "search"}}></Render>
 <Render tag="span" props={{"className": ["pl-1"].filter(Boolean).join(' ')}}>{"Buscar itens"}</Render></Render>
-<Button icon="cog" aria-label="Configurações" aria-haspopup="dialog" aria-expanded={vm.visibleSettings}
-  className="ui-button-success ui-button-raised topbar-settings topbar-desktop-only" onClick={() => vm.action(() => { vm.visibleSettings = true; })} /><Button icon="bars" aria-label="Menu" aria-haspopup="dialog" aria-expanded={vm.visibleMobileMenu} className="ui-button-secondary ui-button-raised topbar-mobile-menu-btn" onClick={() => vm.action(() => { vm.visibleMobileMenu = true; })} />
+<Button icon="bars" aria-label="Menu" aria-haspopup="dialog" aria-expanded={vm.visibleMobileMenu} className="ui-button-secondary ui-button-raised topbar-mobile-menu-btn" onClick={() => vm.action(() => { vm.visibleMobileMenu = true; })} /><Button icon="cog" aria-label="Configurações" aria-haspopup="dialog" aria-expanded={vm.visibleSettings}
+  className="ui-button-success ui-button-raised topbar-settings topbar-desktop-only" onClick={() => vm.action(() => { vm.visibleSettings = true; })} />
 </Render>
 <Dialog header="Configurações" visible={vm.visibleSettings} modal dismissableMask position="right"
   onVisibleChange={visible => vm.action(() => { vm.visibleSettings = visible; })}>

@@ -67,7 +67,7 @@
    column at 1500px and two once the window is wide enough to earn them. */
 .eq-grid__columns {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
   gap: 16px;
   align-items: start;
 }

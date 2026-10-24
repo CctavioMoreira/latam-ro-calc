@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { isCoarsePointer, trapFocus } from '../../react/ui/layers';
+import { handleTooltipTouchClick } from '../../react/ui/tooltip';
 import { ItemPickerOverlayComponent } from '../../react/controllers/item-picker-overlay';
 import { DescriptionStore } from '../../react/services/data-client';
 
@@ -80,8 +81,55 @@ describe('mobile responsiveness & touch UX contracts', () => {
     cleanup();
   });
 
-  it('toggles item description preview in ItemPickerOverlayComponent without committing selection', () => {
-    const host = { nativeElement: { querySelector: () => null } as unknown as HTMLElement };
+  it('handles touch tooltip clicks: opens on first tap, guards links, and ignores interactive controls', () => {
+    vi.stubGlobal('window', {
+      matchMedia: (query: string) => ({ matches: query === '(pointer: coarse)' }),
+    });
+    const open = vi.fn();
+    const hide = vi.fn();
+    const preventDefault = vi.fn();
+    const linkEl = {} as HTMLElement;
+    const skillLabel = {
+      closest: () => null,
+      contains: (node: unknown) => node === linkEl,
+    } as unknown as HTMLElement;
+    const targetInLink = {
+      closest: (sel: string) => (sel === 'a[href]' ? linkEl : null),
+    } as unknown as EventTarget;
+
+    // 1st tap on skill link: prevents navigation and opens tooltip
+    handleTooltipTouchClick({ currentTarget: skillLabel, target: targetInLink, preventDefault }, null, false, 'Desc', open, hide);
+    expect(preventDefault).toHaveBeenCalledOnce();
+    expect(open).toHaveBeenCalledWith(skillLabel);
+
+    // 2nd tap on skill link while tooltip is open: lets link navigate without hiding
+    preventDefault.mockClear();
+    open.mockClear();
+    handleTooltipTouchClick({ currentTarget: skillLabel, target: targetInLink, preventDefault }, skillLabel, false, 'Desc', open, hide);
+    expect(preventDefault).not.toHaveBeenCalled();
+    expect(open).not.toHaveBeenCalled();
+    expect(hide).not.toHaveBeenCalled();
+
+    // 2nd tap on plain trigger (not a link): hides tooltip
+    const plainTarget = { closest: () => null } as unknown as EventTarget;
+    handleTooltipTouchClick({ currentTarget: skillLabel, target: plainTarget, preventDefault }, skillLabel, false, 'Desc', open, hide);
+    expect(hide).toHaveBeenCalledOnce();
+
+    // Tapping clickable stats, listbox options, or buttons does not open tooltip
+    const clickableEl = {
+      closest: (sel: string) => (sel.includes('.bonus_clickable') ? ({} as HTMLElement) : null),
+      contains: () => false,
+    } as unknown as HTMLElement;
+    handleTooltipTouchClick({ currentTarget: clickableEl, target: plainTarget, preventDefault }, null, false, 'Desc', open, hide);
+    expect(open).not.toHaveBeenCalled();
+  });
+
+  it('toggles item description preview, pins panel width, and clears preview on filter or breadcrumb navigation', () => {
+    const host = {
+      nativeElement: {
+        querySelector: (sel: string) => (sel === '.picker' ? { offsetWidth: 245 } : null),
+      } as unknown as HTMLElement,
+    };
     const descriptions = { get: vi.fn(), version: 1, subscribe: vi.fn(), getSnapshot: () => 1 } as unknown as DescriptionStore;
     const vm = new ItemPickerOverlayComponent(host, descriptions);
     vm.init({
@@ -94,10 +142,20 @@ describe('mobile responsiveness & touch UX contracts', () => {
     });
     const stopPropagation = vi.fn();
     expect(vm.previewValue).toBeNull();
+    expect(vm.pinnedWidth).toBeNull();
     vm.togglePreview(1001, { stopPropagation });
     expect(stopPropagation).toHaveBeenCalledOnce();
     expect(vm.previewValue).toBe(1001);
-    vm.togglePreview(1001, { stopPropagation });
+    expect(vm.pinnedWidth).toBe(245);
+
+    // Filtering resets previewValue so the list stays visible with virtual keyboard open
+    vm.onQuery('cha');
+    expect(vm.previewValue).toBeNull();
+
+    // Breadcrumb navigation also resets previewValue
+    vm.togglePreview(1001);
+    expect(vm.previewValue).toBe(1001);
+    vm.goToLevel(-1);
     expect(vm.previewValue).toBeNull();
   });
 });

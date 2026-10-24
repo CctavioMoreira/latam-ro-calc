@@ -8,6 +8,13 @@
 }
 
 /* Item Picker inline description preview ('i' button) & close button */
+:is(app-item-picker-overlay, .ui-scope-app-item-picker-overlay) .picker__title,
+:is(app-item-picker-overlay, .ui-scope-app-item-picker-overlay) .picker__filter,
+:is(app-item-picker-overlay, .ui-scope-app-item-picker-overlay) .picker__crumbs,
+:is(app-item-picker-overlay, .ui-scope-app-item-picker-overlay) .picker__row--create {
+  flex-shrink: 0;
+}
+
 :is(app-item-picker-overlay, .ui-scope-app-item-picker-overlay) .picker__info {
   flex: 0 0 auto;
   display: inline-flex;
@@ -296,14 +303,17 @@
 
 /* Phone & Small Tablet Breakpoint (< 768px) */
 @media (max-width: 768px) {
+  html {
+    scrollbar-gutter: auto;
+  }
+
   :root {
     --page-gutter: 10px;
   }
 
   /* Prevent iOS Safari zoom on input focus */
   :is(app-item-picker-overlay, .ui-scope-app-item-picker-overlay) .picker__input,
-  .ui-dropdown-filter,
-  :is(app-ro-calculator, .ui-scope-app-ro-calculator) .calc-panel-search-input,
+  :is(app-slot-color-picker, .ui-scope-app-slot-color-picker) .cpicker__input,
   input.ui-inputtext {
     font-size: 16px !important;
   }
@@ -417,6 +427,23 @@
 
   :is(app-battle-hud, .ui-scope-app-battle-hud) .hud-hero-divider {
     display: none !important;
+  }
+
+  :is(app-battle-hud, .ui-scope-app-battle-hud, app-battle-monster-card, .ui-scope-app-battle-monster-card) .hud-card-col--monster .ui-card-content {
+    flex-direction: column !important;
+  }
+
+  :is(app-battle-hud, .ui-scope-app-battle-hud, app-battle-monster-card, .ui-scope-app-battle-monster-card) .hud-card-col--monster .hud-monster-info {
+    flex: 1 1 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+  }
+
+  :is(app-battle-hud, .ui-scope-app-battle-hud, app-battle-monster-card, .ui-scope-app-battle-monster-card) .hud-band-right {
+    border-left: none !important;
+    border-top: 1px solid var(--surface-border);
+    padding-left: 12px !important;
+    margin-top: 0 !important;
   }
 
   .rot-details-panel,
