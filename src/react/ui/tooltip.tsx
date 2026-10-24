@@ -1,5 +1,5 @@
 import { HTMLAttributes, createElement, useEffect, useId, useMemo, useRef, useState } from 'react';
-import { ConnectedPosition } from './layers';
+import { ConnectedPosition, isCoarsePointer } from './layers';
 import { Portal } from './portal';
 import { sanitizeHtml } from './sanitize-html';
 import { HoverLifetime } from './hover-lifetime';
@@ -59,13 +59,13 @@ export function useTooltip({ text, position = 'right', className = '', showDelay
     panel.style.marginTop = chosen === 'right' || chosen === 'left' ? `${correction}px` : '0';
   };
   const triggerProps: HTMLAttributes<HTMLElement> = {
-    onMouseEnter: event => activate(event.currentTarget), onMouseLeave: deactivate,
-    onFocus: event => activate(event.currentTarget), onBlur: deactivate,
+    onMouseEnter: event => { if (!isCoarsePointer()) activate(event.currentTarget); }, onMouseLeave: () => { if (!isCoarsePointer()) deactivate(); },
+    onFocus: event => { if (!isCoarsePointer()) activate(event.currentTarget); }, onBlur: deactivate, onClick: event => { if (!isCoarsePointer() || disabled || !text) return; const el = event.currentTarget; if (el.closest('button,input,select')) return; const link = (event.target as HTMLElement | null)?.closest?.('a[href]'); if (anchor !== el) { if (link && el.contains(link)) event.preventDefault(); target.current = el; setAnchor(el); } else if (!link) hide(); },
     'aria-describedby': [describedBy, anchor ? id : null].filter(Boolean).join(' ') || undefined,
   };
   const tooltip = anchor && text && !disabled ? <Portal anchor={anchor} origin={anchor} positions={positions}
     panelClass={`ui-tooltip ui-tooltip-${position} ${className}`} role="tooltip" id={id} lock={false}
-    onDismiss={hide} onOutsideScroll={hide} onPosition={align}>
+    onDismiss={hide} onOutside={hide} onOutsideScroll={hide} onPosition={align}>
     {createElement('app-ui-tooltip-content', { onMouseEnter: cancelHide, onMouseLeave: deactivate }, <>
       {escape ? <div className="ui-tooltip-text">{text}</div> : <div className="ui-tooltip-text" dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }} />}
     </>)}

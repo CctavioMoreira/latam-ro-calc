@@ -33,8 +33,8 @@ export function ItemPickerOverlay() {
   const request = useSyncExternalStore(services.itemPicker.subscribe, services.itemPicker.getSnapshot);
   if (!request) return null;
   const close = () => services.itemPicker.close();
-  return <Portal anchor={request.anchor} origin={request.anchor} positions={itemPositions} modal backdropClassName="ui-overlay-transparent-backdrop" trap
-    onDismiss={close} onBackdrop={close} onOutside={close} panelClass="ui-item-picker-pane">
+  const sheet = typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia('(max-width: 768px)').matches; return <Portal anchor={sheet ? null : request.anchor} origin={request.anchor} positions={itemPositions} modal position={sheet ? 'bottom' : 'center'} backdropClassName={sheet ? 'ui-dialog-mask' : 'ui-overlay-transparent-backdrop'} trap
+    onDismiss={close} onBackdrop={close} onOutside={close} panelClass={`ui-item-picker-pane ${sheet ? 'ui-item-picker-pane--sheet' : ''}`}>
     <PickerPanel key={identityKey(request)} request={request} services={services} />
   </Portal>;
 }
@@ -61,9 +61,9 @@ export function ColorPickerOverlay() {
   const request = useSyncExternalStore(services.slotColors.picker.subscribe, services.slotColors.picker.getSnapshot);
   if (!request) return null;
   const close = () => services.slotColors.picker.close();
-  return <Portal anchor={request.anchor} origin={request.anchor} modal backdropClassName="ui-overlay-transparent-backdrop" trap
+  const sheet = typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia('(max-width: 768px)').matches; return <Portal anchor={sheet ? null : request.anchor} origin={request.anchor} modal position={sheet ? 'bottom' : 'center'} backdropClassName={sheet ? 'ui-dialog-mask' : 'ui-overlay-transparent-backdrop'} trap
     onEscape={() => { const vm = controller.current; vm?.editing ? vm.action(() => vm.cancelRename()) : close(); }}
-    onDismiss={close} onBackdrop={close} onOutside={close} panelClass="ui-slot-color-picker-pane">
+    onDismiss={close} onBackdrop={close} onOutside={close} panelClass={`ui-slot-color-picker-pane ${sheet ? 'ui-slot-color-picker-pane--sheet' : ''}`}>
     <ColorPanel key={identityKey(request)} request={request} services={services} controller={controller} />
   </Portal>;
 }

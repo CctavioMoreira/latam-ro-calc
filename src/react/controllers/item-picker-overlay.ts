@@ -48,6 +48,7 @@ export class ItemPickerOverlayComponent extends ViewState {
 
   request!: PickerRequest;
   query = '';
+  previewValue: string | number | null = null;
   /** -1 is the "Nenhum" row, which sits outside the scroller and is always reachable. */
   active = -1;
   rows: PickerRow[] = [];
@@ -77,6 +78,7 @@ private readonly host: { nativeElement: HTMLElement },
   init(request: PickerRequest): void {
     this.request = request;
     this.query = '';
+    this.previewValue = null;
     this.trail = [];
     this.active = this.minIndex;
     // Tree mode always virtualises: its flat search can return a thousand leaves, and a
@@ -221,6 +223,7 @@ private readonly host: { nativeElement: HTMLElement },
     this.closed.emit({ committed: true, value: row.value });
   }
 
+  togglePreview(value: string | number | null, event?: any): void { event?.stopPropagation?.(); this.previewValue = this.previewValue === value ? null : value; }
   hover(index: number): void {
     this.active = index;
   }
